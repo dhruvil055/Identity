@@ -3,8 +3,10 @@ import { SectionHeader } from '../common/SectionHeader';
 import { Button } from '../common/Button';
 import { BRAND_CONFIG } from '../../data/brandData';
 import { Check } from 'lucide-react';
+import { useInView } from '../../hooks/useInView';
 
 export const TheShift: React.FC = () => {
+  const { ref: sectionRef, inView } = useInView<HTMLElement>({ threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
 
   const beforePoints = [
     'Successful externally, but quietly misaligned internally.',
@@ -24,6 +26,7 @@ export const TheShift: React.FC = () => {
 
   return (
     <section
+      ref={sectionRef}
       className="section-padding"
       style={{
         position: 'relative',
@@ -61,13 +64,22 @@ export const TheShift: React.FC = () => {
       </div>
 
       <div className="identy-container" style={{ position: 'relative', zIndex: 2 }}>
-        <SectionHeader
-          eyebrow="The Measurable Transformation"
-          title="The Shift"
-          subtitle="How six months inside the I-denty ecosystem fundamentally transforms your trajectory."
-          centered
-          light
-        />
+        {/* Section Header — fades in */}
+        <div
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(24px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
+        >
+          <SectionHeader
+            eyebrow="The Measurable Transformation"
+            title="The Shift"
+            subtitle="How six months inside the I-denty ecosystem fundamentally transforms your trajectory."
+            centered
+            light
+          />
+        </div>
 
         {/* Comparison Cards Grid */}
         <div
@@ -79,7 +91,7 @@ export const TheShift: React.FC = () => {
             margin: '0 auto 3rem auto',
           }}
         >
-          {/* Card 1: Before I-denty */}
+          {/* Card 1: Before I-denty — slides from left */}
           <div
             style={{
               backgroundColor: 'rgba(26, 29, 34, 0.85)',
@@ -89,6 +101,9 @@ export const TheShift: React.FC = () => {
               padding: 'clamp(2rem, 4vw, 2.8rem)',
               display: 'flex',
               flexDirection: 'column',
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(-28px)',
+              transition: 'opacity 0.75s ease 0.2s, transform 0.75s ease 0.2s',
             }}
           >
             <div
@@ -118,6 +133,8 @@ export const TheShift: React.FC = () => {
                     fontSize: '0.94rem',
                     color: '#c4c8d0',
                     lineHeight: 1.5,
+                    opacity: inView ? 1 : 0,
+                    transition: `opacity 0.5s ease ${0.4 + index * 0.08}s`,
                   }}
                 >
                   <span style={{ color: '#ff6b6b', fontWeight: 700, marginTop: '-1px' }}>—</span>
@@ -127,7 +144,7 @@ export const TheShift: React.FC = () => {
             </ul>
           </div>
 
-          {/* Card 2: After 6 Months */}
+          {/* Card 2: After 6 Months — slides from right */}
           <div
             style={{
               backgroundColor: 'rgba(26, 29, 34, 0.95)',
@@ -139,6 +156,9 @@ export const TheShift: React.FC = () => {
               flexDirection: 'column',
               boxShadow: '0 12px 35px rgba(0, 0, 0, 0.4)',
               position: 'relative',
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(28px)',
+              transition: 'opacity 0.75s ease 0.35s, transform 0.75s ease 0.35s',
             }}
           >
             <div
@@ -187,6 +207,8 @@ export const TheShift: React.FC = () => {
                     fontSize: '0.94rem',
                     color: '#ffffff',
                     lineHeight: 1.5,
+                    opacity: inView ? 1 : 0,
+                    transition: `opacity 0.5s ease ${0.55 + index * 0.08}s`,
                   }}
                 >
                   <Check size={18} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '2px' }} />
@@ -198,7 +220,14 @@ export const TheShift: React.FC = () => {
         </div>
 
         {/* CTA Bridge */}
-        <div style={{ textAlign: 'center' }}>
+        <div
+          style={{
+            textAlign: 'center',
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(16px)',
+            transition: 'opacity 0.7s ease 0.9s, transform 0.7s ease 0.9s',
+          }}
+        >
           <Button variant="gold" href="/memberships" withArrow>
             Begin Your Shift Inside The Ecosystem
           </Button>

@@ -3,20 +3,33 @@ import { Link } from 'react-router-dom';
 import { SectionHeader } from '../common/SectionHeader';
 import { MARKET_GAP_ITEMS } from '../../data/brandData';
 import { ArrowRight } from 'lucide-react';
+import { useInView } from '../../hooks/useInView';
 
 export const MarketGap: React.FC = () => {
+  const { ref: sectionRef, inView: sectionVisible } = useInView<HTMLDivElement>();
+  const { ref: gridRef, inView: gridVisible } = useInView<HTMLDivElement>({ threshold: 0.08 });
+  const { ref: bannerRef, inView: bannerVisible } = useInView<HTMLDivElement>();
+
   return (
     <section className="section-padding" style={{ backgroundColor: 'var(--color-bg-sand)' }}>
       <div className="identy-container">
-        <SectionHeader
-          eyebrow="The Market Reality"
-          title="The Market Gap"
-          subtitle="Modern high-capacity women are evolving faster than the traditional spaces built to support them."
-          centered
-        />
+        {/* Section Header */}
+        <div
+          ref={sectionRef as React.RefObject<HTMLDivElement>}
+          className={`reveal${sectionVisible ? ' is-visible' : ''}`}
+        >
+          <SectionHeader
+            eyebrow="The Market Reality"
+            title="The Market Gap"
+            subtitle="Modern high-capacity women are evolving faster than the traditional spaces built to support them."
+            centered
+          />
+        </div>
 
         {/* 4 Life Transition Cards Grid */}
         <div
+          ref={gridRef as React.RefObject<HTMLDivElement>}
+          className={`stagger-children${gridVisible ? ' is-visible' : ''}`}
           style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fit, minmax(250px, 1fr))',
@@ -27,7 +40,7 @@ export const MarketGap: React.FC = () => {
           {MARKET_GAP_ITEMS.map((item) => (
             <div
               key={item.id}
-              className="card-editorial"
+              className={`card-editorial card-hover-glow reveal-scale${gridVisible ? ' is-visible' : ''}`}
               style={{
                 backgroundColor: '#ffffff',
                 padding: '2.2rem 1.8rem',
@@ -35,6 +48,7 @@ export const MarketGap: React.FC = () => {
                 flexDirection: 'column',
                 borderRadius: 'var(--radius-md)',
                 position: 'relative',
+                border: '1px solid var(--color-border-light)',
               }}
             >
               {/* Icon */}
@@ -49,18 +63,20 @@ export const MarketGap: React.FC = () => {
                   justifyContent: 'center',
                   marginBottom: '1.5rem',
                   padding: '10px',
+                  transition: 'background-color 0.3s ease',
                 }}
               >
                 <img
                   src={item.iconSrc}
                   alt={item.title}
+                  loading="lazy"
                   style={{
                     width: '100%',
                     height: '100%',
                     objectFit: 'contain',
                   }}
+                  onLoad={(e) => e.currentTarget.classList.add('loaded')}
                   onError={(e) => {
-                    // fallback if remote asset has an issue
                     e.currentTarget.style.display = 'none';
                   }}
                 />
@@ -96,9 +112,10 @@ export const MarketGap: React.FC = () => {
                 {item.description}
               </p>
 
-              {/* Contextual Link to Reinvention Stage */}
+              {/* Contextual Link */}
               <Link
                 to={item.suggestedPath}
+                className="link-hover-gold"
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -108,7 +125,13 @@ export const MarketGap: React.FC = () => {
                   textTransform: 'uppercase',
                   letterSpacing: '0.08em',
                   color: 'var(--color-brand-gold-dark)',
-                  transition: 'gap 0.2s ease',
+                  transition: 'gap 0.25s ease, color 0.25s ease',
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.gap = '0.75rem';
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLAnchorElement).style.gap = '0.45rem';
                 }}
               >
                 <span>Explore Solution</span>
@@ -120,6 +143,8 @@ export const MarketGap: React.FC = () => {
 
         {/* Closing Narrative Banner */}
         <div
+          ref={bannerRef as React.RefObject<HTMLDivElement>}
+          className={`reveal${bannerVisible ? ' is-visible' : ''}`}
           style={{
             maxWidth: '860px',
             margin: '0 auto',

@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button } from '../common/Button';
 import { ChevronDown, Compass } from 'lucide-react';
 import { BRAND_CONFIG } from '../../data/brandData';
 
 export const HeroSection: React.FC = () => {
+  const [videoLoaded, setVideoLoaded] = useState(false);
+
   return (
     <section
       className="home-hero-section"
@@ -32,11 +34,13 @@ export const HeroSection: React.FC = () => {
           loop
           playsInline
           poster="https://i-denty.com/wp-content/themes/i-denty/assets/images/hero.png"
+          onCanPlay={() => setVideoLoaded(true)}
           style={{
             width: '100%',
             height: '100%',
             objectFit: 'cover',
-            opacity: 0.42,
+            opacity: videoLoaded ? 0.42 : 0,
+            transition: 'opacity 1.4s ease',
           }}
         >
           <source src={BRAND_CONFIG.heroVideoUrl} type="video/mp4" />
@@ -63,7 +67,7 @@ export const HeroSection: React.FC = () => {
           maxWidth: '960px',
         }}
       >
-        {/* Subtle Eyebrow */}
+        {/* Subtle Eyebrow — enters first */}
         <div
           style={{
             display: 'inline-flex',
@@ -79,14 +83,15 @@ export const HeroSection: React.FC = () => {
             letterSpacing: '0.18em',
             fontWeight: 500,
             marginBottom: '1.8rem',
-            animation: 'fadeIn 0.5s ease',
+            animation: 'heroFadeUp 0.7s ease both',
+            animationDelay: '0.1s',
           }}
         >
           <span style={{ color: 'var(--color-brand-gold)' }}>◈</span>
           <span>{BRAND_CONFIG.tagline}</span>
         </div>
 
-        {/* Primary Headline */}
+        {/* Primary Headline — enters second */}
         <h1
           style={{
             color: '#ffffff',
@@ -96,12 +101,14 @@ export const HeroSection: React.FC = () => {
             letterSpacing: '-0.025em',
             marginBottom: '1.5rem',
             textShadow: '0 2px 20px rgba(0, 0, 0, 0.4)',
+            animation: 'heroFadeUp 0.8s ease both',
+            animationDelay: '0.28s',
           }}
         >
           {BRAND_CONFIG.heroTitle}
         </h1>
 
-        {/* Supporting Message */}
+        {/* Supporting Message — enters third */}
         <p
           style={{
             fontSize: 'clamp(1.05rem, 1.9vw, 1.28rem)',
@@ -112,12 +119,14 @@ export const HeroSection: React.FC = () => {
             marginRight: 'auto',
             marginBottom: '2.5rem',
             fontWeight: 300,
+            animation: 'heroFadeUp 0.8s ease both',
+            animationDelay: '0.46s',
           }}
         >
           {BRAND_CONFIG.heroSubtitle}
         </p>
 
-        {/* Dual High-Priority CTAs */}
+        {/* Dual CTAs — enters last */}
         <div
           style={{
             display: 'flex',
@@ -125,6 +134,8 @@ export const HeroSection: React.FC = () => {
             alignItems: 'center',
             justifyContent: 'center',
             gap: '1.1rem',
+            animation: 'heroFadeUp 0.8s ease both',
+            animationDelay: '0.62s',
           }}
         >
           <Button variant="gold" href="/reinvention" withArrow>
@@ -161,17 +172,25 @@ export const HeroSection: React.FC = () => {
           textTransform: 'uppercase',
           letterSpacing: '0.15em',
           transition: 'color 0.2s',
+          animation: 'heroFadeUp 1s ease both',
+          animationDelay: '1.1s',
         }}
       >
         <span>Discover</span>
-        <ChevronDown size={16} style={{ animation: 'bounce 2s infinite' }} />
+        <ChevronDown size={16} style={{ animation: 'scrollBounce 2s ease-in-out 2s infinite' }} />
       </a>
 
       <style>{`
-        @keyframes bounce {
-          0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-          40% { transform: translateY(5px); }
-          60% { transform: translateY(3px); }
+        @keyframes heroFadeUp {
+          from { opacity: 0; transform: translateY(22px); }
+          to   { opacity: 1; transform: translateY(0); }
+        }
+        @keyframes scrollBounce {
+          0%, 100% { transform: translateY(0); opacity: 0.6; }
+          50%       { transform: translateY(6px); opacity: 1; }
+        }
+        @media (prefers-reduced-motion: reduce) {
+          [style*="animation"] { animation: none !important; opacity: 1 !important; }
         }
       `}</style>
     </section>

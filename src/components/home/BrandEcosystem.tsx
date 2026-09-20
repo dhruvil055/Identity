@@ -2,9 +2,13 @@ import React from 'react';
 import { SectionHeader } from '../common/SectionHeader';
 import { Button } from '../common/Button';
 import { PLATFORM_TIMELINE } from '../../data/brandData';
+import { useInView } from '../../hooks/useInView';
 
 
 export const BrandEcosystem: React.FC = () => {
+  const { ref: sectionRef, inView } = useInView<HTMLElement>({ threshold: 0.08 });
+  const { ref: timelineRef, inView: timelineInView } = useInView<HTMLDivElement>({ threshold: 0.1 });
+
   const brandPillars = [
     'Curated e-commerce & styling integrations',
     'Exclusive capsule collaborations with luxury partners',
@@ -13,14 +17,23 @@ export const BrandEcosystem: React.FC = () => {
   ];
 
   return (
-    <section className="section-padding" style={{ backgroundColor: 'var(--color-bg-sand-light)' }}>
+    <section ref={sectionRef} className="section-padding" style={{ backgroundColor: 'var(--color-bg-sand-light)' }}>
       <div className="identy-container">
-        <SectionHeader
-          eyebrow="Commercial Architecture"
-          title="The Brand Ecosystem"
-          subtitle="I-denty partners with aligned luxury and lifestyle brands seeking genuine resonance with high-capacity, financially empowered women."
-          centered
-        />
+        {/* Header */}
+        <div
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
+        >
+          <SectionHeader
+            eyebrow="Commercial Architecture"
+            title="The Brand Ecosystem"
+            subtitle="I-denty partners with aligned luxury and lifestyle brands seeking genuine resonance with high-capacity, financially empowered women."
+            centered
+          />
+        </div>
 
         <div
           style={{
@@ -31,7 +44,7 @@ export const BrandEcosystem: React.FC = () => {
             marginBottom: '4.5rem',
           }}
         >
-          {/* Left: Graphic Asset */}
+          {/* Left: Graphic Asset — slides from left */}
           <div
             style={{
               borderRadius: 'var(--radius-md)',
@@ -39,11 +52,15 @@ export const BrandEcosystem: React.FC = () => {
               boxShadow: 'var(--shadow-card)',
               backgroundColor: '#ffffff',
               border: '1px solid var(--color-border-light)',
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(-30px)',
+              transition: 'opacity 0.75s ease 0.15s, transform 0.75s ease 0.15s',
             }}
           >
             <img
               src="https://i-denty.com/wp-content/themes/i-denty/assets/images/Group%203255.png"
               alt="The Brand Ecosystem"
+              loading="lazy"
               style={{ width: '100%', height: 'auto', display: 'block' }}
               onError={(e) => {
                 e.currentTarget.src =
@@ -52,8 +69,14 @@ export const BrandEcosystem: React.FC = () => {
             />
           </div>
 
-          {/* Right: Narrative */}
-          <div>
+          {/* Right: Narrative — fades up from right */}
+          <div
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateY(0)' : 'translateY(28px)',
+              transition: 'opacity 0.75s ease 0.3s, transform 0.75s ease 0.3s',
+            }}
+          >
             <span className="eyebrow">Strategic Value</span>
             <h3 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.1rem)', marginBottom: '1rem', color: 'var(--color-text-main)' }}>
               Beyond Traditional Influencer Marketing
@@ -65,7 +88,19 @@ export const BrandEcosystem: React.FC = () => {
 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem' }}>
               {brandPillars.map((pillar, i) => (
-                <li key={i} style={{ display: 'flex', alignItems: 'center', gap: '0.65rem', fontSize: '0.94rem', color: 'var(--color-text-main)' }}>
+                <li
+                  key={i}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'center',
+                    gap: '0.65rem',
+                    fontSize: '0.94rem',
+                    color: 'var(--color-text-main)',
+                    opacity: inView ? 1 : 0,
+                    transform: inView ? 'translateX(0)' : 'translateX(12px)',
+                    transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s ease ${0.5 + i * 0.1}s`,
+                  }}
+                >
                   <span style={{ color: 'var(--color-brand-gold)', fontWeight: 700 }}>◈</span>
                   <span>{pillar}</span>
                 </li>
@@ -85,12 +120,16 @@ export const BrandEcosystem: React.FC = () => {
 
         {/* Scalable Platform Architecture & Timeline */}
         <div
+          ref={timelineRef}
           style={{
             backgroundColor: '#ffffff',
             border: '1px solid var(--color-border)',
             borderRadius: 'var(--radius-md)',
             padding: 'clamp(2rem, 4vw, 3.5rem)',
             boxShadow: 'var(--shadow-subtle)',
+            opacity: timelineInView ? 1 : 0,
+            transform: timelineInView ? 'translateY(0)' : 'translateY(30px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
           }}
         >
           <div style={{ textAlign: 'center', maxWidth: '680px', margin: '0 auto 2.5rem auto' }}>
@@ -120,6 +159,9 @@ export const BrandEcosystem: React.FC = () => {
                   borderTop: '3px solid var(--color-brand-gold)',
                   display: 'flex',
                   flexDirection: 'column',
+                  opacity: timelineInView ? 1 : 0,
+                  transform: timelineInView ? 'translateY(0)' : 'translateY(20px)',
+                  transition: `opacity 0.55s ease ${0.15 + idx * 0.12}s, transform 0.55s ease ${0.15 + idx * 0.12}s`,
                 }}
               >
                 <div

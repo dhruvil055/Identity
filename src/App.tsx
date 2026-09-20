@@ -13,6 +13,7 @@ import { CommunityPage } from './pages/CommunityPage';
 import { AboutPage } from './pages/AboutPage';
 import { PathFinderPage } from './pages/PathFinderPage';
 import { ContactPage } from './pages/ContactPage';
+import { ScrollProgressBar, BackToTopButton } from './components/common/ScrollUtils';
 
 // Scroll to top helper on route transition
 const ScrollToTop: React.FC = () => {
@@ -36,6 +37,7 @@ const ScrollToTop: React.FC = () => {
 function App() {
   return (
     <BrowserRouter>
+      <ScrollProgressBar />
       <div className="site-wrapper" style={{ display: 'flex', flexDirection: 'column', minHeight: '100vh' }}>
         <ScrollToTop />
         <Header />
@@ -58,6 +60,7 @@ function App() {
         </div>
         <Footer />
       </div>
+      <BackToTopButton />
     </BrowserRouter>
   );
 }

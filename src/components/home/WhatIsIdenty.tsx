@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Button } from '../common/Button';
 import { Sparkles, Layers, Shield, HeartHandshake, Check } from 'lucide-react';
+import { useInView } from '../../hooks/useInView';
 
 export const WhatIsIdenty: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'integrated' | 'comparison'>('integrated');
+  const { ref: sectionRef, inView } = useInView<HTMLElement>({ threshold: 0.1, rootMargin: '0px 0px -80px 0px' });
 
   const integratedPillars = [
     {
@@ -29,7 +31,12 @@ export const WhatIsIdenty: React.FC = () => {
   ];
 
   return (
-    <section id="what-is-identy" className="section-padding" style={{ backgroundColor: 'var(--color-bg-sand-light)' }}>
+    <section
+      id="what-is-identy"
+      ref={sectionRef}
+      className="section-padding"
+      style={{ backgroundColor: 'var(--color-bg-sand-light)' }}
+    >
       <div className="identy-container">
         <div
           style={{
@@ -40,7 +47,14 @@ export const WhatIsIdenty: React.FC = () => {
           }}
         >
           {/* Left: Editorial Image with Luxury Framing */}
-          <div style={{ position: 'relative' }}>
+          <div
+            style={{
+              position: 'relative',
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(-32px)',
+              transition: 'opacity 0.75s ease, transform 0.75s ease',
+            }}
+          >
             <div
               style={{
                 borderRadius: 'var(--radius-md)',
@@ -52,12 +66,15 @@ export const WhatIsIdenty: React.FC = () => {
               <img
                 src="https://i-denty.com/wp-content/themes/i-denty/assets/images/identy-brand.png"
                 alt="What Is I-denty?"
+                loading="lazy"
                 style={{
                   width: '100%',
                   height: 'auto',
                   display: 'block',
-                  transition: 'transform 0.6s ease',
+                  transition: 'transform 0.7s ease',
                 }}
+                onMouseEnter={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1.03)'; }}
+                onMouseLeave={(e) => { (e.currentTarget as HTMLImageElement).style.transform = 'scale(1)'; }}
               />
             </div>
 
@@ -74,6 +91,9 @@ export const WhatIsIdenty: React.FC = () => {
                 boxShadow: 'var(--shadow-card)',
                 border: '1px solid var(--color-brand-gold-border)',
                 maxWidth: '240px',
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateY(0)' : 'translateY(10px)',
+                transition: 'opacity 0.6s ease 0.45s, transform 0.6s ease 0.45s',
               }}
             >
               <div style={{ color: 'var(--color-brand-gold)', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 600 }}>
@@ -86,7 +106,13 @@ export const WhatIsIdenty: React.FC = () => {
           </div>
 
           {/* Right: Content & Progressive Disclosure */}
-          <div>
+          <div
+            style={{
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateY(0)' : 'translateY(28px)',
+              transition: 'opacity 0.75s ease 0.18s, transform 0.75s ease 0.18s',
+            }}
+          >
             <span className="eyebrow">The New Category</span>
             <h2 style={{ marginBottom: '1.2rem', lineHeight: 1.18 }}>
               What Is I-denty?
@@ -124,6 +150,8 @@ export const WhatIsIdenty: React.FC = () => {
                   color: activeTab === 'integrated' ? 'var(--color-text-main)' : 'var(--color-text-muted)',
                   boxShadow: activeTab === 'integrated' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
                   transition: 'all 0.2s',
+                  cursor: 'pointer',
+                  border: 'none',
                 }}
               >
                 What You Receive
@@ -141,6 +169,8 @@ export const WhatIsIdenty: React.FC = () => {
                   color: activeTab === 'comparison' ? 'var(--color-text-main)' : 'var(--color-text-muted)',
                   boxShadow: activeTab === 'comparison' ? '0 2px 6px rgba(0,0,0,0.06)' : 'none',
                   transition: 'all 0.2s',
+                  cursor: 'pointer',
+                  border: 'none',
                 }}
               >
                 Why Traditional Solutions Fail
@@ -161,6 +191,9 @@ export const WhatIsIdenty: React.FC = () => {
                       borderRadius: 'var(--radius-sm)',
                       backgroundColor: '#ffffff',
                       border: '1px solid var(--color-border-light)',
+                      opacity: inView ? 1 : 0,
+                      transform: inView ? 'translateX(0)' : 'translateX(16px)',
+                      transition: `opacity 0.5s ease ${0.35 + i * 0.1}s, transform 0.5s ease ${0.35 + i * 0.1}s`,
                     }}
                   >
                     <div style={{ marginTop: '2px' }}>{p.icon}</div>

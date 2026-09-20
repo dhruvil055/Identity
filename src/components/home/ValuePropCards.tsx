@@ -2,8 +2,11 @@ import React from 'react';
 import { SectionHeader } from '../common/SectionHeader';
 import { Button } from '../common/Button';
 import { Sparkles, Calendar, Check } from 'lucide-react';
+import { useInView } from '../../hooks/useInView';
 
 export const ValuePropCards: React.FC = () => {
+  const { ref: sectionRef, inView } = useInView<HTMLElement>({ threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
+
   const membershipItems = [
     'Access to the full Reinvention Framework™ operating system',
     'Personal styling and non-verbal executive presence guidance',
@@ -21,14 +24,23 @@ export const ValuePropCards: React.FC = () => {
   ];
 
   return (
-    <section className="section-padding" style={{ backgroundColor: 'var(--color-bg-sand)' }}>
+    <section ref={sectionRef} className="section-padding" style={{ backgroundColor: 'var(--color-bg-sand)' }}>
       <div className="identy-container">
-        <SectionHeader
-          eyebrow="Inside The Membership"
-          title="The Core Pillars of Growth"
-          subtitle="Everything in I-denty is built around practical transformation and ongoing reinforcement."
-          centered
-        />
+        {/* Header */}
+        <div
+          style={{
+            opacity: inView ? 1 : 0,
+            transform: inView ? 'translateY(0)' : 'translateY(20px)',
+            transition: 'opacity 0.7s ease, transform 0.7s ease',
+          }}
+        >
+          <SectionHeader
+            eyebrow="Inside The Membership"
+            title="The Core Pillars of Growth"
+            subtitle="Everything in I-denty is built around practical transformation and ongoing reinforcement."
+            centered
+          />
+        </div>
 
         <div
           style={{
@@ -39,7 +51,7 @@ export const ValuePropCards: React.FC = () => {
             margin: '0 auto',
           }}
         >
-          {/* Card 1: The Membership Experience */}
+          {/* Card 1: The Membership Experience — slides from left */}
           <div
             className="card-editorial"
             style={{
@@ -49,6 +61,9 @@ export const ValuePropCards: React.FC = () => {
               flexDirection: 'column',
               borderRadius: 'var(--radius-md)',
               border: '1px solid var(--color-border)',
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(-26px)',
+              transition: 'opacity 0.75s ease 0.15s, transform 0.75s ease 0.15s',
             }}
           >
             <div
@@ -78,7 +93,18 @@ export const ValuePropCards: React.FC = () => {
 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem', flex: 1 }}>
               {membershipItems.map((item, index) => (
-                <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem', fontSize: '0.92rem' }}>
+                <li
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.65rem',
+                    fontSize: '0.92rem',
+                    opacity: inView ? 1 : 0,
+                    transform: inView ? 'translateX(0)' : 'translateX(-10px)',
+                    transition: `opacity 0.45s ease ${0.3 + index * 0.08}s, transform 0.45s ease ${0.3 + index * 0.08}s`,
+                  }}
+                >
                   <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
                   <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
                 </li>
@@ -111,7 +137,7 @@ export const ValuePropCards: React.FC = () => {
             </Button>
           </div>
 
-          {/* Card 2: The Monthly Reinvention Session */}
+          {/* Card 2: The Monthly Reinvention Session — slides from right */}
           <div
             className="card-editorial"
             style={{
@@ -123,6 +149,9 @@ export const ValuePropCards: React.FC = () => {
               border: '1px solid var(--color-brand-gold-border)',
               position: 'relative',
               boxShadow: 'var(--shadow-card)',
+              opacity: inView ? 1 : 0,
+              transform: inView ? 'translateX(0)' : 'translateX(26px)',
+              transition: 'opacity 0.75s ease 0.3s, transform 0.75s ease 0.3s',
             }}
           >
             <div
@@ -171,7 +200,18 @@ export const ValuePropCards: React.FC = () => {
 
             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem', flex: 1 }}>
               {monthlySessionItems.map((item, index) => (
-                <li key={index} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem', fontSize: '0.92rem' }}>
+                <li
+                  key={index}
+                  style={{
+                    display: 'flex',
+                    alignItems: 'flex-start',
+                    gap: '0.65rem',
+                    fontSize: '0.92rem',
+                    opacity: inView ? 1 : 0,
+                    transform: inView ? 'translateX(0)' : 'translateX(10px)',
+                    transition: `opacity 0.45s ease ${0.45 + index * 0.1}s, transform 0.45s ease ${0.45 + index * 0.1}s`,
+                  }}
+                >
                   <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
                   <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
                 </li>
