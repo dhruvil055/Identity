@@ -1,0 +1,2821 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I-DENTY — Homepage Redesign Demo | Ecosystem & Conversion Architecture</title>
+  
+  <!-- Google Fonts: Cormorant Garamond (Editorial Serif), Italiana (Wordmark), Jost (Modern Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400;1,600&family=Italiana&family=Jost:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  
+  <!-- GSAP & ScrollTrigger from cdnjs for subtle editorial animations -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       I-DENTY EDITORIAL LUXURY DESIGN SYSTEM
+       Theme: Warm Ivory Base, Rich Navy Ink, Muted Burnished Gold, Sand Accents
+       ========================================================================== */
+    :root {
+      --bg-base: #fbf9f5;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f5f0e6;
+      --bg-warm: #ece5d8;
+      --text-main: #18213b;
+      --text-muted: #576175;
+      --text-light: #8993a4;
+      --border-subtle: #e8e2d5;
+      --border-strong: #d2c8b4;
+      --gold-primary: #85702f;
+      --gold-accent: #aa8c42;
+      --gold-light: #f7f3e8;
+      --navy-deep: #141c30;
+      --navy-soft: #222d48;
+      --camel: #96683c;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-wordmark: 'Italiana', serif;
+      --font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --container-max: 1240px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-soft: 0 10px 30px -10px rgba(24, 33, 59, 0.05);
+      --shadow-hover: 0 20px 40px -15px rgba(24, 33, 59, 0.1);
+      --transition-smooth: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+    }
+
+    ::selection {
+      background-color: rgba(133, 112, 47, 0.2);
+      color: var(--navy-deep);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Container */
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.25rem;
+      }
+    }
+
+    /* Typography Utilities */
+    .font-display {
+      font-family: var(--font-display);
+    }
+
+    .font-wordmark {
+      font-family: var(--font-wordmark);
+      letter-spacing: 0.18em;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      color: var(--gold-primary);
+      margin-bottom: 0.75rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 18px;
+      height: 1px;
+      background-color: var(--gold-primary);
+    }
+
+    /* Proposal & Verified Badges */
+    .badge-proposal {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background-color: #fef3c7;
+      color: #92400e;
+      border: 1px solid #fde68a;
+      vertical-align: middle;
+      transition: opacity 0.2s;
+    }
+
+    .badge-verified {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      font-weight: 600;
+      padding: 2px 7px;
+      border-radius: 4px;
+      background-color: #ecfdf5;
+      color: #065f46;
+      border: 1px solid #a7f3d0;
+      vertical-align: middle;
+    }
+
+    body.hide-proposals .badge-proposal {
+      display: none !important;
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.8rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-smooth);
+      position: relative;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      border: 1px solid var(--navy-deep);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--gold-primary);
+      border-color: var(--gold-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(133, 112, 47, 0.25);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--navy-deep);
+      border: 1px solid var(--border-strong);
+    }
+
+    .btn-secondary:hover {
+      border-color: var(--navy-deep);
+      background-color: var(--bg-surface);
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      background-color: var(--gold-primary);
+      color: #ffffff;
+      border: 1px solid var(--gold-primary);
+    }
+
+    .btn-gold:hover {
+      background-color: #6e5c26;
+      border-color: #6e5c26;
+      transform: translateY(-2px);
+      box-shadow: 0 6px 18px rgba(133, 112, 47, 0.3);
+    }
+
+    .btn-sm {
+      padding: 0.55rem 1.1rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* Floating Proposal Toggle Bar */
+    .demo-bar {
+      position: fixed;
+      bottom: 1.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 999;
+      background-color: rgba(20, 28, 48, 0.95);
+      backdrop-filter: blur(12px);
+      color: #ffffff;
+      padding: 0.6rem 1.25rem;
+      border-radius: 999px;
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.25);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      font-size: 0.75rem;
+    }
+
+    .demo-bar span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: rgba(255, 255, 255, 0.75);
+    }
+
+    .demo-bar span strong {
+      color: #f7f3e8;
+    }
+
+    .demo-bar button {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #ffffff;
+      padding: 4px 10px;
+      border-radius: 999px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      transition: all 0.2s;
+    }
+
+    .demo-bar button:hover {
+      background-color: var(--gold-primary);
+    }
+
+    /* Top Sticky Navigation */
+    .site-header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background-color: rgba(251, 249, 245, 0.92);
+      backdrop-filter: blur(10px);
+      border-bottom: 1px solid var(--border-subtle);
+      transition: all 0.3s ease;
+    }
+
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 76px;
+    }
+
+    .brand-logo {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .brand-logo .wordmark {
+      font-family: var(--font-wordmark);
+      font-size: 1.7rem;
+      letter-spacing: 0.16em;
+      color: var(--navy-deep);
+      font-weight: 400;
+      line-height: 1;
+    }
+
+    .brand-logo .tag {
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--gold-primary);
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .nav-links a {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+      position: relative;
+    }
+
+    .nav-links a:hover {
+      color: var(--navy-deep);
+    }
+
+    .nav-links a::after {
+      content: '';
+      position: absolute;
+      bottom: -4px;
+      left: 0;
+      width: 0;
+      height: 1px;
+      background-color: var(--gold-primary);
+      transition: width 0.2s ease;
+    }
+
+    .nav-links a:hover::after {
+      width: 100%;
+    }
+
+    @media (max-width: 992px) {
+      .nav-links {
+        display: none;
+      }
+    }
+
+    /* Hero Section */
+    .hero-section {
+      padding: 5.5rem 0 4.5rem;
+      position: relative;
+      background: radial-gradient(circle at 80% 20%, rgba(232, 226, 213, 0.4) 0%, transparent 60%);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+    }
+
+    @media (max-width: 992px) {
+      .hero-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(2.4rem, 4.4vw, 3.8rem);
+      line-height: 1.12;
+      font-weight: 400;
+      color: var(--navy-deep);
+      margin-bottom: 1.4rem;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-primary);
+      font-weight: 400;
+    }
+
+    .hero-subtitle {
+      font-size: 1.08rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 2rem;
+      max-width: 580px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      align-items: center;
+      margin-bottom: 2.5rem;
+    }
+
+    /* Hero Pillars Quick-Reference Strip */
+    .hero-pillars-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.2rem;
+      padding-top: 2rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    @media (max-width: 640px) {
+      .hero-pillars-strip {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .hero-pillar-mini {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .hero-pillar-mini .num {
+      font-family: var(--font-display);
+      font-size: 1.25rem;
+      color: var(--gold-primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-pillar-mini .name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-pillar-mini .desc {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      line-height: 1.4;
+    }
+
+    /* Hero Editorial Card / Visual */
+    .hero-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.2rem;
+      box-shadow: var(--shadow-soft);
+      position: relative;
+    }
+
+    .hero-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+      padding-bottom: 1rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .hero-card-founder-quote {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--navy-deep);
+      line-height: 1.45;
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-card-author {
+      display: flex;
+      align-items: center;
+      gap: 0.9rem;
+    }
+
+    .hero-card-author-avatar {
+      width: 44px;
+      height: 44px;
+      border-radius: 50%;
+      background-color: var(--bg-warm);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-wordmark);
+      font-size: 1.1rem;
+      color: var(--gold-primary);
+      border: 1px solid var(--border-strong);
+    }
+
+    .hero-card-author-info .name {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+    }
+
+    .hero-card-author-info .title {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    .hero-card-metrics {
+      margin-top: 1.5rem;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1rem;
+      background-color: var(--bg-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+    }
+
+    .metric-item .val {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      color: var(--navy-deep);
+      font-weight: 600;
+    }
+
+    .metric-item .lbl {
+      font-size: 0.7rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    /* Section Header Reusable */
+    .section-header {
+      text-align: center;
+      max-width: 780px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-header.left-aligned {
+      text-align: left;
+      margin-left: 0;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2.1rem, 3.2vw, 2.9rem);
+      line-height: 1.2;
+      font-weight: 400;
+      color: var(--navy-deep);
+      margin-bottom: 1rem;
+    }
+
+    .section-header h2 em {
+      font-style: italic;
+      color: var(--gold-primary);
+    }
+
+    .section-header p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+    }
+
+    /* ==========================================================================
+       SECTION 1: THE FULL ECOSYSTEM AT A GLANCE (Eveliene's Core Priority)
+       ========================================================================== */
+    .ecosystem-section {
+      padding: 6rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+      position: relative;
+    }
+
+    /* Horizontal Journey Progress Map */
+    .journey-map-container {
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.5rem 2rem;
+      margin-bottom: 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .journey-steps-nav {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      position: relative;
+      margin-bottom: 2.5rem;
+    }
+
+    @media (max-width: 860px) {
+      .journey-steps-nav {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .journey-steps-nav {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .journey-connector-line {
+      position: absolute;
+      top: 26px;
+      left: 10%;
+      width: 80%;
+      height: 2px;
+      background: linear-gradient(to right, var(--gold-accent), var(--navy-deep));
+      z-index: 1;
+      opacity: 0.35;
+    }
+
+    @media (max-width: 860px) {
+      .journey-connector-line {
+        display: none;
+      }
+    }
+
+    .journey-step-btn {
+      position: relative;
+      z-index: 2;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.25rem 1rem;
+      text-align: left;
+      cursor: pointer;
+      transition: var(--transition-smooth);
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .journey-step-btn:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .journey-step-btn.active {
+      border-color: var(--gold-primary);
+      background-color: #ffffff;
+      box-shadow: 0 10px 25px -5px rgba(133, 112, 47, 0.18);
+      outline: 2px solid rgba(133, 112, 47, 0.25);
+    }
+
+    .journey-step-btn .badge-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .journey-step-btn .step-index {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background-color: var(--bg-warm);
+      color: var(--navy-deep);
+      font-size: 0.72rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border: 1px solid var(--border-strong);
+      transition: all 0.2s;
+    }
+
+    .journey-step-btn.active .step-index {
+      background-color: var(--gold-primary);
+      color: #ffffff;
+      border-color: var(--gold-primary);
+    }
+
+    .journey-step-btn .step-tier-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-primary);
+      font-weight: 700;
+    }
+
+    .journey-step-btn .step-title {
+      font-family: var(--font-display);
+      font-size: 1.15rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      line-height: 1.25;
+    }
+
+    .journey-step-btn .step-commitment {
+      font-size: 0.72rem;
+      color: var(--text-muted);
+    }
+
+    /* Step Active Deep-Dive Box */
+    .journey-step-detail {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 2.2rem;
+      box-shadow: var(--shadow-soft);
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 2.5rem;
+      align-items: center;
+      animation: fadeIn 0.35s ease;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (max-width: 860px) {
+      .journey-step-detail {
+        grid-template-columns: 1fr;
+        gap: 1.8rem;
+      }
+    }
+
+    .detail-left .stage-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+      margin-bottom: 0.75rem;
+    }
+
+    .detail-left h3 {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      color: var(--navy-deep);
+      line-height: 1.2;
+      margin-bottom: 0.9rem;
+    }
+
+    .detail-left .description {
+      font-size: 0.94rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-left .what-included {
+      margin-bottom: 1.5rem;
+    }
+
+    .detail-left .what-included h4 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--navy-deep);
+      margin-bottom: 0.6rem;
+    }
+
+    .detail-left .included-list {
+      list-style: none;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0.5rem 1rem;
+    }
+
+    @media (max-width: 550px) {
+      .detail-left .included-list {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .included-list li {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .included-list li::before {
+      content: '✓';
+      color: var(--gold-primary);
+      font-weight: bold;
+    }
+
+    /* The "Conversion Bridge" Callout (The critical requirement) */
+    .conversion-bridge-box {
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 1.6rem;
+      position: relative;
+    }
+
+    .conversion-bridge-box .bridge-tag {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold-primary);
+      font-weight: 700;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .conversion-bridge-box .bridge-title {
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      margin-bottom: 0.5rem;
+      line-height: 1.35;
+    }
+
+    .conversion-bridge-box .bridge-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1.2rem;
+    }
+
+    .conversion-bridge-box .bridge-cta {
+      width: 100%;
+    }
+
+    /* ==========================================================================
+       SECTION 2: "WHERE ARE YOU RIGHT NOW?" STAGE FINDER
+       ========================================================================== */
+    .finder-section {
+      padding: 6rem 0;
+      background-color: var(--bg-base);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .finder-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.8rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    @media (max-width: 768px) {
+      .finder-card {
+        padding: 1.8rem 1.25rem;
+      }
+    }
+
+    .finder-tabs {
+      display: flex;
+      gap: 0.75rem;
+      border-bottom: 1px solid var(--border-subtle);
+      padding-bottom: 1.25rem;
+      margin-bottom: 2.5rem;
+      flex-wrap: wrap;
+    }
+
+    .finder-tab-btn {
+      padding: 0.7rem 1.4rem;
+      font-size: 0.82rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      border-radius: 999px;
+      color: var(--text-muted);
+      border: 1px solid var(--border-subtle);
+      background-color: var(--bg-base);
+      transition: var(--transition-smooth);
+    }
+
+    .finder-tab-btn:hover {
+      color: var(--navy-deep);
+      border-color: var(--border-strong);
+    }
+
+    .finder-tab-btn.active {
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      border-color: var(--navy-deep);
+    }
+
+    .finder-content-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 3rem;
+      align-items: start;
+    }
+
+    @media (max-width: 860px) {
+      .finder-content-grid {
+        grid-template-columns: 1fr;
+        gap: 2rem;
+      }
+    }
+
+    .finder-col h3 {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.8rem;
+      line-height: 1.25;
+    }
+
+    .finder-col .friction-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-primary);
+      font-weight: 700;
+      margin-bottom: 0.4rem;
+    }
+
+    .finder-col .friction-text {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .finder-col .needs-title {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--navy-deep);
+      font-weight: 700;
+      margin-bottom: 0.6rem;
+    }
+
+    .finder-col .needs-list {
+      list-style: none;
+      margin-bottom: 1.8rem;
+    }
+
+    .needs-list li {
+      font-size: 0.86rem;
+      color: var(--text-muted);
+      margin-bottom: 0.4rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .needs-list li::before {
+      content: '•';
+      color: var(--gold-primary);
+      font-size: 1.2rem;
+      line-height: 1;
+    }
+
+    /* Finder Recommendation Card */
+    .recommendation-card {
+      background: linear-gradient(145deg, #ffffff 0%, var(--bg-subtle) 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      box-shadow: 0 10px 30px -10px rgba(133, 112, 47, 0.15);
+      position: relative;
+    }
+
+    .recommendation-badge {
+      display: inline-block;
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 4px;
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .recommendation-card h4 {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.5rem;
+    }
+
+    .recommendation-card .rec-path {
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--gold-primary);
+      margin-bottom: 1rem;
+    }
+
+    .recommendation-card .rec-rationale {
+      font-size: 0.88rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .recommendation-card .rec-steps-preview {
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1.5rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .rec-step-pill {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: 999px;
+      color: var(--navy-deep);
+      font-weight: 500;
+    }
+
+    .rec-arrow {
+      color: var(--gold-primary);
+      font-size: 0.75rem;
+    }
+
+    /* ==========================================================================
+       SECTION 3: THE 3 CORE BRAND PILLARS
+       ========================================================================== */
+    .pillars-section {
+      padding: 6rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .pillars-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pillar-card {
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.2rem 1.8rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      transition: var(--transition-smooth);
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--gold-primary);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .pillar-num {
+      font-family: var(--font-display);
+      font-size: 1.75rem;
+      color: var(--gold-primary);
+      margin-bottom: 0.5rem;
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-size: 1.55rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.4rem;
+    }
+
+    .pillar-role {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-primary);
+      font-weight: 700;
+      margin-bottom: 1rem;
+    }
+
+    .pillar-desc {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .pillar-loop-connection {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .pillar-loop-connection .lbl {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      color: var(--navy-deep);
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+    }
+
+    .pillar-loop-connection .text {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    .pillar-card .cta-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: var(--navy-deep);
+      transition: color 0.2s;
+    }
+
+    .pillar-card .cta-link:hover {
+      color: var(--gold-primary);
+    }
+
+    /* ==========================================================================
+       SECTION 4: MEMBERSHIPS ARCHITECTURE (The Core Commitment)
+       ========================================================================== */
+    .memberships-section {
+      padding: 6rem 0;
+      background-color: var(--bg-base);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .billing-toggle-wrapper {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+    }
+
+    .billing-label {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      cursor: pointer;
+    }
+
+    .billing-label.active {
+      color: var(--navy-deep);
+    }
+
+    .toggle-switch {
+      width: 48px;
+      height: 26px;
+      background-color: var(--navy-deep);
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+      transition: background-color 0.2s;
+    }
+
+    .toggle-thumb {
+      width: 20px;
+      height: 20px;
+      background-color: #ffffff;
+      border-radius: 50%;
+      position: absolute;
+      top: 3px;
+      left: 3px;
+      transition: transform 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    .toggle-switch.annual .toggle-thumb {
+      transform: translateX(22px);
+    }
+
+    .savings-pill {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+      background-color: var(--gold-light);
+      color: var(--gold-primary);
+      padding: 3px 8px;
+      border-radius: 999px;
+      font-weight: 700;
+      border: 1px solid rgba(133, 112, 47, 0.2);
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+    }
+
+    @media (max-width: 992px) {
+      .tiers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tier-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2.4rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: var(--transition-smooth);
+    }
+
+    .tier-card:hover {
+      border-color: var(--gold-primary);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-hover);
+    }
+
+    .tier-card.featured {
+      border-color: var(--gold-primary);
+      box-shadow: 0 15px 35px -10px rgba(133, 112, 47, 0.18);
+      background: linear-gradient(180deg, #ffffff 0%, #faf7f0 100%);
+    }
+
+    .tier-card-badge {
+      position: absolute;
+      top: -12px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--gold-primary);
+      color: #ffffff;
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      padding: 4px 12px;
+      border-radius: 999px;
+    }
+
+    .tier-name {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.3rem;
+    }
+
+    .tier-tagline {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-pricing {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.5rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tier-price-val {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      line-height: 1;
+    }
+
+    .tier-price-val .currency {
+      font-size: 1.4rem;
+      font-weight: 400;
+      vertical-align: top;
+      margin-right: 2px;
+    }
+
+    .tier-price-val .period {
+      font-size: 0.85rem;
+      font-family: var(--font-sans);
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .tier-price-sub {
+      font-size: 0.72rem;
+      color: var(--text-light);
+      margin-top: 4px;
+    }
+
+    .tier-ideal {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+      padding: 0.8rem;
+      background-color: var(--bg-base);
+      border-radius: var(--radius-sm);
+    }
+
+    .tier-features-list {
+      list-style: none;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .tier-features-list li {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .tier-features-list li::before {
+      content: '✓';
+      color: var(--gold-primary);
+      font-weight: bold;
+    }
+
+    /* ==========================================================================
+       SECTION 5: 1:1 PRIVATE ADVISORY ($500/HR) AS NATURAL CLIMAX
+       ========================================================================== */
+    .advisory-section {
+      padding: 6rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .advisory-card {
+      background: linear-gradient(135deg, #141c30 0%, #1e2a47 100%);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 3.8rem 3rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    @media (max-width: 768px) {
+      .advisory-card {
+        padding: 2.2rem 1.5rem;
+      }
+    }
+
+    .advisory-card::before {
+      content: '';
+      position: absolute;
+      top: -50%;
+      right: -20%;
+      width: 500px;
+      height: 500px;
+      background: radial-gradient(circle, rgba(170, 140, 66, 0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .advisory-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3.5rem;
+      align-items: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    @media (max-width: 900px) {
+      .advisory-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    .advisory-left .advisory-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-accent);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .advisory-left h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 1.2rem;
+    }
+
+    .advisory-left h2 em {
+      font-style: italic;
+      color: var(--gold-accent);
+    }
+
+    .advisory-left p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.8rem;
+    }
+
+    .advisory-scope-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .advisory-scope-list li {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.88);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.6rem;
+    }
+
+    .advisory-scope-list li::before {
+      content: '◆';
+      color: var(--gold-accent);
+      font-size: 0.75rem;
+      margin-top: 3px;
+    }
+
+    .advisory-box-rate {
+      background-color: rgba(255, 255, 255, 0.06);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 2.2rem;
+      text-align: center;
+    }
+
+    .advisory-rate-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold-accent);
+      font-weight: 600;
+      margin-bottom: 0.4rem;
+    }
+
+    .advisory-rate-value {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: #ffffff;
+      margin-bottom: 0.4rem;
+    }
+
+    .advisory-capacity {
+      font-size: 0.8rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1.8rem;
+      line-height: 1.4;
+    }
+
+    /* ==========================================================================
+       SECTION 6: VERIFIED FOUNDER & TRUST SECTION (Strict brand veracity)
+       ========================================================================== */
+    .founder-section {
+      padding: 6rem 0;
+      background-color: var(--bg-base);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .founder-grid {
+      display: grid;
+      grid-template-columns: 0.8fr 1.2fr;
+      gap: 4rem;
+      align-items: center;
+    }
+
+    @media (max-width: 900px) {
+      .founder-grid {
+        grid-template-columns: 1fr;
+        gap: 2.5rem;
+      }
+    }
+
+    .founder-portrait-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .founder-monogram-circle {
+      width: 110px;
+      height: 110px;
+      margin: 0 auto 1.5rem;
+      border-radius: 50%;
+      background: radial-gradient(circle, var(--bg-subtle) 0%, var(--bg-warm) 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-wordmark);
+      font-size: 2.8rem;
+      color: var(--navy-deep);
+      border: 2px solid var(--gold-primary);
+    }
+
+    .founder-name {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.2rem;
+    }
+
+    .founder-role {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-primary);
+      font-weight: 600;
+      margin-bottom: 1.2rem;
+    }
+
+    .awards-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      padding-top: 1.2rem;
+      border-top: 1px solid var(--border-subtle);
+    }
+
+    .award-item {
+      font-size: 0.76rem;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+
+    .founder-bio-content h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      line-height: 1.2;
+      color: var(--navy-deep);
+      margin-bottom: 1.4rem;
+    }
+
+    .founder-quote-banner {
+      font-family: var(--font-display);
+      font-size: 1.35rem;
+      font-style: italic;
+      color: var(--gold-primary);
+      line-height: 1.45;
+      padding-left: 1.2rem;
+      border-left: 2px solid var(--gold-primary);
+      margin-bottom: 1.8rem;
+    }
+
+    .founder-bio-content p {
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      margin-bottom: 1.2rem;
+    }
+
+    /* Veracity Integrity Notice Box */
+    .veracity-notice {
+      background-color: #f8fafc;
+      border: 1px solid #cbd5e1;
+      border-radius: var(--radius-sm);
+      padding: 1rem 1.2rem;
+      display: flex;
+      align-items: flex-start;
+      gap: 0.75rem;
+      margin-top: 1.8rem;
+    }
+
+    .veracity-notice-icon {
+      color: #0369a1;
+      font-size: 1rem;
+      line-height: 1;
+      margin-top: 2px;
+    }
+
+    .veracity-notice-text {
+      font-size: 0.76rem;
+      color: #334155;
+      line-height: 1.5;
+    }
+
+    /* ==========================================================================
+       SECTION 7: FREE VALUE ENTRY POINT (The low-commitment lead magnet)
+       ========================================================================== */
+    .lead-section {
+      padding: 5.5rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .lead-card {
+      background: linear-gradient(135deg, var(--bg-subtle) 0%, #ffffff 100%);
+      border: 1px solid var(--border-strong);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 3rem;
+      align-items: center;
+      box-shadow: var(--shadow-soft);
+    }
+
+    @media (max-width: 860px) {
+      .lead-card {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    .lead-left h3 {
+      font-family: var(--font-display);
+      font-size: 2.1rem;
+      color: var(--navy-deep);
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .lead-left p {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .lead-deliverables {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+    }
+
+    .deliverable-item {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .deliverable-item::before {
+      content: '✓';
+      color: var(--gold-primary);
+    }
+
+    .lead-form-box {
+      background-color: #ffffff;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 1.8rem;
+      box-shadow: var(--shadow-soft);
+    }
+
+    .lead-form-box .form-title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      margin-bottom: 1rem;
+    }
+
+    .form-group {
+      margin-bottom: 0.9rem;
+    }
+
+    .form-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-base);
+      color: var(--navy-deep);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .form-input:focus {
+      border-color: var(--gold-primary);
+      background-color: #ffffff;
+    }
+
+    .form-helper {
+      font-size: 0.68rem;
+      color: var(--text-light);
+      margin-top: 0.5rem;
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       FOOTER & ECOSYSTEM SITEMAP
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      padding: 5rem 0 3rem;
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.5fr repeat(3, 1fr);
+      gap: 3rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .footer-brand .wordmark {
+      font-family: var(--font-wordmark);
+      font-size: 2rem;
+      letter-spacing: 0.16em;
+      color: #ffffff;
+      margin-bottom: 0.8rem;
+      display: block;
+    }
+
+    .footer-brand p {
+      font-size: 0.85rem;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.6;
+      max-width: 320px;
+    }
+
+    .footer-col h5 {
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: var(--gold-accent);
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .footer-col ul a {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.2s;
+    }
+
+    .footer-col ul a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      pointer-events: none;
+    }
+
+    .toast {
+      pointer-events: auto;
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      padding: 0.85rem 1.4rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gold-primary);
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      animation: slideInRight 0.3s ease;
+      max-width: 360px;
+    }
+
+    @keyframes slideInRight {
+      from { transform: translateX(100%); opacity: 0; }
+      to { transform: translateX(0); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       DEMO CONTROLS FLOATING BAR
+       Allows prospective client (Eveliene) to toggle proposal markers and review.
+       ========================================================================== -->
+  <aside class="demo-bar" aria-label="Demo Controls">
+    <span><strong>DEMO MODE:</strong> Homepage Redesign & Conversion Pathing</span>
+    <span>|</span>
+    <button type="button" id="toggleProposalBtn" onclick="toggleProposals()">Proposal Tags: ON</button>
+    <button type="button" onclick="showToast('Live Config: All copy and pricing in DEMO_CONFIG at top of script', 'info')">View Config Rationale</button>
+  </aside>
+
+  <!-- ==========================================================================
+       TOAST NOTIFICATION OUTLET
+       ========================================================================== -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- ==========================================================================
+       TOP STICKY NAVIGATION
+       ========================================================================== -->
+  <header class="site-header" id="header">
+    <div class="container nav-inner">
+      <a href="#top" class="brand-logo" aria-label="I-DENTY Home">
+        <span class="wordmark">I-DENTY</span>
+        <span class="tag">Editorial Ecosystem Demo</span>
+      </a>
+
+      <nav aria-label="Primary Navigation">
+        <ul class="nav-links">
+          <li><a href="#ecosystem">The Ecosystem</a></li>
+          <li><a href="#stage-finder">Stage Finder</a></li>
+          <li><a href="#pillars">The 3 Pillars</a></li>
+          <li><a href="#memberships">Memberships</a></li>
+          <li><a href="#advisory">1:1 Advisory</a></li>
+          <li><a href="#founder">Founder</a></li>
+        </ul>
+      </nav>
+
+      <div style="display: flex; align-items: center; gap: 0.75rem;">
+        <a href="#ecosystem" class="btn btn-primary btn-sm">Explore The Path</a>
+      </div>
+    </div>
+  </header>
+
+  <main id="top">
+    <!-- ==========================================================================
+         HERO SECTION: High-Clarity Positioning & Ecosystem At A Glance
+         ========================================================================== -->
+    <section class="hero-section">
+      <div class="container hero-grid">
+        <div class="hero-left">
+          <div class="eyebrow">
+            The Identity-Led Lifestyle Ecosystem
+            <span class="badge-verified" title="Verified brand positioning">Verified</span>
+          </div>
+
+          <h1 class="hero-title">
+            The architecture of <em>who you become</em> in your next chapter.
+          </h1>
+
+          <p class="hero-subtitle">
+            I-denty integrates identity development, curated commerce, and private community — guiding high-capacity women through pivotal life transitions with structured intentionality, peer sanctuary, and executive presence.
+          </p>
+
+          <div class="hero-ctas">
+            <a href="#ecosystem" class="btn btn-primary">
+              <span>Explore The Ecosystem Path</span>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+            </a>
+
+            <a href="#stage-finder" class="btn btn-secondary">
+              <span>Find Your Starting Stage</span>
+            </a>
+          </div>
+
+          <!-- Hero Pillars Strip -->
+          <div class="hero-pillars-strip">
+            <div class="hero-pillar-mini">
+              <span class="num">01</span>
+              <span class="name">Identity Development</span>
+              <span class="desc">The proprietary Reinvention Framework™</span>
+            </div>
+            <div class="hero-pillar-mini">
+              <span class="num">02</span>
+              <span class="name">Curated Commerce</span>
+              <span class="desc">Aesthetic living, capsule style, partner perks</span>
+            </div>
+            <div class="hero-pillar-mini">
+              <span class="num">03</span>
+              <span class="name">Community Sanctuary</span>
+              <span class="desc">Confidential peer circles & live salons</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Hero Editorial Side Card -->
+        <div class="hero-right">
+          <div class="hero-card">
+            <div class="hero-card-header">
+              <span class="eyebrow" style="margin-bottom: 0;">Founder Core Axiom</span>
+              <span class="badge-verified">Verified Quote</span>
+            </div>
+
+            <blockquote class="hero-card-founder-quote">
+              “Reinvention is not starting over. It is recalibrating intentionally from a position of experience.”
+            </blockquote>
+
+            <div class="hero-card-author">
+              <div class="hero-card-author-avatar">E</div>
+              <div class="hero-card-author-info">
+                <div class="name">Eveliene</div>
+                <div class="title">Founder & Creative Director | 20+ Yrs Corporate Leadership</div>
+              </div>
+            </div>
+
+            <div class="hero-card-metrics">
+              <div class="metric-item">
+                <div class="val">4-Stage</div>
+                <div class="lbl">Integrated Path</div>
+              </div>
+              <div class="metric-item">
+                <div class="val">Zero</div>
+                <div class="lbl">Dead-End Content</div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 1: THE FULL ECOSYSTEM AT A GLANCE (Eveliene's Priority)
+         Solves: "Communicate an extensive ecosystem clearly and create stronger
+         customer journeys between content, free resources, workshops, memberships"
+         ========================================================================== -->
+    <section class="ecosystem-section" id="ecosystem">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">The Integrated Journey Architecture</div>
+          <h2>From First Discovery to <em>High-Touch Mastery</em></h2>
+          <p>
+            Unlike fragmented programs or isolated courses, every touchpoint in I-denty is engineered as an intentional progression. Click any stage below to inspect the experience and its natural bridge into the next phase.
+          </p>
+        </div>
+
+        <div class="journey-map-container">
+          <!-- Horizontal connector line -->
+          <div class="journey-connector-line"></div>
+
+          <!-- Step Buttons Strip -->
+          <div class="journey-steps-nav" id="journeyStepsNav" role="tablist">
+            <!-- Populated dynamically via DEMO_CONFIG -->
+          </div>
+
+          <!-- Active Step Detail & Conversion Bridge -->
+          <div class="journey-step-detail" id="journeyStepDetail">
+            <!-- Populated dynamically via DEMO_CONFIG on tab switch -->
+          </div>
+        </div>
+
+        <!-- Ecosystem Flow Summary Callout -->
+        <div style="background-color: var(--bg-subtle); border-radius: var(--radius-sm); padding: 1.25rem 1.8rem; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; border: 1px solid var(--border-subtle);">
+          <div style="font-size: 0.85rem; color: var(--navy-deep);">
+            <strong>Conversion Rationale:</strong> Every level builds trust before asking for deeper investment. No visitor arrives at a paywall without first understanding the underlying philosophy.
+          </div>
+          <a href="#stage-finder" class="btn btn-secondary btn-sm">Find Your Phase →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: "WHERE ARE YOU RIGHT NOW?" STAGE FINDER
+         Solves: Helping visitors self-identify their need and routing them to the
+         exact right starting point (rebuilding / expanding / refining)
+         ========================================================================== -->
+    <section class="finder-section" id="stage-finder">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">
+            Self-Identification Framework
+            <span class="badge-proposal" title="UX recommendation for self-selection">Proposal</span>
+          </div>
+          <h2>Where are you <em>right now?</em></h2>
+          <p>
+            Transitions are not one-size-fits-all. Select your current life juncture to see your calibrated starting point and expected transformation timeline.
+          </p>
+        </div>
+
+        <div class="finder-card">
+          <div class="finder-tabs" id="finderTabs" role="tablist">
+            <!-- Injected via JavaScript from DEMO_CONFIG -->
+          </div>
+
+          <div class="finder-content-grid" id="finderContent">
+            <!-- Injected via JavaScript on tab change -->
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: THE 3 CORE BRAND PILLARS
+         Solves: Clear articulation of Identity Development, Curated Commerce, Community
+         ========================================================================== -->
+    <section class="pillars-section" id="pillars">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">The Triad Architecture</div>
+          <h2>Three Pillars. <em>One Harmonious Life Standard.</em></h2>
+          <p>
+            Identity work without community lacks accountability; community without curated lifestyle lacks embodiment. I-denty binds all three into an everyday ecosystem.
+          </p>
+        </div>
+
+        <div class="pillars-grid" id="pillarsGrid">
+          <!-- Injected dynamically via DEMO_CONFIG -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4: MEMBERSHIPS PREVIEW (Core Commitment Tier)
+         Solves: Clear comparison between The Collective, Inner Circle, Private Member
+         ========================================================================== -->
+    <section class="memberships-section" id="memberships">
+      <div class="container">
+        <div class="section-header">
+          <div class="eyebrow">The Sustained Sanctuary</div>
+          <h2>Choose Your <em>Pace of Evolution</em></h2>
+          <p>
+            Whether you desire self-directed reflection or high-touch executive intimacy, I-denty memberships provide continuous recalibration.
+          </p>
+        </div>
+
+        <!-- Billing Toggle -->
+        <div class="billing-toggle-wrapper">
+          <span class="billing-label active" id="labelMonthly" onclick="setBilling('monthly')">Monthly Billing</span>
+          <div class="toggle-switch" id="billingSwitch" onclick="toggleBilling()" role="switch" aria-checked="false" aria-label="Toggle annual billing">
+            <div class="toggle-thumb"></div>
+          </div>
+          <span class="billing-label" id="labelAnnual" onclick="setBilling('annual')">Annual Enrollment</span>
+          <span class="savings-pill">Save ~20%</span>
+        </div>
+
+        <!-- Tiers Grid -->
+        <div class="tiers-grid" id="tiersGrid">
+          <!-- Injected dynamically from DEMO_CONFIG -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 5: 1:1 PRIVATE ADVISORY ($500/HR)
+         Solves: Making $500/hr advisory feel like a natural high-touch culmination,
+         not an awkward bolt-on.
+         ========================================================================== -->
+    <section class="advisory-section" id="advisory">
+      <div class="container">
+        <div class="advisory-card">
+          <div class="advisory-grid">
+            <div class="advisory-left">
+              <div class="advisory-eyebrow">
+                The Pinnacle Offering
+                <span class="badge-verified">Verified Offering</span>
+              </div>
+              <h2>Private 1:1 Strategic <em>Advisory & Consultation</em></h2>
+              <p>
+                For senior executives, founders, and leaders navigating high-stakes inflection points — restructuring life after corporate departures, designing post-divorce lifestyle infrastructure, or commanding international brand realignment.
+              </p>
+
+              <ul class="advisory-scope-list">
+                <li>Bespoke executive departure & transition strategy roadmaps</li>
+                <li>Post-divorce personal sovereignty, financial, and lifestyle recalibration</li>
+                <li>Executive presence, wardrobe, and international physical footprint curation</li>
+                <li>Direct strategic counsel grounded in 20+ years of corporate governance</li>
+              </ul>
+            </div>
+
+            <div class="advisory-right">
+              <div class="advisory-box-rate">
+                <div class="advisory-rate-label">Confidential Advisory Rate</div>
+                <div class="advisory-rate-value">$500<span style="font-size: 1.1rem; font-family: var(--font-sans); color: rgba(255,255,255,0.7); font-weight: normal;">/hour</span></div>
+                <div class="advisory-capacity">
+                  Strictly capped at <strong>4 advisory clients per quarter</strong> to preserve profound strategic intimacy.
+                </div>
+
+                <button type="button" class="btn btn-gold" style="width: 100%;" onclick="showToast('Advisory Application Flow: Collects transition dossier & conducts confidential fit review', 'success')">
+                  Request Confidential Consultation
+                </button>
+                <div style="font-size: 0.7rem; color: rgba(255,255,255,0.5); margin-top: 0.8rem;">
+                  Inner Circle & Private Members receive priority booking privilege.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 6: VERIFIED FOUNDER & TRUST SECTION (Zero Hallucination Guarantee)
+         Solves: Adheres strictly to Eveliene's verified background and awards.
+         ========================================================================== -->
+    <section class="founder-section" id="founder">
+      <div class="container">
+        <div class="founder-grid">
+          <div class="founder-portrait-card">
+            <div class="founder-monogram-circle">E</div>
+            <h3 class="founder-name">Eveliene</h3>
+            <div class="founder-role">Founder & Creative Director</div>
+
+            <ul class="awards-list">
+              <li class="award-item">🏆 Asia's Woman Leaders Award</li>
+              <li class="award-item">🏆 Global Women Power Leaders</li>
+              <li class="award-item">🏆 Asia's Most Influential HR Leaders</li>
+            </ul>
+          </div>
+
+          <div class="founder-bio-content">
+            <div class="eyebrow">
+              Executive Stewardship
+              <span class="badge-verified">Verified Credentials</span>
+            </div>
+            <h2>Where corporate governance meets <em>lived personal reinvention.</em></h2>
+
+            <blockquote class="founder-quote-banner">
+              “Reinvention is not starting over. It is recalibrating intentionally from a position of experience.”
+            </blockquote>
+
+            <p>
+              I-denty was established by a globally recognized, multi-award-winning corporate leader and keynote speaker with over two decades of experience constructing cross-regional leadership structures.
+            </p>
+            <p>
+              Having navigated divorce, international executive disruption, and rebuilding her family life abroad as an expat mother, Eveliene constructed the exact sanctuary and infrastructure she once needed — now structured for sustainable scale.
+            </p>
+
+            <div class="veracity-notice">
+              <div class="veracity-notice-icon">🛡️</div>
+              <div class="veracity-notice-text">
+                <strong>Brand Veracity Guarantee:</strong> All founder awards, career milestones, and pricing models on this page reflect authentic brand facts. No fictitious testimonials or fabricated member metrics have been added.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 7: FREE VALUE ENTRY POINT (No-Pressure Onboarding)
+         Solves: Generating a natural email-capture and low-barrier entry point
+         ========================================================================== -->
+    <section class="lead-section">
+      <div class="container">
+        <div class="lead-card">
+          <div class="lead-left">
+            <div class="eyebrow">
+              Complimentary Entry
+              <span class="badge-proposal">Proposal</span>
+            </div>
+            <h3>Begin With The Reinvention Calibration Guide</h3>
+            <p>
+              A 24-page editorial workbook introducing the four pillars of the framework: <em>Recalibrate, Redefine, Express,</em> and <em>Expand</em>. Begin your audit before joining any live sessions.
+            </p>
+
+            <div class="lead-deliverables">
+              <div class="deliverable-item">The 4-Pillar Life Audit Matrix</div>
+              <div class="deliverable-item">Boundary Architecture Worksheet</div>
+              <div class="deliverable-item">Private Journal Invitation</div>
+            </div>
+          </div>
+
+          <div class="lead-right">
+            <div class="lead-form-box">
+              <div class="form-title">Receive Your Complimentary Guide</div>
+              <form onsubmit="handleLeadSubmit(event)">
+                <div class="form-group">
+                  <input type="text" class="form-input" placeholder="Your Full Name" required />
+                </div>
+                <div class="form-group">
+                  <input type="email" class="form-input" placeholder="Your Primary Email Address" required />
+                </div>
+                <button type="submit" class="btn btn-primary" style="width: 100%;">
+                  Download The Guide & Join The Journal
+                </button>
+                <div class="form-helper">
+                  Zero spam. Instant delivery to your inbox. Unsubscribe at any time.
+                </div>
+              </form>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       FOOTER & FULL ECOSYSTEM SITEMAP
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="wordmark">I-DENTY</span>
+          <p>
+            The identity-led lifestyle ecosystem for women reinventing their next chapter with intentional presence, curated living, and peer sanctuary.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>The Ecosystem</h5>
+          <ul>
+            <li><a href="#ecosystem" onclick="selectJourneyStep('free')">The Journal & Guide</a></li>
+            <li><a href="#ecosystem" onclick="selectJourneyStep('workshops')">Monthly Reinvention Sessions</a></li>
+            <li><a href="#memberships">The Collective Membership</a></li>
+            <li><a href="#memberships">The Inner Circle</a></li>
+            <li><a href="#memberships">Private Member Tier</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>The 3 Pillars</h5>
+          <ul>
+            <li><a href="#pillars">Identity Development</a></li>
+            <li><a href="#pillars">Curated Commerce & Style</a></li>
+            <li><a href="#pillars">Private Peer Sanctuary</a></li>
+            <li><a href="#stage-finder">Stage Identification Finder</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Bespoke Advisory</h5>
+          <ul>
+            <li><a href="#advisory">1:1 Founder Consultation ($500/hr)</a></li>
+            <li><a href="#founder">About Founder Eveliene</a></li>
+            <li><a href="#founder">Corporate Leadership Credentials</a></li>
+            <li><a href="javascript:void(0)" onclick="showToast('Demo: Navigates to live client portal', 'info')">Member Portal Login</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 I-DENTY. All Rights Reserved. Redesign Architecture Proposal for Eveliene.
+        </div>
+        <div>
+          Designed for Clarity, Elegance, and Intentional Conversion.
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       EDITABLE CONFIGURATION BLOCK & INTERACTIVE LOGIC
+       Easily adjust copy, tiers, pricing, stages, and links without digging into HTML.
+       ========================================================================== -->
+  <script>
+    /**
+     * DEMO_CONFIG: Centralized Configuration Object
+     * All copy, verified client facts, and proposed conversion paths can be edited here.
+     */
+    const DEMO_CONFIG = {
+      brand: {
+        name: "I-denty",
+        tagline: "Define your Identity. Elevate your presence",
+        founder: {
+          name: "Eveliene",
+          role: "Founder & Creative Director",
+          quote: "“Reinvention is not starting over. It is recalibrating intentionally from a position of experience.”",
+          awards: [
+            "Asia's Woman Leaders Award",
+            "Global Women Power Leaders",
+            "Asia's Most Influential HR Leaders"
+          ]
+        }
+      },
+
+      // The 4-Stage Customer Journey Path (Core Deliverable)
+      journeyStages: [
+        {
+          id: "free",
+          stepNumber: "01",
+          tierLabel: "Free Entry",
+          title: "The Editorial Journal & Guide",
+          commitment: "Zero Commitment • Open Access",
+          headline: "Intellectual Calibration & Foundation",
+          description: "A low-barrier gateway where visitors read in-depth essays, discover the 4-phase Reinvention Framework™, and download the self-guided Life Audit Workbook.",
+          included: [
+            "Bi-weekly editorial essays",
+            "24-Page Reinvention Framework Guide",
+            "Boundary architecture exercises",
+            "Curated lifestyle reading lists"
+          ],
+          conversionBridge: {
+            tag: "The Natural Next Step",
+            title: "From Self-Reflection to Live Experience",
+            description: "After finishing the self-audit guide, readers receive an exclusive invitation to attend an upcoming Monthly Reinvention Session™ as a guest.",
+            ctaText: "Download Guide & Preview Next Step",
+            actionType: "guide-download"
+          }
+        },
+        {
+          id: "workshops",
+          stepNumber: "02",
+          tierLabel: "Low Commitment",
+          title: "Workshops & Monthly Sessions",
+          commitment: "Single Event / Guest Access",
+          headline: "Interactive Masterclasses & Replays",
+          description: "Live 90-minute digital salons led by Eveliene and guest specialists in wealth architecture, functional wellness, and executive wardrobe curation.",
+          included: [
+            "Live 90-minute strategic sessions",
+            "Interactive Q&A with Eveliene",
+            "Downloadable companion workbooks",
+            "Session replay vault (14-day access)"
+          ],
+          conversionBridge: {
+            tag: "The Natural Next Step",
+            title: "From One-Off Sessions to Ongoing Sanctuary",
+            description: "Workshop guests are given a credit toward their first month of membership inside The Collective or The Inner Circle.",
+            ctaText: "Explore Session Topics & Credits",
+            actionType: "workshop-info"
+          }
+        },
+        {
+          id: "membership",
+          stepNumber: "03",
+          tierLabel: "Core Commitment",
+          title: "The Tiered Memberships",
+          commitment: "From $24/mo or $19/mo annual",
+          headline: "Sustained Evolution & Peer Community",
+          description: "The core engine of I-denty: Three structured tiers (The Collective, The Inner Circle, Private Member) providing continuous recalibration and private fellowship.",
+          included: [
+            "Full Reinvention Framework™ operating system",
+            "Private ad-free digital sanctuary",
+            "Live monthly sessions & guest masterclasses",
+            "Curated brand partner rates & capsule edits"
+          ],
+          conversionBridge: {
+            tag: "The Natural Next Step",
+            title: "From Group Membership to Executive Intimacy",
+            description: "Members with complex international, corporate, or relationship transitions unlock direct eligibility for 1:1 Founder Advisory.",
+            ctaText: "Compare The 3 Membership Tiers",
+            actionType: "scroll-memberships"
+          }
+        },
+        {
+          id: "advisory",
+          stepNumber: "04",
+          tierLabel: "High-Touch Climax",
+          title: "1:1 Strategic Advisory",
+          commitment: "$500/hr • 4 Clients/Quarter",
+          headline: "Private Executive Strategic Counsel",
+          description: "Bespoke, highly confidential strategic consultation directly with Eveliene for high-stakes executive exits, post-divorce lifestyle design, and international realignment.",
+          included: [
+            "Direct 1:1 strategy sessions with Eveliene",
+            "Comprehensive transition architecture dossier",
+            "Executive presence & spatial wardrobe audit",
+            "Confidential personal & board advisory"
+          ],
+          conversionBridge: {
+            tag: "The Full Circle",
+            title: "Ecosystem Integration",
+            description: "1:1 clients automatically receive full Private Member status, integrating their personal strategy with the broader curated ecosystem.",
+            ctaText: "Request Confidential Advisory Review",
+            actionType: "advisory-apply"
+          }
+        }
+      ],
+
+      // "Where Are You Right Now?" Stage Finder Data
+      stageFinder: [
+        {
+          id: "rebuilding",
+          tabName: "Rebuilding After Transition",
+          title: "Restructuring Sovereignty & Standards",
+          friction: "Navigating relationship shifts, divorce, or loss of a past anchor where your former identity no longer matches who you are becoming.",
+          needs: [
+            "Safe, confidential sanctuary free from unsolicited social noise",
+            "Structured tools to untangle identity from past partnerships",
+            "Re-establishing financial, lifestyle, and aesthetic independence"
+          ],
+          recommendation: {
+            badge: "Recommended Starting Path",
+            title: "The Collective + Reinvention Guide",
+            path: "Phase 1: Recalibrate & Redefine",
+            rationale: "Begin self-paced reflection using the framework workbooks in The Collective ($24/mo), surrounding yourself with members who normalize bold new beginnings.",
+            steps: ["Download Free Audit", "Join The Collective", "Attend Monthly Replay Vault"],
+            cta: "Start Your Rebuilding Journey"
+          }
+        },
+        {
+          id: "expanding",
+          tabName: "Executive & Career Pivots",
+          title: "Aligning Influence With Purpose",
+          friction: "Stepping away from corporate prestige to launch strategic advisory roles, build high-value ventures, or command authentic executive presence.",
+          needs: [
+            "High-caliber peers who understand executive complexity",
+            "Live strategic feedback and interactive coaching",
+            "Repositioning your personal brand without losing authority"
+          ],
+          recommendation: {
+            badge: "Recommended Starting Path",
+            title: "The Inner Circle (Most Chosen)",
+            path: "Phase 2: Express & Expand",
+            rationale: "Participate in live monthly sessions with Eveliene and join breakout circles of fellow executive women navigating high-profile transitions ($59/mo).",
+            steps: ["The Inner Circle Live Sessions", "Executive Breakouts", "Advisory Eligibility"],
+            cta: "Step Into The Inner Circle"
+          }
+        },
+        {
+          id: "refining",
+          tabName: "Lifestyle & Presence Recalibration",
+          title: "Harmonizing Internal Truth with External Living",
+          friction: "External success feels misaligned with your living rhythm, international relocation has disrupted your grounding, or your physical style requires elevated curation.",
+          needs: [
+            "Capsule wardrobe & aesthetic environmental curation",
+            "International relocation grounding and peer connection",
+            "Exclusive access to vetted luxury brand partners"
+          ],
+          recommendation: {
+            badge: "Recommended Starting Path",
+            title: "Private Member or 1:1 Consultation",
+            path: "Phase 3: Curated Commerce & High-Touch",
+            rationale: "Leverage bespoke styling capsules, confidential executive salon cohorts, and direct hourly advisory ($500/hr) for end-to-end presence transformation.",
+            steps: ["Private Member Access", "Wardrobe Curation", "1:1 Strategic Counsel"],
+            cta: "Request Private Consultation Access"
+          }
+        }
+      ],
+
+      // The 3 Brand Pillars Data
+      pillars: [
+        {
+          number: "01",
+          name: "Identity Development",
+          role: "The Foundational Operating System",
+          description: "Our proprietary 4-pillar Reinvention Framework™ (Recalibrate, Redefine, Express, Expand) gives you an intellectual and emotional roadmap through transition.",
+          connection: "How it links: Clarifies your values and standards before you alter your wardrobe or commit to new business ventures.",
+          linkText: "Explore The Framework",
+          targetSection: "#ecosystem"
+        },
+        {
+          number: "02",
+          name: "Curated Commerce",
+          role: "The Physical Embodiment",
+          description: "Your external presence must honor your internal evolution. We provide seasonal capsule edits, interior environment design, and vetted luxury brand partner privileges.",
+          connection: "How it links: Translates your redefined identity into how you dress, live, and present yourself to the world.",
+          linkText: "View Curated Edits",
+          targetSection: "#stage-finder"
+        },
+        {
+          number: "03",
+          name: "Community Sanctuary",
+          role: "The Resonant Peer Circle",
+          description: "An ad-free, private digital and in-person sanctuary connecting high-capacity women who celebrate high standards, ambitious expansion, and authentic vulnerability.",
+          connection: "How it links: Provides the peer resonance and accountability required to sustain your reinvention long-term.",
+          linkText: "Discover The Circles",
+          targetSection: "#memberships"
+        }
+      ],
+
+      // Membership Tiers Pricing & Details
+      memberships: [
+        {
+          id: "collective",
+          name: "The Collective",
+          tagline: "Foundational access & self-paced evolution",
+          priceMonthly: 24,
+          priceAnnualPerMonth: 19,
+          priceAnnualTotal: 228,
+          idealFor: "Women establishing clarity, lifestyle alignment, and seeking the structured foundation.",
+          features: [
+            "Full Reinvention Framework™ operating system",
+            "Complete I-denty Journal archive & curated edits",
+            "On-demand replays of Monthly Reinvention Sessions",
+            "Brand partner perks and member privileges",
+            "Private digital community sanctuary access"
+          ],
+          cta: "Join The Collective"
+        },
+        {
+          id: "inner-circle",
+          name: "The Inner Circle",
+          tagline: "Guided expansion & live founder integration",
+          isFeatured: true,
+          badge: "Most Chosen",
+          priceMonthly: 59,
+          priceAnnualPerMonth: 49,
+          priceAnnualTotal: 588,
+          idealFor: "Women seeking direct monthly guidance, live group interaction, and elevated peer connection.",
+          features: [
+            "Everything in The Collective included",
+            "LIVE access to The Monthly Reinvention Session™ with Eveliene",
+            "Live interactive Q&A & strategic coaching",
+            "Curated guest expert conversations",
+            "Priority RSVP for regional salons & workshops",
+            "Eligibility to apply for 1:1 Founder Advisory"
+          ],
+          cta: "Step Into The Inner Circle"
+        },
+        {
+          id: "private-member",
+          name: "Private Member",
+          tagline: "High-touch transformation & executive intimacy",
+          badge: "Limited Capacity",
+          priceMonthly: 149,
+          priceAnnualPerMonth: 129,
+          priceAnnualTotal: 1548,
+          idealFor: "Senior executives, founders, and high-capacity leaders desiring high-touch access and tailored alignment.",
+          features: [
+            "Everything in The Inner Circle included",
+            "Intimate small-group executive cohorts (max 12)",
+            "Invitation-only private retreats & dinners",
+            "Dedicated concierge support & wardrobe capsules",
+            "Guaranteed priority eligibility for 1:1 Consultation ($500/hr)",
+            "Exclusive first-look brand collaborations"
+          ],
+          cta: "Request Private Access"
+        }
+      ]
+    };
+
+    // State Variables
+    let currentBilling = 'monthly';
+    let currentJourneyStep = 'free';
+    let currentFinderTab = 'rebuilding';
+    let proposalsVisible = true;
+
+    // Toast Notification Utility
+    function showToast(message, type = 'info') {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast';
+      toast.innerHTML = `
+        <span style="color: ${type === 'success' ? '#34d399' : '#eab308'}">●</span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateX(100%)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 4000);
+    }
+
+    // Toggle Proposal Badges
+    function toggleProposals() {
+      proposalsVisible = !proposalsVisible;
+      document.body.classList.toggle('hide-proposals', !proposalsVisible);
+      document.getElementById('toggleProposalBtn').textContent = `Proposal Tags: ${proposalsVisible ? 'ON' : 'OFF'}`;
+      showToast(`Proposal mode ${proposalsVisible ? 'Enabled (highlighting UX recommendations)' : 'Disabled (clean preview)'}`);
+    }
+
+    // Render Journey Steps Navigation & Details
+    function renderJourneySection() {
+      const navContainer = document.getElementById('journeyStepsNav');
+      navContainer.innerHTML = DEMO_CONFIG.journeyStages.map(stage => `
+        <button type="button" 
+                class="journey-step-btn ${stage.id === currentJourneyStep ? 'active' : ''}" 
+                onclick="selectJourneyStep('${stage.id}')"
+                role="tab"
+                aria-selected="${stage.id === currentJourneyStep}">
+          <div class="badge-row">
+            <span class="step-index">${stage.stepNumber}</span>
+            <span class="step-tier-label">${stage.tierLabel}</span>
+          </div>
+          <div class="step-title">${stage.title}</div>
+          <div class="step-commitment">${stage.commitment}</div>
+        </button>
+      `).join('');
+
+      renderJourneyDetail();
+    }
+
+    function renderJourneyDetail() {
+      const stage = DEMO_CONFIG.journeyStages.find(s => s.id === currentJourneyStep);
+      const detailContainer = document.getElementById('journeyStepDetail');
+      if (!stage || !detailContainer) return;
+
+      detailContainer.innerHTML = `
+        <div class="detail-left">
+          <div class="stage-meta">
+            <span class="step-index" style="width: 24px; height: 24px; font-size: 0.7rem; background-color: var(--gold-primary); color: #fff; border: none; border-radius: 50%; display: inline-flex; align-items: center; justify-content: center;">${stage.stepNumber}</span>
+            <span class="eyebrow" style="margin-bottom: 0;">Stage ${stage.stepNumber}: ${stage.tierLabel}</span>
+          </div>
+          <h3>${stage.headline}</h3>
+          <p class="description">${stage.description}</p>
+
+          <div class="what-included">
+            <h4>What is included in this phase:</h4>
+            <ul class="included-list">
+              ${stage.included.map(item => `<li>${item}</li>`).join('')}
+            </ul>
+          </div>
+        </div>
+
+        <div class="detail-right">
+          <div class="conversion-bridge-box">
+            <div class="bridge-tag">
+              <span>➔</span>
+              <span>${stage.conversionBridge.tag}</span>
+            </div>
+            <div class="bridge-title">${stage.conversionBridge.title}</div>
+            <div class="bridge-desc">${stage.conversionBridge.description}</div>
+            <button type="button" class="btn btn-primary btn-sm bridge-cta" onclick="handleBridgeAction('${stage.conversionBridge.actionType}')">
+              ${stage.conversionBridge.ctaText}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectJourneyStep(stepId) {
+      currentJourneyStep = stepId;
+      renderJourneySection();
+      showToast(`Inspecting Stage: ${stepId.toUpperCase()} conversion pathway`);
+    }
+
+    function handleBridgeAction(actionType) {
+      switch (actionType) {
+        case 'guide-download':
+          document.querySelector('.lead-section').scrollIntoView({ behavior: 'smooth' });
+          showToast('Navigated to Complimentary Guide download form');
+          break;
+        case 'workshop-info':
+          showToast('Demo: Opens live schedule for upcoming Monthly Reinvention Sessions™');
+          break;
+        case 'scroll-memberships':
+          document.getElementById('memberships').scrollIntoView({ behavior: 'smooth' });
+          showToast('Navigated to Membership Tiers comparison');
+          break;
+        case 'advisory-apply':
+          document.getElementById('advisory').scrollIntoView({ behavior: 'smooth' });
+          showToast('Navigated to 1:1 Strategic Advisory section');
+          break;
+        default:
+          showToast('Demo action recorded');
+      }
+    }
+
+    // Render "Where Are You Right Now?" Stage Finder
+    function renderStageFinder() {
+      const tabsContainer = document.getElementById('finderTabs');
+      tabsContainer.innerHTML = DEMO_CONFIG.stageFinder.map(item => `
+        <button type="button" 
+                class="finder-tab-btn ${item.id === currentFinderTab ? 'active' : ''}" 
+                onclick="selectFinderTab('${item.id}')"
+                role="tab"
+                aria-selected="${item.id === currentFinderTab}">
+          ${item.tabName}
+        </button>
+      `).join('');
+
+      renderFinderContent();
+    }
+
+    function renderFinderContent() {
+      const item = DEMO_CONFIG.stageFinder.find(f => f.id === currentFinderTab);
+      const contentContainer = document.getElementById('finderContent');
+      if (!item || !contentContainer) return;
+
+      contentContainer.innerHTML = `
+        <div class="finder-col">
+          <div class="friction-title">Your Current Life Juncture</div>
+          <h3>${item.title}</h3>
+          <p class="friction-text">${item.friction}</p>
+
+          <div class="needs-title">Critical Transformation Requirements:</div>
+          <ul class="needs-list">
+            ${item.needs.map(need => `<li>${need}</li>`).join('')}
+          </ul>
+        </div>
+
+        <div class="finder-col">
+          <div class="recommendation-card">
+            <span class="recommendation-badge">${item.recommendation.badge}</span>
+            <h4>${item.recommendation.title}</h4>
+            <div class="rec-path">${item.recommendation.path}</div>
+            <p class="rec-rationale">${item.recommendation.rationale}</p>
+
+            <div class="rec-steps-preview">
+              <span class="rec-step-pill">${item.recommendation.steps[0]}</span>
+              <span class="rec-arrow">➔</span>
+              <span class="rec-step-pill">${item.recommendation.steps[1]}</span>
+              <span class="rec-arrow">➔</span>
+              <span class="rec-step-pill">${item.recommendation.steps[2]}</span>
+            </div>
+
+            <button type="button" class="btn btn-primary" style="width: 100%;" onclick="showToast('Demo: Initiating ${item.recommendation.title} onboarding flow', 'success')">
+              ${item.recommendation.cta}
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    function selectFinderTab(tabId) {
+      currentFinderTab = tabId;
+      renderStageFinder();
+      showToast(`Updated Starting Point: ${DEMO_CONFIG.stageFinder.find(f => f.id === tabId)?.tabName}`);
+    }
+
+    // Render The 3 Brand Pillars
+    function renderPillars() {
+      const grid = document.getElementById('pillarsGrid');
+      grid.innerHTML = DEMO_CONFIG.pillars.map(pillar => `
+        <div class="pillar-card">
+          <div>
+            <div class="pillar-num">${pillar.number}</div>
+            <h3 class="pillar-title">${pillar.name}</h3>
+            <div class="pillar-role">${pillar.role}</div>
+            <p class="pillar-desc">${pillar.description}</p>
+
+            <div class="pillar-loop-connection">
+              <div class="lbl">Ecosystem Interlock</div>
+              <div class="text">${pillar.connection}</div>
+            </div>
+          </div>
+
+          <a href="${pillar.targetSection}" class="cta-link">
+            <span>${pillar.linkText}</span>
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+        </div>
+      `).join('');
+    }
+
+    // Render Memberships with Billing Switch
+    function renderMemberships() {
+      const grid = document.getElementById('tiersGrid');
+      grid.innerHTML = DEMO_CONFIG.memberships.map(tier => {
+        const price = currentBilling === 'monthly' ? tier.priceMonthly : tier.priceAnnualPerMonth;
+        const subtext = currentBilling === 'monthly' ? 'Billed month-to-month' : `Billed $${tier.priceAnnualTotal}/year (Save ~20%)`;
+
+        return `
+          <div class="tier-card ${tier.isFeatured ? 'featured' : ''}">
+            ${tier.badge ? `<div class="tier-card-badge">${tier.badge}</div>` : ''}
+
+            <div>
+              <h3 class="tier-name">${tier.name}</h3>
+              <div class="tier-tagline">${tier.tagline}</div>
+
+              <div class="tier-pricing">
+                <div class="tier-price-val">
+                  <span class="currency">$</span>${price}<span class="period">/month</span>
+                </div>
+                <div class="tier-price-sub">${subtext}</div>
+              </div>
+
+              <div class="tier-ideal">
+                <strong>Ideal for:</strong> ${tier.idealFor}
+              </div>
+
+              <ul class="tier-features-list">
+                ${tier.features.map(f => `<li>${f}</li>`).join('')}
+              </ul>
+            </div>
+
+            <button type="button" class="btn ${tier.isFeatured ? 'btn-primary' : 'btn-secondary'}" style="width: 100%;" onclick="showToast('Demo: Navigating to ${tier.name} enrollment checkout', 'success')">
+              ${tier.cta}
+            </button>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function toggleBilling() {
+      setBilling(currentBilling === 'monthly' ? 'annual' : 'monthly');
+    }
+
+    function setBilling(mode) {
+      currentBilling = mode;
+      document.getElementById('billingSwitch').classList.toggle('annual', mode === 'annual');
+      document.getElementById('labelMonthly').classList.toggle('active', mode === 'monthly');
+      document.getElementById('labelAnnual').classList.toggle('active', mode === 'annual');
+      renderMemberships();
+      showToast(`Switched pricing to ${mode.toUpperCase()} billing view`);
+    }
+
+    // Lead Magnet Submission
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      showToast('Guide Dispatched: Check email inbox for download link and journal invitation', 'success');
+      e.target.reset();
+    }
+
+    // Initialization on DOM Load
+    document.addEventListener('DOMContentLoaded', () => {
+      renderJourneySection();
+      renderStageFinder();
+      renderPillars();
+      renderMemberships();
+
+      // Subtle GSAP animations if available
+      if (typeof gsap !== 'undefined') {
+        gsap.from('.hero-title, .hero-subtitle, .hero-ctas', {
+          y: 20,
+          opacity: 0,
+          duration: 0.9,
+          stagger: 0.15,
+          ease: 'power2.out'
+        });
+      }
+    });
+  </script>
+</body>
+</html>

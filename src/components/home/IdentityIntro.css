@@ -46,6 +46,7 @@
   color: var(--color-text-main);
   margin: 0 0 1.3rem;
   text-wrap: balance;
+  font-family: var(--font-brand);
 }
 
 .ii-statement em {

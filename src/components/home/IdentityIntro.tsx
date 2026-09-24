@@ -67,7 +67,7 @@ const TiltPillar: React.FC<{ icon: LucideIcon; title: string; desc: string }> = 
   desc,
 }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const raf = useRef(0);
+  const raf = useRef<number>(0);
   const m = useRef({ rx: 0, ry: 0, trx: 0, try_: 0, on: false });
 
   useEffect(() => {
@@ -76,6 +76,7 @@ const TiltPillar: React.FC<{ icon: LucideIcon; title: string; desc: string }> = 
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
     if (!window.matchMedia('(pointer: fine)').matches) return;
     const s = m.current;
+
     const tick = () => {
       s.rx += (s.trx - s.rx) * 0.14;
       s.ry += (s.try_ - s.ry) * 0.14;
@@ -93,7 +94,8 @@ const TiltPillar: React.FC<{ icon: LucideIcon; title: string; desc: string }> = 
         raf.current = requestAnimationFrame(tick);
       }
     };
-    const onMove = (e: PointerEvent) => {
+
+    const onMove = (e: React.PointerEvent) => {
       const r = el.getBoundingClientRect();
       s.try_ = ((e.clientX - r.left) / r.width - 0.5) * 7;
       s.trx = -((e.clientY - r.top) / r.height - 0.5) * 5;
@@ -105,10 +107,11 @@ const TiltPillar: React.FC<{ icon: LucideIcon; title: string; desc: string }> = 
       s.on = false;
       kick();
     };
-    el.addEventListener('pointermove', onMove, { passive: true });
+
+    el.addEventListener('pointermove', onMove as any, { passive: true });
     el.addEventListener('pointerleave', onLeave, { passive: true });
     return () => {
-      el.removeEventListener('pointermove', onMove);
+      el.removeEventListener('pointermove', onMove as any);
       el.removeEventListener('pointerleave', onLeave);
       cancelAnimationFrame(raf.current);
     };

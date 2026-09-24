@@ -1,24 +1,21 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { Link } from 'react-router-dom';
-import { ArrowRight } from 'lucide-react';
 import { BRAND_CONFIG } from '../../data/brandData';
 import './HomeHero.css';
 
 const HERO_POSTER = 'https://i-denty.com/wp-content/themes/i-denty/assets/images/hero.png';
-const MAX_SHIFT = 16;
 
 /**
- * Premium immersive 3D hero — CSS-3D depth layers + cinematic video background.
- * - Content (eyebrow, H1, description, CTAs) preserved from brand config.
- * - CTAs: Join the Membership (/memberships), Explore Membership Levels
- *   (/memberships#comparison-matrix).
- * - Mouse parallax is rAF-throttled, transform-only, desktop/fine-pointer only,
- *   and fully disabled under prefers-reduced-motion.
- * - Video is skipped on reduced-motion and coarse-pointer (poster fallback).
+ * Premium immersive 3D hero — Membership V3 Style
+ * - 3D rings with CSS 3D transforms
+ * - Editorial typography with word-by-word entrance
+ * - Cinematic video background
+ * - Staggered entrance animations
+ * - Mouse parallax (desktop/fine-pointer only)
+ * - Video skipped on reduced-motion and coarse-pointer
  */
 export const HomeHero: React.FC = () => {
   const sectionRef = useRef<HTMLElement>(null);
-  const rafRef = useRef<number>(0);
+  const ringsRef = useRef<HTMLDivElement>(null);
   const [reducedMotion, setReducedMotion] = useState<boolean>(
     () => typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
   );
@@ -40,14 +37,10 @@ export const HomeHero: React.FC = () => {
     };
   }, []);
 
-  // Subtle mouse parallax — writes CSS vars consumed by .hh-px layers.
+  // Mouse parallax for 3D rings
   useEffect(() => {
-    const el = sectionRef.current;
-    if (!el || reducedMotion) {
-      sectionRef.current?.style.setProperty('--mx', '0px');
-      sectionRef.current?.style.setProperty('--my', '0px');
-      return;
-    }
+    const rings = ringsRef.current;
+    if (!rings || reducedMotion) return;
     if (!window.matchMedia('(pointer: fine)').matches) return;
 
     let targetX = 0;
@@ -59,10 +52,9 @@ export const HomeHero: React.FC = () => {
     const tick = () => {
       currentX += (targetX - currentX) * 0.08;
       currentY += (targetY - currentY) * 0.08;
-      el.style.setProperty('--mx', `${currentX.toFixed(2)}px`);
-      el.style.setProperty('--my', `${currentY.toFixed(2)}px`);
+      rings.style.transform = `rotate(-18deg) rotateX(62deg) translate3d(${currentX.toFixed(2)}px, ${currentY.toFixed(2)}px, 0)`;
       if (Math.abs(targetX - currentX) > 0.05 || Math.abs(targetY - currentY) > 0.05) {
-        rafRef.current = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
       } else {
         running = false;
       }
@@ -70,16 +62,16 @@ export const HomeHero: React.FC = () => {
     const kick = () => {
       if (!running) {
         running = true;
-        rafRef.current = requestAnimationFrame(tick);
+        requestAnimationFrame(tick);
       }
     };
 
     const onMove = (e: PointerEvent) => {
-      const rect = el.getBoundingClientRect();
+      const rect = rings.getBoundingClientRect();
       const nx = (e.clientX - rect.left) / rect.width - 0.5;
       const ny = (e.clientY - rect.top) / rect.height - 0.5;
-      targetX = nx * MAX_SHIFT;
-      targetY = ny * MAX_SHIFT;
+      targetX = nx * 20;
+      targetY = ny * 20;
       kick();
     };
     const onLeave = () => {
@@ -88,21 +80,20 @@ export const HomeHero: React.FC = () => {
       kick();
     };
 
-    el.addEventListener('pointermove', onMove, { passive: true });
-    el.addEventListener('pointerleave', onLeave, { passive: true });
+    rings.addEventListener('pointermove', onMove, { passive: true });
+    rings.addEventListener('pointerleave', onLeave, { passive: true });
     return () => {
-      el.removeEventListener('pointermove', onMove);
-      el.removeEventListener('pointerleave', onLeave);
-      cancelAnimationFrame(rafRef.current);
+      rings.removeEventListener('pointermove', onMove);
+      rings.removeEventListener('pointerleave', onLeave);
     };
   }, [reducedMotion]);
 
   const showVideo = !reducedMotion && !coarsePointer && !videoFailed;
 
   return (
-    <section ref={sectionRef} className="hh" aria-label="I-denty — The identity-led lifestyle ecosystem">
-      {/* Layer 0 — background media (poster always, video progressively enhances) */}
-      <div className="hh-media hh-px" style={{ ['--d' as string]: 2.1 }} aria-hidden="true">
+    <section ref={sectionRef} className="hero" aria-label="I-denty — The identity-led lifestyle ecosystem">
+      {/* Background media */}
+      <div className="hero-media" aria-hidden="true">
         <img src={HERO_POSTER} alt="" fetchPriority="high" decoding="async" />
         {showVideo && (
           <video
@@ -121,58 +112,57 @@ export const HomeHero: React.FC = () => {
         )}
       </div>
 
-      {/* Layer 1 — cinematic overlays */}
-      <div className="hh-shade" aria-hidden="true" />
-
-      {/* Layer 2 — CSS 3D decor scene (purely decorative) */}
-      <div className="hh-scene" aria-hidden="true">
-        <div className="hh-orb hh-px" style={{ ['--d' as string]: 1.1 }} />
-        <div className="hh-lines hh-px" style={{ ['--d' as string]: 0.5 }} />
-        <div className="hh-ring hh-ring-a hh-px" style={{ ['--d' as string]: 1.7, ['--z' as string]: '-120px' }} />
-        <div className="hh-ring hh-ring-b hh-px" style={{ ['--d' as string]: 1.2, ['--z' as string]: '-60px' }} />
-        <div className="hh-ring hh-ring-c hh-px" style={{ ['--d' as string]: 0.8, ['--z' as string]: '40px' }} />
-      </div>
-
-      {/* Floating glass session card — keyboard-accessible, participates in parallax */}
-      <Link to="/experiences" className="hh-card hh-px" style={{ ['--d' as string]: 0.55, ['--z' as string]: '90px' }}>
-        <span className="hh-card-eyebrow">Monthly Reinvention Session</span>
-        <span className="hh-card-title">Founder-led live, every month</span>
-        <span className="hh-card-sub">90 minutes · Teaching + live Q&amp;A →</span>
-      </Link>
-
-      {/* Layer 3 — content */}
-      <div className="hh-content hh-px" style={{ ['--d' as string]: -0.35 }}>
-        <div className="hh-rise" style={{ ['--rd' as string]: '0.05s' }}>
-          <span className="hh-pill">
-            <span className="hh-pill-dot" aria-hidden="true">◈</span>
-            <span>{BRAND_CONFIG.tagline}</span>
-          </span>
-        </div>
-
-        <h1 className="hh-title hh-rise" style={{ ['--rd' as string]: '0.18s' }}>
-          The identity-led lifestyle ecosystem
-          <br className="hh-br" /> for women <em>reinventing</em> their next chapter.
-        </h1>
-
-        <p className="hh-sub hh-rise" style={{ ['--rd' as string]: '0.32s' }}>
-          {BRAND_CONFIG.heroSubtitle}
-        </p>
-
-        <div className="hh-ctas hh-rise" style={{ ['--rd' as string]: '0.46s' }}>
-          <Link to="/memberships" className="hh-btn hh-btn-primary">
-            Join the Membership
-            <ArrowRight size={16} aria-hidden="true" />
-          </Link>
-          <Link to="/memberships#comparison-matrix" className="hh-btn hh-btn-ghost">
-            Explore Membership Levels
-          </Link>
+      {/* 3D Rings */}
+      <div ref={ringsRef} className="rings" aria-hidden="true">
+        <div className="rings-in">
+          <div className="ring" />
+          <div className="ring" />
+          <div className="ring" />
         </div>
       </div>
 
-      {/* Layer 4 — scroll cue */}
-      <a href="#what-is-identy" className="hh-cue hh-rise" style={{ ['--rd' as string]: '1s' }} aria-label="Scroll to discover more">
+      {/* Hero content */}
+      <div className="hero-top">
+        <div>
+          <h1 aria-label="Your Path Inside I-denty">
+            <span className="w"><span className="wi">Your</span></span>{' '}
+            <span className="w"><span className="wi">Path</span></span>{' '}
+            <span className="w"><span className="wi">Inside</span></span>{' '}
+            <span className="w"><span className="wi">I-denty</span></span>
+          </h1>
+          <p className="lede">
+            I-denty operates through structured access levels designed to support identity evolution at every stage of life.
+          </p>
+          <div className="std">
+            OPEN ACCESS &nbsp;|&nbsp; ELEVATED STANDARD
+          </div>
+          <div className="trust">
+            <span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 8.5l3.2 3L13 4.5" />
+              </svg>
+              Reinvention Framework in every level
+            </span>
+            <span>
+              <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+                <path d="M3 8.5l3.2 3L13 4.5" />
+              </svg>
+              Earlier framework fee credited
+            </span>
+          </div>
+        </div>
+
+        <div className="hero-side">
+          <a href="/finder" className="btn pill">
+            Find My Level
+          </a>
+        </div>
+      </div>
+
+      {/* Scroll cue */}
+      <a href="#what-is-identy" className="hero-scroll" aria-label="Scroll to discover more">
         <span>Scroll</span>
-        <span className="hh-cue-line" aria-hidden="true" />
+        <span className="hero-scroll-line" aria-hidden="true" />
       </a>
     </section>
   );

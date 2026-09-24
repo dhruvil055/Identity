@@ -1,0 +1,1710 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>I-DENTY — Static Homepage Demo | Identity-Led Lifestyle Ecosystem</title>
+  
+  <!-- Google Fonts: Cormorant Garamond (Serif), Italiana (Wordmark), Jost (Clean Body) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,400;1,500&family=Italiana&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  
+  <!-- Lightweight GSAP Core for smooth entrance choreography (No ScrollTrigger needed) -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+
+  <style>
+    /* ==========================================================================
+       I-DENTY STATIC DEMO DESIGN SYSTEM
+       Palette: Warm Ivory, Crisp White, Rich Navy Ink, Muted Burnished Gold
+       ========================================================================== */
+    :root {
+      --bg-base: #fbf9f5;
+      --bg-surface: #ffffff;
+      --bg-subtle: #f5f0e6;
+      --bg-card: #ffffff;
+      --text-main: #141c30;
+      --text-muted: #535e73;
+      --text-light: #8993a4;
+      --border-subtle: #e8e2d5;
+      --border-strong: #d2c8b4;
+      --gold-primary: #85702f;
+      --gold-hover: #6e5c26;
+      --gold-light: #f7f3e8;
+      --navy-deep: #141c30;
+      --navy-surface: #1a233a;
+      --font-display: 'Cormorant Garamond', Georgia, serif;
+      --font-wordmark: 'Italiana', serif;
+      --font-sans: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      --container-max: 1200px;
+      --radius-sm: 6px;
+      --radius-md: 10px;
+      --radius-lg: 16px;
+      --shadow-subtle: 0 4px 20px rgba(20, 28, 48, 0.04);
+      --shadow-lift: 0 12px 30px rgba(20, 28, 48, 0.08);
+      --transition-default: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    *, *::before, *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    html {
+      scroll-behavior: smooth;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+      font-family: var(--font-sans);
+      font-size: 16px;
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    body {
+      overflow-x: hidden;
+      background-color: var(--bg-base);
+      color: var(--text-main);
+    }
+
+    ::selection {
+      background-color: rgba(133, 112, 47, 0.2);
+      color: var(--navy-deep);
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+      border: none;
+      background: none;
+    }
+
+    /* Container Utility */
+    .container {
+      max-width: var(--container-max);
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+
+    @media (max-width: 768px) {
+      .container {
+        padding: 0 1.25rem;
+      }
+    }
+
+    /* Typography Classes */
+    .font-display {
+      font-family: var(--font-display);
+    }
+
+    .font-wordmark {
+      font-family: var(--font-wordmark);
+      letter-spacing: 0.22em;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      font-weight: 600;
+      color: var(--gold-primary);
+      margin-bottom: 0.8rem;
+    }
+
+    .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px;
+      height: 1px;
+      background-color: var(--gold-primary);
+    }
+
+    /* Buttons */
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.6rem;
+      padding: 0.85rem 1.8rem;
+      font-size: 0.8rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border-radius: var(--radius-sm);
+      transition: var(--transition-default);
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      border: 1px solid var(--navy-deep);
+    }
+
+    .btn-primary:hover {
+      background-color: var(--gold-primary);
+      border-color: var(--gold-primary);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(133, 112, 47, 0.25);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      color: var(--navy-deep);
+      border: 1px solid var(--border-strong);
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-surface);
+      border-color: var(--navy-deep);
+      transform: translateY(-2px);
+    }
+
+    .btn-gold {
+      background-color: var(--gold-primary);
+      color: #ffffff;
+      border: 1px solid var(--gold-primary);
+    }
+
+    .btn-gold:hover {
+      background-color: var(--gold-hover);
+      border-color: var(--gold-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 16px rgba(133, 112, 47, 0.3);
+    }
+
+    .btn-sm {
+      padding: 0.55rem 1.15rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.12em;
+    }
+
+    /* ==========================================================================
+       LOADER ANIMATION (PAGE ENTRY, PLAYS ONCE)
+       Ivory/Navy screen with tracking-in wordmark and expanding gold line
+       ========================================================================== */
+    .page-loader {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background-color: var(--bg-base);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      pointer-events: all;
+    }
+
+    .loader-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+    }
+
+    .loader-wordmark {
+      font-family: var(--font-wordmark);
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      letter-spacing: 0.08em;
+      color: var(--navy-deep);
+      line-height: 1;
+      opacity: 0;
+      will-change: letter-spacing, opacity;
+    }
+
+    .loader-subtitle {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      letter-spacing: 0.24em;
+      color: var(--gold-primary);
+      margin-top: 0.6rem;
+      font-weight: 500;
+      opacity: 0;
+    }
+
+    .loader-line-track {
+      width: 140px;
+      height: 1.5px;
+      background-color: rgba(133, 112, 47, 0.2);
+      margin-top: 1.4rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .loader-line-fill {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 0%;
+      background-color: var(--gold-primary);
+    }
+
+    /* ==========================================================================
+       STICKY HEADER
+       ========================================================================== */
+    .site-header {
+      position: sticky;
+      top: 0;
+      left: 0;
+      width: 100%;
+      z-index: 100;
+      background-color: rgba(251, 249, 245, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .header-inner {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: 74px;
+    }
+
+    .header-brand {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header-brand .wordmark {
+      font-family: var(--font-wordmark);
+      font-size: 1.65rem;
+      letter-spacing: 0.2em;
+      color: var(--navy-deep);
+      line-height: 1;
+    }
+
+    .header-brand .subtext {
+      font-size: 0.58rem;
+      text-transform: uppercase;
+      letter-spacing: 0.22em;
+      color: var(--gold-primary);
+      margin-top: 3px;
+      font-weight: 600;
+    }
+
+    .header-nav {
+      display: flex;
+      align-items: center;
+      gap: 2rem;
+      list-style: none;
+    }
+
+    .header-nav a {
+      font-size: 0.78rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 500;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+
+    .header-nav a:hover {
+      color: var(--navy-deep);
+    }
+
+    @media (max-width: 860px) {
+      .header-nav {
+        display: none;
+      }
+    }
+
+    /* ==========================================================================
+       SECTION TRANSITIONS (SCROLL-BASED INTERSECTION REVEALS)
+       ========================================================================== */
+    .reveal-section {
+      opacity: 0;
+      transform: translateY(22px);
+      transition: opacity 0.45s ease-out, transform 0.45s ease-out;
+      will-change: opacity, transform;
+    }
+
+    .reveal-section.is-revealed {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    /* Staggered Child Reveal */
+    .reveal-section.is-revealed .stagger-1 {
+      animation: childFadeIn 0.4s ease-out 0.05s both;
+    }
+    .reveal-section.is-revealed .stagger-2 {
+      animation: childFadeIn 0.4s ease-out 0.15s both;
+    }
+    .reveal-section.is-revealed .stagger-3 {
+      animation: childFadeIn 0.4s ease-out 0.25s both;
+    }
+    .reveal-section.is-revealed .stagger-4 {
+      animation: childFadeIn 0.4s ease-out 0.35s both;
+    }
+
+    @keyframes childFadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(14px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Reduced Motion Accessibility */
+    @media (prefers-reduced-motion: reduce) {
+      .page-loader {
+        display: none !important;
+      }
+      .reveal-section {
+        opacity: 1 !important;
+        transform: none !important;
+        transition: none !important;
+      }
+      .stagger-1, .stagger-2, .stagger-3, .stagger-4 {
+        animation: none !important;
+        opacity: 1 !important;
+        transform: none !important;
+      }
+    }
+
+    /* Reusable Section Header */
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 3.5rem;
+    }
+
+    .section-header h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.2vw, 2.8rem);
+      line-height: 1.2;
+      font-weight: 400;
+      color: var(--navy-deep);
+      margin-bottom: 0.8rem;
+    }
+
+    .section-header h2 em {
+      font-style: italic;
+      color: var(--gold-primary);
+    }
+
+    .section-header p {
+      font-size: 0.98rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ==========================================================================
+       1. HERO SECTION
+       ========================================================================== */
+    .hero-section {
+      padding: 6.5rem 0 5rem;
+      border-bottom: 1px solid var(--border-subtle);
+      background: radial-gradient(circle at 80% 20%, rgba(232, 226, 213, 0.45) 0%, transparent 65%);
+    }
+
+    .hero-content {
+      max-width: 860px;
+      margin: 0 auto;
+      text-align: center;
+    }
+
+    .hero-wordmark-display {
+      font-family: var(--font-wordmark);
+      font-size: clamp(2.4rem, 6vw, 4.4rem);
+      letter-spacing: 0.24em;
+      color: var(--navy-deep);
+      line-height: 1;
+      margin-bottom: 1.4rem;
+    }
+
+    .hero-title {
+      font-family: var(--font-display);
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      font-weight: 400;
+      line-height: 1.25;
+      color: var(--navy-deep);
+      margin-bottom: 1.2rem;
+    }
+
+    .hero-title em {
+      font-style: italic;
+      color: var(--gold-primary);
+    }
+
+    .hero-statement {
+      font-size: 1.05rem;
+      line-height: 1.7;
+      color: var(--text-muted);
+      max-width: 660px;
+      margin: 0 auto 2.2rem;
+    }
+
+    .hero-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      margin-bottom: 3.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Hero 3 Pillars Quick Banner */
+    .hero-pillars-band {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.5rem;
+      padding-top: 2.2rem;
+      border-top: 1px solid var(--border-subtle);
+      text-align: left;
+    }
+
+    @media (max-width: 768px) {
+      .hero-pillars-band {
+        grid-template-columns: 1fr;
+        gap: 1.2rem;
+        text-align: center;
+      }
+    }
+
+    .hero-pillar-col .num {
+      font-family: var(--font-display);
+      font-size: 1.2rem;
+      color: var(--gold-primary);
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-pillar-col .title {
+      font-size: 0.88rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      margin-bottom: 0.2rem;
+    }
+
+    .hero-pillar-col .desc {
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      line-height: 1.45;
+    }
+
+    /* ==========================================================================
+       2. ECOSYSTEM OVERVIEW (STATIC VISUAL PROGRESSION)
+       Free Content -> Workshops -> Memberships -> 1:1 Consultation
+       ========================================================================== */
+    .ecosystem-section {
+      padding: 6rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .ecosystem-flow-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 1.5rem;
+      position: relative;
+    }
+
+    @media (max-width: 992px) {
+      .ecosystem-flow-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 580px) {
+      .ecosystem-flow-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .ecosystem-card {
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2rem 1.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: var(--transition-default);
+    }
+
+    .ecosystem-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+      border-color: var(--gold-primary);
+    }
+
+    .ecosystem-card-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 1.2rem;
+    }
+
+    .ecosystem-step-badge {
+      width: 26px;
+      height: 26px;
+      border-radius: 50%;
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-strong);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      font-weight: 700;
+      color: var(--gold-primary);
+    }
+
+    .ecosystem-level-tag {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-weight: 600;
+      color: var(--text-light);
+    }
+
+    .ecosystem-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.45rem;
+      line-height: 1.25;
+      color: var(--navy-deep);
+      margin-bottom: 0.6rem;
+    }
+
+    .ecosystem-card p {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin-bottom: 1.5rem;
+    }
+
+    .ecosystem-bridge-indicator {
+      border-top: 1px solid var(--border-subtle);
+      padding-top: 1rem;
+      font-size: 0.72rem;
+      color: var(--gold-primary);
+      font-weight: 500;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* ==========================================================================
+       3. THREE PILLARS SECTION
+       ========================================================================== */
+    .pillars-section {
+      padding: 6rem 0;
+      background-color: var(--bg-base);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .pillars-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .pillar-card {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.5rem 2rem;
+      transition: var(--transition-default);
+    }
+
+    .pillar-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+      border-color: var(--gold-primary);
+    }
+
+    .pillar-num {
+      font-family: var(--font-display);
+      font-size: 1.6rem;
+      color: var(--gold-primary);
+      margin-bottom: 0.6rem;
+    }
+
+    .pillar-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.65rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.4rem;
+    }
+
+    .pillar-role {
+      font-size: 0.7rem;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      color: var(--gold-primary);
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+
+    .pillar-card p {
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+
+    /* ==========================================================================
+       4. MEMBERSHIP PREVIEW (CONDENSED 3-TIER TEASERS)
+       ========================================================================== */
+    .memberships-section {
+      padding: 6rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tiers-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2rem;
+      align-items: stretch;
+      margin-bottom: 3rem;
+    }
+
+    @media (max-width: 992px) {
+      .tiers-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .tier-card {
+      background-color: var(--bg-base);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-md);
+      padding: 2.4rem 2rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      position: relative;
+      transition: var(--transition-default);
+    }
+
+    .tier-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lift);
+      border-color: var(--gold-primary);
+    }
+
+    .tier-card.featured {
+      border-color: var(--gold-primary);
+      background: linear-gradient(180deg, #ffffff 0%, var(--bg-subtle) 100%);
+      box-shadow: 0 10px 30px rgba(133, 112, 47, 0.12);
+    }
+
+    .tier-card-badge {
+      position: absolute;
+      top: -11px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: var(--gold-primary);
+      color: #ffffff;
+      font-size: 0.62rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      font-weight: 700;
+      padding: 3px 12px;
+      border-radius: 999px;
+    }
+
+    .tier-card h3 {
+      font-family: var(--font-display);
+      font-size: 1.85rem;
+      color: var(--navy-deep);
+      margin-bottom: 0.3rem;
+    }
+
+    .tier-tagline {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+
+    .tier-price-box {
+      margin-bottom: 1.5rem;
+      padding-bottom: 1.2rem;
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .tier-price-val {
+      font-family: var(--font-display);
+      font-size: 2.6rem;
+      font-weight: 600;
+      color: var(--navy-deep);
+      line-height: 1;
+    }
+
+    .tier-price-val .currency {
+      font-size: 1.3rem;
+      font-weight: 400;
+      vertical-align: top;
+      margin-right: 2px;
+    }
+
+    .tier-price-val .period {
+      font-family: var(--font-sans);
+      font-size: 0.85rem;
+      font-weight: 400;
+      color: var(--text-muted);
+    }
+
+    .tier-features {
+      list-style: none;
+      margin-bottom: 2rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.65rem;
+    }
+
+    .tier-features li {
+      font-size: 0.84rem;
+      color: var(--text-muted);
+      display: flex;
+      align-items: flex-start;
+      gap: 0.5rem;
+    }
+
+    .tier-features li::before {
+      content: '✓';
+      color: var(--gold-primary);
+      font-weight: bold;
+    }
+
+    .memberships-cta-wrap {
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       5. FREE ENTRY POINT (JOURNAL & GUIDE)
+       ========================================================================== */
+    .lead-section {
+      padding: 5.5rem 0;
+      background-color: var(--bg-base);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .lead-box {
+      background-color: var(--bg-surface);
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-lg);
+      padding: 3rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+      box-shadow: var(--shadow-subtle);
+    }
+
+    @media (max-width: 860px) {
+      .lead-box {
+        grid-template-columns: 1fr;
+        padding: 2rem 1.5rem;
+      }
+    }
+
+    .lead-left h3 {
+      font-family: var(--font-display);
+      font-size: 2rem;
+      color: var(--navy-deep);
+      line-height: 1.2;
+      margin-bottom: 0.8rem;
+    }
+
+    .lead-left p {
+      font-size: 0.92rem;
+      color: var(--text-muted);
+      line-height: 1.6;
+      margin-bottom: 1.5rem;
+    }
+
+    .lead-deliverables {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1.2rem;
+    }
+
+    .deliverable-item {
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--navy-deep);
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    .deliverable-item::before {
+      content: '•';
+      color: var(--gold-primary);
+      font-size: 1.2rem;
+    }
+
+    .lead-form {
+      display: flex;
+      flex-direction: column;
+      gap: 0.8rem;
+    }
+
+    .lead-input {
+      width: 100%;
+      padding: 0.8rem 1rem;
+      font-size: 0.85rem;
+      font-family: inherit;
+      border: 1px solid var(--border-subtle);
+      border-radius: var(--radius-sm);
+      background-color: var(--bg-base);
+      color: var(--navy-deep);
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .lead-input:focus {
+      border-color: var(--gold-primary);
+      background-color: #ffffff;
+    }
+
+    .lead-note {
+      font-size: 0.7rem;
+      color: var(--text-light);
+      text-align: center;
+    }
+
+    /* ==========================================================================
+       6. CONSULTATION CALLOUT (1:1 PRIVATE STRATEGIC ADVISORY)
+       ========================================================================== */
+    .advisory-section {
+      padding: 6rem 0;
+      background-color: var(--bg-surface);
+      border-bottom: 1px solid var(--border-subtle);
+    }
+
+    .advisory-card {
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      border-radius: var(--radius-lg);
+      padding: 3.5rem 3rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 3rem;
+      align-items: center;
+    }
+
+    @media (max-width: 860px) {
+      .advisory-card {
+        grid-template-columns: 1fr;
+        padding: 2.2rem 1.5rem;
+      }
+    }
+
+    .advisory-card .advisory-eyebrow {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.18em;
+      color: var(--gold-primary);
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+    }
+
+    .advisory-card h2 {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 3.2vw, 2.7rem);
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 1rem;
+    }
+
+    .advisory-card h2 em {
+      font-style: italic;
+      color: #d4ba75;
+    }
+
+    .advisory-card p {
+      font-size: 0.95rem;
+      line-height: 1.65;
+      color: rgba(255, 255, 255, 0.8);
+      margin-bottom: 1.5rem;
+    }
+
+    .advisory-scope-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+    }
+
+    .advisory-tag {
+      font-size: 0.72rem;
+      padding: 4px 10px;
+      border-radius: 999px;
+      background-color: rgba(255, 255, 255, 0.08);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      color: rgba(255, 255, 255, 0.88);
+    }
+
+    .advisory-rate-box {
+      background-color: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(255, 255, 255, 0.12);
+      border-radius: var(--radius-md);
+      padding: 2rem;
+      text-align: center;
+    }
+
+    .advisory-rate-label {
+      font-size: 0.72rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #d4ba75;
+      margin-bottom: 0.4rem;
+    }
+
+    .advisory-rate-amount {
+      font-family: var(--font-display);
+      font-size: 2.8rem;
+      font-weight: 600;
+      color: #ffffff;
+      line-height: 1;
+      margin-bottom: 0.5rem;
+    }
+
+    .advisory-rate-amount span {
+      font-size: 1rem;
+      font-family: var(--font-sans);
+      font-weight: 400;
+      color: rgba(255, 255, 255, 0.65);
+    }
+
+    .advisory-capacity-note {
+      font-size: 0.78rem;
+      color: rgba(255, 255, 255, 0.7);
+      margin-bottom: 1.5rem;
+    }
+
+    /* ==========================================================================
+       7. FOOTER
+       ========================================================================== */
+    .site-footer {
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      padding: 5rem 0 3rem;
+      border-top: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .footer-grid {
+      display: grid;
+      grid-template-columns: 1.6fr repeat(4, 1fr);
+      gap: 2.5rem;
+      margin-bottom: 4rem;
+    }
+
+    @media (max-width: 900px) {
+      .footer-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    @media (max-width: 550px) {
+      .footer-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    .footer-brand .wordmark {
+      font-family: var(--font-wordmark);
+      font-size: 1.9rem;
+      letter-spacing: 0.2em;
+      color: #ffffff;
+      display: block;
+      margin-bottom: 0.8rem;
+    }
+
+    .footer-brand p {
+      font-size: 0.84rem;
+      color: rgba(255, 255, 255, 0.65);
+      line-height: 1.6;
+      max-width: 300px;
+    }
+
+    .footer-col h5 {
+      font-size: 0.74rem;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      color: #d4ba75;
+      margin-bottom: 1.2rem;
+      font-weight: 600;
+    }
+
+    .footer-col ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+    }
+
+    .footer-col a {
+      font-size: 0.82rem;
+      color: rgba(255, 255, 255, 0.7);
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #ffffff;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+      padding-top: 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 1rem;
+      font-size: 0.75rem;
+      color: rgba(255, 255, 255, 0.5);
+    }
+
+    /* Toast Notification */
+    .toast-container {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      z-index: 10000;
+      pointer-events: none;
+    }
+
+    .toast-message {
+      pointer-events: auto;
+      background-color: var(--navy-deep);
+      color: #ffffff;
+      padding: 0.8rem 1.4rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--gold-primary);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+      font-size: 0.82rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      animation: toastIn 0.3s ease-out;
+    }
+
+    @keyframes toastIn {
+      from { transform: translateY(12px); opacity: 0; }
+      to { transform: translateY(0); opacity: 1; }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- ==========================================================================
+       PAGE LOADER ANIMATION (PAGE ENTRY, PLAYS ONCE)
+       Ivory/navy full-screen reveal: wordmark tracks in with drawing gold line
+       ========================================================================== -->
+  <div class="page-loader" id="pageLoader" aria-hidden="false">
+    <div class="loader-content">
+      <div class="loader-wordmark" id="loaderWordmark">I-DENTY</div>
+      <div class="loader-subtitle" id="loaderSubtitle">Identity-Led Lifestyle Ecosystem</div>
+      <div class="loader-line-track">
+        <div class="loader-line-fill" id="loaderLineFill"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Toast Notification Outlet -->
+  <div class="toast-container" id="toastContainer" aria-live="polite"></div>
+
+  <!-- ==========================================================================
+       STICKY HEADER
+       ========================================================================== -->
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#hero" class="header-brand" aria-label="I-DENTY Home">
+        <span class="wordmark">I-DENTY</span>
+        <span class="subtext">Lifestyle Ecosystem</span>
+      </a>
+
+      <nav aria-label="Main Navigation">
+        <ul class="header-nav">
+          <li><a href="#ecosystem">Ecosystem</a></li>
+          <li><a href="#pillars">The 3 Pillars</a></li>
+          <li><a href="#memberships">Memberships</a></li>
+          <li><a href="#consultation">1:1 Consultation</a></li>
+        </ul>
+      </nav>
+
+      <div>
+        <button type="button" class="btn btn-primary btn-sm" onclick="showToast('Demo only — in production this opens the portal application')">
+          Join Ecosystem
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <!-- ==========================================================================
+         SECTION 1: HERO
+         I-DENTY wordmark, one-line positioning statement, 3 pillars named briefly, single primary CTA
+         ========================================================================== -->
+    <section class="hero-section reveal-section" id="hero">
+      <div class="container hero-content">
+        <div class="eyebrow stagger-1">The Identity-Led Lifestyle Ecosystem</div>
+        
+        <div class="hero-wordmark-display stagger-2">I-DENTY</div>
+
+        <h1 class="hero-title stagger-2">
+          The architecture of <em>who you become</em> in your next chapter.
+        </h1>
+
+        <p class="hero-statement stagger-3">
+          I-denty integrates identity development, curated commerce, and community — guiding women navigating life transitions with structured intentionality, peer sanctuary, and executive presence.
+        </p>
+
+        <div class="hero-actions stagger-3">
+          <a href="#ecosystem" class="btn btn-primary">
+            <span>Explore The Ecosystem</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+
+          <a href="#memberships" class="btn btn-secondary">
+            <span>View Memberships</span>
+          </a>
+        </div>
+
+        <!-- 3 Pillars Named Briefly -->
+        <div class="hero-pillars-band stagger-4">
+          <div class="hero-pillar-col">
+            <div class="num">01</div>
+            <div class="title">Identity Development</div>
+            <div class="desc">The proprietary Reinvention Framework™ guiding internal alignment and sovereignty.</div>
+          </div>
+          <div class="hero-pillar-col">
+            <div class="num">02</div>
+            <div class="title">Curated Commerce</div>
+            <div class="desc">Capsule wardrobe architecture, aesthetic living edits, and vetted partner privileges.</div>
+          </div>
+          <div class="hero-pillar-col">
+            <div class="num">03</div>
+            <div class="title">Community Sanctuary</div>
+            <div class="desc">Ad-free, confidential peer fellowship and founder-led monthly salons.</div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 2: ECOSYSTEM OVERVIEW (STATIC VISUAL)
+         Path: Free Content -> Workshops/Programmes -> Memberships -> Consultation
+         ========================================================================== -->
+    <section class="ecosystem-section reveal-section" id="ecosystem">
+      <div class="container">
+        <div class="section-header stagger-1">
+          <div class="eyebrow">Journey Architecture</div>
+          <h2>A Clear Progression from <em>Discovery to Mastery</em></h2>
+          <p>
+            Unlike fragmented programs or isolated self-help courses, every layer of I-denty connects to reinforce your reinvention at your chosen pace of commitment.
+          </p>
+        </div>
+
+        <div class="ecosystem-flow-grid stagger-2" id="ecosystemGrid">
+          <!-- Populated from DATA_CONFIG.ecosystemPath -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 3: THREE PILLARS DEEP-DIVE
+         Identity Development / Curated Commerce / Community
+         ========================================================================== -->
+    <section class="pillars-section reveal-section" id="pillars">
+      <div class="container">
+        <div class="section-header stagger-1">
+          <div class="eyebrow">The Triad Foundation</div>
+          <h2>Three Pillars. <em>One Elevated Standard.</em></h2>
+          <p>
+            Identity without community lacks resonance; community without curated expression lacks embodiment. We harmonize all three.
+          </p>
+        </div>
+
+        <div class="pillars-grid stagger-2" id="pillarsGrid">
+          <!-- Populated from DATA_CONFIG.pillars -->
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 4: MEMBERSHIP PREVIEW (CONDENSED 3-TIER TEASERS)
+         The Collective / The Inner Circle / Private Member + "Find your level" CTA
+         ========================================================================== -->
+    <section class="memberships-section reveal-section" id="memberships">
+      <div class="container">
+        <div class="section-header stagger-1">
+          <div class="eyebrow">The Sustained Sanctuary</div>
+          <h2>Choose Your <em>Pace of Evolution</em></h2>
+          <p>
+            Three distinct levels of commitment designed to meet you exactly where you are in your personal or professional transition.
+          </p>
+        </div>
+
+        <div class="tiers-grid stagger-2" id="tiersGrid">
+          <!-- Populated from DATA_CONFIG.tiers -->
+        </div>
+
+        <div class="memberships-cta-wrap stagger-3">
+          <button type="button" class="btn btn-primary" onclick="showToast('Demo only — in production this opens the interactive level diagnostic')">
+            Find Your Level & Compare Inclusions
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 5: FREE ENTRY POINT (JOURNAL & GUIDE EMAIL CALLOUT)
+         ========================================================================== -->
+    <section class="lead-section reveal-section" id="free-entry">
+      <div class="container">
+        <div class="lead-box">
+          <div class="lead-left stagger-1">
+            <div class="eyebrow">Complimentary Gateway</div>
+            <h3>The Reinvention Calibration Guide</h3>
+            <p>
+              A 24-page editorial workbook introducing the four pillars of the framework: <em>Recalibrate, Redefine, Express,</em> and <em>Expand</em>. Begin your personal life audit before joining live sessions.
+            </p>
+
+            <div class="lead-deliverables">
+              <div class="deliverable-item">Life Audit Matrix</div>
+              <div class="deliverable-item">Boundary Architecture Guide</div>
+              <div class="deliverable-item">I-denty Journal Dispatch</div>
+            </div>
+          </div>
+
+          <div class="lead-right stagger-2">
+            <form class="lead-form" onsubmit="handleLeadSubmit(event)">
+              <input type="text" class="lead-input" placeholder="Your Name" required />
+              <input type="email" class="lead-input" placeholder="Your Email Address" required />
+              <button type="submit" class="btn btn-primary" style="width: 100%;">
+                Receive Complimentary Guide
+              </button>
+              <div class="lead-note">Instant inbox delivery. No spam. Unsubscribe anytime.</div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ==========================================================================
+         SECTION 6: CONSULTATION CALLOUT (1:1 PRIVATE CONSULTATION)
+         ========================================================================== -->
+    <section class="advisory-section reveal-section" id="consultation">
+      <div class="container">
+        <div class="advisory-card">
+          <div class="advisory-left stagger-1">
+            <div class="advisory-eyebrow">High-Touch Climax</div>
+            <h2>Private 1:1 Strategic <em>Consultation</em></h2>
+            <p>
+              Direct, confidential advisory with Founder Eveliene. Dedicated to senior executives, founders, and women navigating high-stakes personal or professional inflection points.
+            </p>
+
+            <div class="advisory-scope-tags">
+              <span class="advisory-tag">Executive Transitions</span>
+              <span class="advisory-tag">Post-Divorce Sovereignty</span>
+              <span class="advisory-tag">International Relocation</span>
+              <span class="advisory-tag">Presence & Wardrobe Curation</span>
+            </div>
+          </div>
+
+          <div class="advisory-right stagger-2">
+            <div class="advisory-rate-box">
+              <div class="advisory-rate-label">Confidential Advisory Rate</div>
+              <div class="advisory-rate-amount">$500 <span>/ hour</span></div>
+              <div class="advisory-capacity-note">
+                Strictly capped at 4 client advisory dossiers per quarter to preserve strategic depth.
+              </div>
+
+              <button type="button" class="btn btn-gold" style="width: 100%;" onclick="showToast('Demo only — in production this opens the confidential advisory inquiry form')">
+                Request Advisory Consultation
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- ==========================================================================
+       SECTION 7: FOOTER
+       Simple navigation mapping the ecosystem (content, workshops, memberships, consultation, about)
+       ========================================================================== -->
+  <footer class="site-footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <span class="wordmark">I-DENTY</span>
+          <p>
+            The identity-led lifestyle ecosystem for women reinventing their next chapter with intentional presence, curated living, and peer sanctuary.
+          </p>
+        </div>
+
+        <div class="footer-col">
+          <h5>Content</h5>
+          <ul>
+            <li><a href="#free-entry" onclick="showToast('Demo only — opens The I-denty Journal')">The Journal</a></li>
+            <li><a href="#free-entry" onclick="showToast('Demo only — opens Reinvention Guide')">Reinvention Guide</a></li>
+            <li><a href="#free-entry" onclick="showToast('Demo only — opens Editorial Archives')">Editorial Archives</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Workshops</h5>
+          <ul>
+            <li><a href="#ecosystem" onclick="showToast('Demo only — opens Monthly Sessions schedule')">Monthly Sessions™</a></li>
+            <li><a href="#ecosystem" onclick="showToast('Demo only — opens Guest Masterclasses')">Guest Masterclasses</a></li>
+            <li><a href="#ecosystem" onclick="showToast('Demo only — opens Replay Vault')">Session Replays</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Memberships</h5>
+          <ul>
+            <li><a href="#memberships">The Collective</a></li>
+            <li><a href="#memberships">The Inner Circle</a></li>
+            <li><a href="#memberships">Private Member</a></li>
+          </ul>
+        </div>
+
+        <div class="footer-col">
+          <h5>Advisory & About</h5>
+          <ul>
+            <li><a href="#consultation">1:1 Consultation</a></li>
+            <li><a href="#hero" onclick="showToast('Demo only — displays Founder biography & awards')">About Eveliene</a></li>
+            <li><a href="javascript:void(0)" onclick="showToast('Demo only — Member portal login')">Member Portal</a></li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <div>
+          © 2026 I-DENTY. All Rights Reserved. Static Homepage Architecture Demo.
+        </div>
+        <div>
+          Identity Development • Curated Commerce • Community Sanctuary
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ==========================================================================
+       CENTRALIZED DATA CONFIG & LIGHTWEIGHT SCRIPTS
+       ========================================================================== -->
+  <script>
+    /**
+     * DATA_CONFIG: Single editable data object near the top of <script>
+     * All copy, tiers, pricing, and ecosystem steps can be modified here.
+     */
+    const DATA_CONFIG = {
+      brand: {
+        name: "I-DENTY",
+        positioning: "The identity-led lifestyle ecosystem for women reinventing their next chapter.",
+        founder: "Eveliene",
+        rateConsultation: "$500 / hr"
+      },
+
+      // 4-Stage Ecosystem Path (Static Progression)
+      ecosystemPath: [
+        {
+          step: "01",
+          level: "Discovery",
+          title: "Free Content",
+          description: "The I-denty Journal essays and complimentary Reinvention Calibration Guide providing self-audit frameworks.",
+          bridgeText: "➔ Leads to live workshop invitation"
+        },
+        {
+          step: "02",
+          level: "Low-Commitment",
+          title: "Workshops & Sessions",
+          description: "Live 90-minute digital salons with Founder Eveliene and visiting specialists in style, wealth, and presence.",
+          bridgeText: "➔ Guest credit toward membership"
+        },
+        {
+          step: "03",
+          level: "Commitment",
+          title: "Memberships",
+          description: "Three structured tiers (Collective, Inner Circle, Private Member) offering sustained growth and community sanctuary.",
+          bridgeText: "➔ Priority access to 1:1 advisory"
+        },
+        {
+          step: "04",
+          level: "High-Touch",
+          title: "1:1 Consultation",
+          description: "Bespoke strategic counsel with Eveliene ($500/hr) for complex executive transitions and lifestyle architecture.",
+          bridgeText: "➔ Highest executive intimacy"
+        }
+      ],
+
+      // Three Core Brand Pillars
+      pillars: [
+        {
+          num: "01",
+          title: "Identity Development",
+          role: "Foundational OS",
+          description: "The proprietary 4-pillar Reinvention Framework™ (Recalibrate, Redefine, Express, Expand) providing structured clarity through pivotal life transitions."
+        },
+        {
+          num: "02",
+          title: "Curated Commerce",
+          role: "Physical Expression",
+          description: "External presence harmonized with internal growth: capsule wardrobe architecture, aesthetic living edits, and vetted luxury partner privileges."
+        },
+        {
+          num: "03",
+          title: "Community",
+          role: "Peer Sanctuary",
+          description: "An ad-free, private digital and salon environment connecting high-capacity women who normalize bold evolution and high standards."
+        }
+      ],
+
+      // Membership Tiers Teaser Preview
+      tiers: [
+        {
+          id: "collective",
+          name: "The Collective",
+          tagline: "Foundational access & self-paced evolution",
+          price: "24",
+          period: "month",
+          features: [
+            "Full Reinvention Framework™ operating system",
+            "Complete I-denty Journal editorial archive",
+            "On-demand replays of Monthly Sessions",
+            "Private digital community access"
+          ],
+          cta: "Join The Collective"
+        },
+        {
+          id: "inner-circle",
+          name: "The Inner Circle",
+          badge: "Most Chosen",
+          isFeatured: true,
+          tagline: "Guided expansion & live founder integration",
+          price: "59",
+          period: "month",
+          features: [
+            "Everything in The Collective included",
+            "LIVE monthly sessions with Eveliene",
+            "Interactive Q&A and strategic coaching",
+            "Curated guest expert masterclasses",
+            "Priority RSVP for regional salons"
+          ],
+          cta: "Step Into Inner Circle"
+        },
+        {
+          id: "private-member",
+          name: "Private Member",
+          badge: "Limited Capacity",
+          tagline: "High-touch transformation & executive intimacy",
+          price: "149",
+          period: "month",
+          features: [
+            "Everything in The Inner Circle included",
+            "Intimate small-group cohorts (max 12)",
+            "Invitation-only retreats & dinners",
+            "Dedicated concierge support",
+            "Eligibility for 1:1 Founder Advisory"
+          ],
+          cta: "Request Private Access"
+        }
+      ]
+    };
+
+    // Render Dynamic Content from DATA_CONFIG
+    function populateStaticContent() {
+      // 1. Ecosystem Cards
+      const ecoContainer = document.getElementById('ecosystemGrid');
+      if (ecoContainer) {
+        ecoContainer.innerHTML = DATA_CONFIG.ecosystemPath.map(item => `
+          <div class="ecosystem-card">
+            <div>
+              <div class="ecosystem-card-header">
+                <span class="ecosystem-step-badge">${item.step}</span>
+                <span class="ecosystem-level-tag">${item.level}</span>
+              </div>
+              <h3>${item.title}</h3>
+              <p>${item.description}</p>
+            </div>
+            <div class="ecosystem-bridge-indicator">${item.bridgeText}</div>
+          </div>
+        `).join('');
+      }
+
+      // 2. Pillars Cards
+      const pillarsContainer = document.getElementById('pillarsGrid');
+      if (pillarsContainer) {
+        pillarsContainer.innerHTML = DATA_CONFIG.pillars.map(item => `
+          <div class="pillar-card">
+            <div class="pillar-num">${item.num}</div>
+            <h3>${item.title}</h3>
+            <div class="pillar-role">${item.role}</div>
+            <p>${item.description}</p>
+          </div>
+        `).join('');
+      }
+
+      // 3. Membership Tiers Cards
+      const tiersContainer = document.getElementById('tiersGrid');
+      if (tiersContainer) {
+        tiersContainer.innerHTML = DATA_CONFIG.tiers.map(tier => `
+          <div class="tier-card ${tier.isFeatured ? 'featured' : ''}">
+            ${tier.badge ? `<div class="tier-card-badge">${tier.badge}</div>` : ''}
+            <div>
+              <h3>${tier.name}</h3>
+              <div class="tier-tagline">${tier.tagline}</div>
+              
+              <div class="tier-price-box">
+                <div class="tier-price-val">
+                  <span class="currency">$</span>${tier.price}
+                  <span class="period">/${tier.period}</span>
+                </div>
+              </div>
+
+              <ul class="tier-features">
+                ${tier.features.map(f => `<li>${f}</li>`).join('')}
+              </ul>
+            </div>
+
+            <button type="button" class="btn ${tier.isFeatured ? 'btn-primary' : 'btn-secondary'}" style="width: 100%;" onclick="showToast('Demo only — ${tier.name} enrollment checkout')">
+              ${tier.cta}
+            </button>
+          </div>
+        `).join('');
+      }
+    }
+
+    // Toast Notification System
+    function showToast(message) {
+      const container = document.getElementById('toastContainer');
+      const toast = document.createElement('div');
+      toast.className = 'toast-message';
+      toast.innerHTML = `
+        <span style="color: #aa8c42;">●</span>
+        <span>${message}</span>
+      `;
+      container.appendChild(toast);
+
+      setTimeout(() => {
+        toast.style.opacity = '0';
+        toast.style.transform = 'translateY(10px)';
+        toast.style.transition = 'all 0.3s ease';
+        setTimeout(() => toast.remove(), 300);
+      }, 3500);
+    }
+
+    // Lead Form Handler
+    function handleLeadSubmit(e) {
+      e.preventDefault();
+      showToast('Demo only — Guide dispatched! Check email inbox for download link');
+      e.target.reset();
+    }
+
+    // Loader Animation & Entrance Choreography
+    function initLoaderAnimation() {
+      const loader = document.getElementById('pageLoader');
+      const wordmark = document.getElementById('loaderWordmark');
+      const subtitle = document.getElementById('loaderSubtitle');
+      const lineFill = document.getElementById('loaderLineFill');
+      const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      // Skip choreography if user prefers reduced motion
+      if (prefersReduced) {
+        if (loader) loader.style.display = 'none';
+        triggerSectionObserver();
+        return;
+      }
+
+      // Check if GSAP is available
+      if (typeof gsap !== 'undefined') {
+        const tl = gsap.timeline({
+          onComplete: () => {
+            // Fade out loader smoothly and reveal hero
+            gsap.to(loader, {
+              opacity: 0,
+              scale: 1.02,
+              duration: 0.5,
+              ease: 'power2.inOut',
+              onComplete: () => {
+                loader.style.display = 'none';
+                triggerSectionObserver();
+              }
+            });
+          }
+        });
+
+        // 1. Wordmark fades and tracks in (letter-spacing animates tight to wide)
+        tl.fromTo(wordmark, 
+          { opacity: 0, letterSpacing: '0.04em' }, 
+          { opacity: 1, letterSpacing: '0.24em', duration: 0.75, ease: 'power2.out' }
+        )
+        // 2. Subtitle fades in
+        .to(subtitle, { opacity: 1, duration: 0.35, ease: 'power1.out' }, '-=0.3')
+        // 3. Thin gold line draws left-to-right beneath
+        .to(lineFill, { width: '100%', duration: 0.65, ease: 'power2.inOut' }, '-=0.25')
+        // Brief pause to meet the ~1.2s minimum threshold
+        .to({}, { duration: 0.2 });
+
+      } else {
+        // Fallback without GSAP
+        setTimeout(() => {
+          loader.style.opacity = '0';
+          loader.style.transition = 'opacity 0.4s ease';
+          setTimeout(() => {
+            loader.style.display = 'none';
+            triggerSectionObserver();
+          }, 400);
+        }, 1200);
+      }
+    }
+
+    // Scroll-based Section Transitions (IntersectionObserver, triggered ONCE)
+    function triggerSectionObserver() {
+      const sections = document.querySelectorAll('.reveal-section');
+      
+      const observer = new IntersectionObserver((entries, obs) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-revealed');
+            obs.unobserve(entry.target); // Triggered once only
+          }
+        });
+      }, {
+        threshold: 0.15,
+        rootMargin: '0px 0px -40px 0px'
+      });
+
+      sections.forEach(sec => observer.observe(sec));
+    }
+
+    // DOM Ready Initialization
+    document.addEventListener('DOMContentLoaded', () => {
+      populateStaticContent();
+      
+      // Ensure fonts are ready before releasing loader
+      if (document.fonts && document.fonts.ready) {
+        document.fonts.ready.then(() => {
+          initLoaderAnimation();
+        });
+      } else {
+        initLoaderAnimation();
+      }
+    });
+  </script>
+</body>
+</html>

@@ -1,43 +1,11 @@
 /* ==========================================================================
-   MARKET GAP — premium 3D editorial section (CSS 3D, no WebGL)
-   Depth system: section light -> header -> 2x2 card stage -> banner.
-   Entrance: single .is-in class (IntersectionObserver) + per-item --ed delay.
-   Motion uses transform/translate/opacity only. No layout shift.
+   MARKET GAP — Membership V3 style cards (light, clean, dimensional)
    ========================================================================== */
 
 .mg {
   position: relative;
   overflow: hidden;
   background-color: var(--color-bg-body);
-  background-image:
-    radial-gradient(58% 42% at 50% 0%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 70%),
-    radial-gradient(40% 30% at 50% 22%, rgba(133, 112, 47, 0.1) 0%, rgba(133, 112, 47, 0) 70%);
-  isolation: isolate;
-}
-
-/* Faint editorial ring decor */
-.mg::before,
-.mg::after {
-  content: '';
-  position: absolute;
-  border-radius: 50%;
-  border: 1px solid rgba(133, 112, 47, 0.16);
-  pointer-events: none;
-  z-index: 0;
-}
-
-.mg::before {
-  width: min(88vmin, 760px);
-  height: min(88vmin, 760px);
-  left: -30vmin;
-  top: -24vmin;
-}
-
-.mg::after {
-  width: min(70vmin, 600px);
-  height: min(70vmin, 600px);
-  right: -24vmin;
-  bottom: -20vmin;
 }
 
 .mg-inner {
@@ -45,29 +13,14 @@
   z-index: 1;
 }
 
-/* ---------- Staged entrance (opacity + translate property; tilt uses transform) ---------- */
-.mg-rise {
-  opacity: 0;
-  translate: 0 26px;
-}
-
-.mg.is-in .mg-rise {
-  opacity: 1;
-  translate: 0 0;
-  transition:
-    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s),
-    translate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s);
-}
-
-/* ---------- 2x2 3D card stage ---------- */
+/* ---------- 2x2 card grid ---------- */
 .mg-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: clamp(1.25rem, 3vw, 2rem);
   max-width: 1060px;
-  margin: 0 auto var(--section-block-gap);
+  margin: 0 auto clamp(2.5rem, 5vw, 3.5rem);
   perspective: 1400px;
-  perspective-origin: 50% 30%;
 }
 
 .mg-card {
@@ -207,6 +160,7 @@
   font-size: 1.28rem;
   margin-bottom: 0.4rem;
   color: var(--color-text-main);
+  font-family: var(--font-brand);
 }
 
 .mg-kicker {

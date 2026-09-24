@@ -78,7 +78,7 @@ const GapIcon: React.FC<{ item: MarketGapItem }> = ({ item }) => {
 /** One 3D tilt card — pointer-tracked, rAF-lerped, transform-only. */
 const GapCard: React.FC<{ item: MarketGapItem; index: number }> = ({ item, index }) => {
   const ref = useRef<HTMLDivElement>(null);
-  const raf = useRef(0);
+  const raf = useRef<number>(0);
   const motion = useRef({ rx: 0, ry: 0, trx: 0, try_: 0, active: false });
 
   useEffect(() => {

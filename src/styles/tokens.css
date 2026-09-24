@@ -1,6 +1,6 @@
-/* I-DENTY DESIGN TOKENS - Matched to Reference Design */
+/* I-DENTY DESIGN TOKENS - Matched to Membership V3 Design System */
 :root {
-  /* Color Scheme - Reference Design */
+  /* Color Scheme - Membership V3 Design System */
   --paper: #fdfcf9;
   --wash: #f6f2e8;
   --surface: #ffffff;
@@ -78,7 +78,7 @@
   --z-toast: 60;
   --z-prog: 70;
 
-  /* Homepage vertical rhythm — single source of truth for section spacing */
+  /* Homepage vertical rhythm */
   --section-pad-y: clamp(3.5rem, 6vw, 5.5rem);
   --section-pad-y-tablet: clamp(3rem, 6vw, 4.25rem);
   --section-pad-y-mobile: clamp(2.5rem, 8vw, 3.5rem);
