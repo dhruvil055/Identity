@@ -50,6 +50,8 @@ export const TheShift: React.FC = () => {
           muted
           loop
           playsInline
+          preload="metadata"
+          aria-hidden="true"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         >
           <source src={BRAND_CONFIG.shiftVideoUrl} type="video/mp4" />
@@ -87,10 +89,10 @@ export const TheShift: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))',
             gap: '2.5rem',
             maxWidth: '1040px',
-            margin: '0 auto 4rem auto',
+            margin: '0 auto 3rem auto',
             transformStyle: 'preserve-3d'
           }}
         >
@@ -208,7 +210,7 @@ export const TheShift: React.FC = () => {
                       transition: `opacity 0.5s ease ${0.55 + index * 0.08}s`,
                     }}
                   >
-                    <Check size={18} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '2px' }} />
+                    <Check size={18} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '2px' }} aria-hidden="true" />
                     <span>{point}</span>
                   </li>
                 ))}

@@ -1,0 +1,99 @@
+/* ==========================================================================
+   HOME LOADER — premium, short, non-blocking homepage loading experience.
+   Logo reveal + thin gold progress line + gentle fade. Overlay only:
+   page content renders underneath and is never blocked.
+   ========================================================================== */
+
+.home-loader {
+  position: fixed;
+  inset: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-body);
+  opacity: 1;
+  transition: opacity 0.45s ease;
+}
+
+.home-loader.is-done {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.home-loader-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.1rem;
+  padding: 2rem;
+  text-align: center;
+}
+
+.home-loader-word {
+  font-family: var(--font-serif);
+  font-size: clamp(1.9rem, 5vw, 2.6rem);
+  letter-spacing: 0.32em;
+  text-indent: 0.32em;
+  color: var(--color-text-main);
+  font-weight: 400;
+  opacity: 0;
+  animation: home-loader-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.05s forwards;
+}
+
+.home-loader-tag {
+  font-size: 0.68rem;
+  letter-spacing: 0.24em;
+  text-indent: 0.24em;
+  text-transform: uppercase;
+  color: var(--color-brand-gold-dark);
+  font-weight: 500;
+  opacity: 0;
+  animation: home-loader-rise 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) 0.18s forwards;
+}
+
+.home-loader-line {
+  position: relative;
+  width: min(220px, 52vw);
+  height: 2px;
+  border-radius: 2px;
+  background: var(--color-border-light);
+  overflow: hidden;
+}
+
+.home-loader-line::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  width: 40%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, var(--color-brand-gold-hover), var(--color-brand-gold));
+  animation: home-loader-slide 0.9s cubic-bezier(0.45, 0, 0.2, 1) infinite;
+}
+
+@keyframes home-loader-rise {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes home-loader-slide {
+  0% { left: -40%; }
+  100% { left: 100%; }
+}
+
+/* Reduced motion: static brand mark, near-instant fade */
+@media (prefers-reduced-motion: reduce) {
+  .home-loader-word,
+  .home-loader-tag {
+    animation: none;
+    opacity: 1;
+  }
+  .home-loader-line::after {
+    animation: none;
+    width: 100%;
+    left: 0;
+  }
+  .home-loader {
+    transition-duration: 0.01ms;
+  }
+}

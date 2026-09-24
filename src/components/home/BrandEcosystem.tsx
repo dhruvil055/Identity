@@ -38,10 +38,10 @@ export const BrandEcosystem: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-            gap: 'clamp(2.5rem, 5vw, 4.5rem)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(320px, 100%), 1fr))',
+            gap: 'clamp(2rem, 4vw, 3.5rem)',
             alignItems: 'center',
-            marginBottom: '4.5rem',
+            marginBottom: 'var(--section-block-gap)',
           }}
         >
           {/* Left: Graphic Asset — slides from left */}
@@ -50,7 +50,8 @@ export const BrandEcosystem: React.FC = () => {
               borderRadius: 'var(--radius-md)',
               overflow: 'hidden',
               boxShadow: 'var(--shadow-card)',
-              backgroundColor: '#ffffff',
+              backgroundColor: 'var(--color-bg-sand)',
+              aspectRatio: '4 / 3',
               border: '1px solid var(--color-border-light)',
               opacity: inView ? 1 : 0,
               transform: inView ? 'translateX(0)' : 'translateX(-30px)',
@@ -59,9 +60,10 @@ export const BrandEcosystem: React.FC = () => {
           >
             <img
               src="https://i-denty.com/wp-content/themes/i-denty/assets/images/Group%203255.png"
-              alt="The Brand Ecosystem"
+              alt="Collage of I-denty brand ecosystem partners and curated lifestyle imagery"
               loading="lazy"
-              style={{ width: '100%', height: 'auto', display: 'block' }}
+              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
+              onLoad={(e) => e.currentTarget.classList.add('loaded')}
               onError={(e) => {
                 e.currentTarget.src =
                   'https://images.unsplash.com/photo-1441986300917-64674bd600d8?q=80&w=800&auto=format&fit=crop';
@@ -101,7 +103,7 @@ export const BrandEcosystem: React.FC = () => {
                     transition: `opacity 0.5s ease ${0.5 + i * 0.1}s, transform 0.5s ease ${0.5 + i * 0.1}s`,
                   }}
                 >
-                  <span style={{ color: 'var(--color-brand-gold)', fontWeight: 700 }}>◈</span>
+                  <span style={{ color: 'var(--color-brand-gold)', fontWeight: 700 }} aria-hidden="true">◈</span>
                   <span>{pillar}</span>
                 </li>
               ))}

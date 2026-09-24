@@ -200,6 +200,12 @@ export const PathFinderWizard: React.FC = () => {
             </div>
 
             <div
+              role="progressbar"
+              aria-label="Assessment progress"
+              aria-valuemin={0}
+              aria-valuemax={QUESTIONS.length}
+              aria-valuenow={currentStep + 1}
+              aria-valuetext={`Question ${currentStep + 1} of ${QUESTIONS.length}`}
               style={{
                 height: '4px',
                 width: '100%',
@@ -236,7 +242,7 @@ export const PathFinderWizard: React.FC = () => {
           </p>
 
           {/* Options */}
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '2rem' }}>
+          <div role="radiogroup" aria-label={QUESTIONS[currentStep].question} style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem', marginBottom: '2rem' }}>
             {QUESTIONS[currentStep].options.map((option, idx) => {
               const isSelected = answers[currentStep] === idx;
               return (
@@ -244,6 +250,8 @@ export const PathFinderWizard: React.FC = () => {
                   key={idx}
                   onClick={() => handleSelectOption(idx)}
                   className="card-editorial"
+                  role="radio"
+                  aria-checked={isSelected}
                   style={{
                     display: 'flex',
                     alignItems: 'flex-start',
@@ -397,7 +405,7 @@ export const PathFinderWizard: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.4rem' }}>
-                  <BookOpen size={13} color="var(--color-brand-gold)" />
+                  <BookOpen size={13} color="var(--color-brand-gold)" aria-hidden="true" />
                   <span>Recommended Reading</span>
                 </div>
                 <h5 style={{ fontSize: '0.98rem', fontWeight: 600, color: 'var(--color-text-main)', marginBottom: '0.35rem' }}>
@@ -408,7 +416,7 @@ export const PathFinderWizard: React.FC = () => {
                   style={{ fontSize: '0.82rem', color: 'var(--color-brand-gold-dark)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
                 >
                   <span>Read Essay ({recommendedArticle.readTime})</span>
-                  <ArrowRight size={12} />
+                  <ArrowRight size={12} aria-hidden="true" />
                 </a>
               </div>
 
@@ -422,7 +430,7 @@ export const PathFinderWizard: React.FC = () => {
                 }}
               >
                 <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', fontSize: '0.72rem', textTransform: 'uppercase', letterSpacing: '0.1em', fontWeight: 600, color: 'var(--color-text-muted)', marginBottom: '0.4rem' }}>
-                  <Calendar size={13} color="var(--color-brand-gold)" />
+                  <Calendar size={13} color="var(--color-brand-gold)" aria-hidden="true" />
                   <span>Upcoming Relevant Session</span>
                 </div>
                 <h5 style={{ fontSize: '0.98rem', fontWeight: 600, color: 'var(--color-text-main)', marginBottom: '0.35rem' }}>
@@ -433,7 +441,7 @@ export const PathFinderWizard: React.FC = () => {
                   style={{ fontSize: '0.82rem', color: 'var(--color-brand-gold-dark)', fontWeight: 600, display: 'inline-flex', alignItems: 'center', gap: '0.3rem' }}
                 >
                   <span>View Details &amp; RSVP</span>
-                  <ArrowRight size={12} />
+                  <ArrowRight size={12} aria-hidden="true" />
                 </a>
               </div>
             </div>
@@ -461,7 +469,7 @@ export const PathFinderWizard: React.FC = () => {
                 fontWeight: 500,
               }}
             >
-              <RotateCcw size={14} />
+              <RotateCcw size={14} aria-hidden="true" />
               <span>Retake Assessment</span>
             </button>
 

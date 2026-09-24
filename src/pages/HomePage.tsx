@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { HomeHero } from '../components/home/HomeHero';
+import { HomeLoader } from '../components/home/HomeLoader';
 import { WhatIsIdenty } from '../components/home/WhatIsIdenty';
 import { EcosystemMap } from '../components/home/EcosystemMap';
 import { MarketGap } from '../components/home/MarketGap';
@@ -19,10 +20,52 @@ import { Footer } from '../components/home/Footer';
 
 export const HomePage: React.FC = () => {
   const [mounted, setMounted] = useState(false);
+  const [loading, setLoading] = useState(true);
+  const [loaderDone, setLoaderDone] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  // Premium homepage loader: minimum 500ms for brand polish,
+  // hard cap ~1200ms, skipped fast when the page is already complete.
+  // Reduced-motion users get a near-instant fade.
+  useEffect(() => {
+    if (!mounted) return;
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const minMs = reduced ? 150 : 500;
+    const maxMs = reduced ? 400 : 1200;
+    const start = performance.now();
+    let finished = false;
+
+    const finish = () => {
+      if (finished) return;
+      finished = true;
+      const elapsed = performance.now() - start;
+      const wait = Math.max(0, minMs - elapsed);
+      window.setTimeout(() => {
+        setLoaderDone(true);
+        // Remove overlay after fade; restore scroll in case it was locked.
+        window.setTimeout(() => {
+          setLoading(false);
+          document.body.style.overflow = '';
+        }, reduced ? 10 : 480);
+      }, wait);
+    };
+
+    document.body.style.overflow = 'hidden';
+    if (document.readyState === 'complete') {
+      finish();
+    } else {
+      window.addEventListener('load', finish);
+    }
+    const cap = window.setTimeout(finish, maxMs);
+    return () => {
+      window.removeEventListener('load', finish);
+      window.clearTimeout(cap);
+      document.body.style.overflow = '';
+    };
+  }, [mounted]);
 
   if (!mounted) {
     return <div style={{ minHeight: '100vh', background: 'var(--color-bg-body)' }} />;
@@ -30,6 +73,7 @@ export const HomePage: React.FC = () => {
 
   return (
     <>
+      {loading && <HomeLoader done={loaderDone} />}
       <main id="primary" className="site-main front-page">
         {/* 1. Premium immersive 3D hero */}
         <HomeHero />

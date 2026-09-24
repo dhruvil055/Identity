@@ -15,8 +15,8 @@ export const CommunityBanner: React.FC = () => {
         backgroundColor: '#121417',
         color: '#ffffff',
         overflow: 'hidden',
-        paddingTop: 'clamp(5rem, 8vw, 8rem)',
-        paddingBottom: 'clamp(5rem, 8vw, 8rem)',
+        paddingTop: 'var(--section-pad-y)',
+        paddingBottom: 'var(--section-pad-y)',
         textAlign: 'center',
         perspective: '1200px'
       }}
@@ -36,6 +36,8 @@ export const CommunityBanner: React.FC = () => {
           muted
           loop
           playsInline
+          preload="metadata"
+          aria-hidden="true"
           style={{ width: '100%', height: '100%', objectFit: 'cover' }}
         >
           <source src={BRAND_CONFIG.communityVideoUrl} type="video/mp4" />

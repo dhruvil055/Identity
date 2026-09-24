@@ -27,7 +27,7 @@ export const FrameworkTeaser: React.FC = () => {
               display: flex;
               flex-direction: row;
               gap: 0.5rem;
-              height: 600px;
+              height: clamp(480px, 62vh, 600px);
               width: 100%;
               overflow: hidden;
             }
@@ -45,7 +45,8 @@ export const FrameworkTeaser: React.FC = () => {
             @media (max-width: 900px) {
               .framework-accordion {
                 flex-direction: column;
-                height: 800px;
+                height: auto;
+                min-height: 560px;
               }
               .framework-card-content {
                 flex-direction: column;
@@ -132,15 +133,19 @@ export const FrameworkTeaser: React.FC = () => {
                         className="framework-card-content"
                       >
                         {/* Left Side: Image */}
-                        <div className="framework-card-image">
+                        <div className="framework-card-image" style={{ backgroundColor: 'var(--color-bg-sand)' }}>
                           <img
                             src={stage.imageSrc}
                             alt={stage.title}
+                            loading="lazy"
                             style={{
                               width: '100%',
                               height: '100%',
                               objectFit: 'cover',
                               display: 'block',
+                            }}
+                            onError={(e) => {
+                              e.currentTarget.style.display = 'none';
                             }}
                           />
                           <div
@@ -216,7 +221,7 @@ export const FrameworkTeaser: React.FC = () => {
                             <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
                               {stage.learningOutcomes.map((outcome, idx) => (
                                 <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem', fontSize: '0.94rem' }}>
-                                  <CheckCircle2 size={17} color="var(--color-brand-gold)" style={{ marginTop: '2px', flexShrink: 0 }} />
+                                  <CheckCircle2 size={17} color="var(--color-brand-gold)" style={{ marginTop: '2px', flexShrink: 0 }} aria-hidden="true" />
                                   <span style={{ color: 'var(--color-text-main)' }}>{outcome}</span>
                                 </li>
                               ))}
@@ -228,6 +233,7 @@ export const FrameworkTeaser: React.FC = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: 0.5 }}
                             style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem', marginTop: 'auto' }}
+                            onClick={(e) => e.stopPropagation()}
                           >
                             <Button variant="primary" href="/framework" withArrow>
                               Explore The Complete Framework

@@ -84,6 +84,7 @@ export const PathFinderCTA: React.FC = () => {
           pointerEvents: 'none',
           fontFamily: 'var(--font-brand)',
         }}
+        aria-hidden="true"
       >
         \u25C8
       </motion.div>
@@ -98,10 +99,11 @@ export const PathFinderCTA: React.FC = () => {
           left: '-5%',
           fontSize: '40rem',
           fontWeight: 900,
-          color: '#8b5cf6',
+          color: 'var(--color-brand-gold)',
           zIndex: 0,
           pointerEvents: 'none',
         }}
+        aria-hidden="true"
       >
         \u25CF
       </motion.div>
@@ -127,9 +129,9 @@ export const PathFinderCTA: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(3, 1fr)',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(240px, 100%), 1fr))',
             gap: '1.5rem',
-            marginBottom: '4rem',
+            marginBottom: 'var(--section-block-gap)',
             maxWidth: '1000px',
             marginLeft: 'auto',
             marginRight: 'auto',
@@ -156,14 +158,13 @@ export const PathFinderCTA: React.FC = () => {
                   alignItems: 'center',
                   textAlign: 'center',
                   height: '100%',
-                  minHeight: '220px',
                   position: 'relative',
                   overflow: 'hidden',
                 }}
               >
                 <motion.div
                   initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
+                  animate={inView ? { opacity: 1, scale: 1 } : {}}
                   transition={{ delay: 0.4 + index * 0.1, type: 'spring', stiffness: 100, damping: 15 }}
                   style={{
                     width: '64px',
@@ -239,6 +240,9 @@ export const PathFinderCTA: React.FC = () => {
           </div>
 
           <div
+            role="region"
+            aria-label="Membership tier previews — scroll horizontally to explore"
+            tabIndex={0}
             style={{
               display: 'flex',
               gap: '1.5rem',
@@ -255,7 +259,7 @@ export const PathFinderCTA: React.FC = () => {
               <motion.div
                 key={preview.tier.id}
                 initial={{ opacity: 0, x: 40 }}
-                animate={{ opacity: 1, x: 0 }}
+                animate={inView ? { opacity: 1, x: 0 } : {}}
                 transition={{ delay: 0.7 + index * 0.1, type: 'spring', stiffness: 100, damping: 20 }}
                 style={{
                   scrollSnapAlign: 'center',
@@ -398,8 +402,8 @@ export const PathFinderCTA: React.FC = () => {
         <motion.div
           initial={{ opacity: 0, y: 30 }}
           animate={inView ? { opacity: 1, y: 0 } : {}}
-          transition={{ delay: 1, type: 'spring', stiffness: 80, damping: 20 }}
-          style={{ textAlign: 'center', marginTop: '3rem', paddingTop: '2rem', borderTop: '1px solid var(--color-border-light)' }}
+          transition={{ delay: 0.6, type: 'spring', stiffness: 80, damping: 20 }}
+          style={{ textAlign: 'center', marginTop: 'var(--section-block-gap)', paddingTop: '2rem', borderTop: '1px solid var(--color-border-light)' }}
         >
           <div style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem', color: 'var(--color-brand-gold-dark)', fontSize: '0.78rem', textTransform: 'uppercase', letterSpacing: '0.14em', fontWeight: 600, marginBottom: '1.5rem' }}>
             <Compass size={14} />

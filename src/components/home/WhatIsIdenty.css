@@ -1,0 +1,62 @@
+/* ==========================================================================
+   WHAT IS I-DENTY — entrance reveal driven by .is-in (IntersectionObserver
+   + guaranteed fallback), NOT by JS animation state. Content can never be
+   stuck invisible: worst case it appears without motion.
+   ========================================================================== */
+
+.wi-rise {
+  opacity: 0;
+  translate: 0 28px;
+}
+
+.is-in .wi-rise {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s),
+    translate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s);
+}
+
+.wi-letter {
+  position: absolute;
+  top: -10%;
+  right: -5%;
+  font-size: 40rem;
+  font-weight: 900;
+  color: var(--color-brand-gold);
+  opacity: 0;
+  z-index: 0;
+  pointer-events: none;
+  user-select: none;
+}
+
+.is-in .wi-letter {
+  opacity: 0.05;
+  transition: opacity 1.5s ease var(--ed, 0s);
+}
+
+.wi-img {
+  transition: transform 0.8s ease;
+}
+
+.wi-img:hover {
+  transform: scale(1.05);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .wi-rise,
+  .is-in .wi-rise {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+  .is-in .wi-letter {
+    opacity: 0.05;
+    transition: none;
+  }
+  .wi-img,
+  .wi-img:hover {
+    transform: none;
+    transition: none;
+  }
+}

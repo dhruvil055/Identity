@@ -47,7 +47,7 @@ export const ValuePropCards: React.FC = () => {
         <div
           style={{
             display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(340px, 1fr))',
+            gridTemplateColumns: 'repeat(auto-fit, minmax(min(340px, 100%), 1fr))',
             gap: '2rem',
             maxWidth: '1100px',
             margin: '0 auto',
@@ -83,7 +83,7 @@ export const ValuePropCards: React.FC = () => {
                     marginBottom: '0.6rem',
                   }}
                 >
-                  <Sparkles size={14} />
+                  <Sparkles size={14} aria-hidden="true" />
                   <span>Comprehensive Living Ecosystem</span>
                 </div>
 
@@ -109,7 +109,7 @@ export const ValuePropCards: React.FC = () => {
                         transition: `opacity 0.45s ease ${0.3 + index * 0.08}s, transform 0.45s ease ${0.3 + index * 0.08}s`,
                       }}
                     >
-                      <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                      <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
                       <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
                     </li>
                   ))}
@@ -194,7 +194,7 @@ export const ValuePropCards: React.FC = () => {
                     marginBottom: '0.6rem',
                   }}
                 >
-                  <Calendar size={14} />
+                  <Calendar size={14} aria-hidden="true" />
                   <span>Signature Live Ritual</span>
                 </div>
 
@@ -220,7 +220,7 @@ export const ValuePropCards: React.FC = () => {
                         transition: `opacity 0.45s ease ${0.45 + index * 0.1}s, transform 0.45s ease ${0.45 + index * 0.1}s`,
                       }}
                     >
-                      <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                      <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} aria-hidden="true" />
                       <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
                     </li>
                   ))}

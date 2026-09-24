@@ -3,6 +3,7 @@ import { Button } from '../common/Button';
 import { Sparkles, Layers, Shield, HeartHandshake, Check } from 'lucide-react';
 import { useInView } from '../../hooks/useInView';
 import { motion, AnimatePresence } from 'framer-motion';
+import './WhatIsIdenty.css';
 
 export const WhatIsIdenty: React.FC = () => {
   const [activeTab, setActiveTab] = useState<'integrated' | 'comparison'>('integrated');
@@ -34,21 +35,16 @@ export const WhatIsIdenty: React.FC = () => {
   return (
     <section
       ref={sectionRef}
-      className="section-padding"
+      className={`section-padding${inView ? ' is-in' : ''}`}
       aria-label="What Is I-denty"
       style={{ backgroundColor: 'var(--color-bg-sand)', overflow: 'hidden' }}
     >
       <div className="identy-container" style={{ position: 'relative', display: 'flex', alignItems: 'center', paddingTop: '1rem', paddingBottom: '1rem' }}>
         
         {/* Deep Background 3D Elements */}
-        <motion.div 
-          initial={{ opacity: 0, scale: 0.8 }}
-          animate={inView ? { opacity: 0.05, scale: 1 } : {}}
-          transition={{ duration: 1.5, ease: "easeOut" }}
-          style={{ position: 'absolute', top: '-10%', right: '-5%', fontSize: '40rem', fontWeight: 900, color: 'var(--color-brand-gold)', zIndex: 0, pointerEvents: 'none' }}
-        >
+        <div className="wi-letter" style={{ ['--ed' as string]: '0s' }} aria-hidden="true">
           I
-        </motion.div>
+        </div>
 
         {/* Spatial Grid Layout */}
         <div
@@ -63,16 +59,15 @@ export const WhatIsIdenty: React.FC = () => {
           }}
         >
           {/* Back Layer: Editorial Image */}
-          <motion.div
-            initial={{ opacity: 0, x: -100, rotateY: 15 }}
-            animate={inView ? { opacity: 1, x: 0, rotateY: 0 } : {}}
-            transition={{ type: "spring", stiffness: 60, damping: 25 }}
+          <div
+            className="wi-rise"
             style={{
+              ['--ed' as string]: '0.1s',
               position: 'relative',
               width: '100%',
               maxWidth: '650px',
               zIndex: 1,
-              perspective: '1200px'
+              perspective: '1200px',
             }}
           >
             <div
@@ -84,20 +79,22 @@ export const WhatIsIdenty: React.FC = () => {
                 transform: 'translateZ(0)'
               }}
             >
-              <motion.img
+              <img
+                className="wi-img"
                 src="https://i-denty.com/wp-content/themes/i-denty/assets/images/identy-brand.png"
                 alt="What Is I-denty?"
                 loading="lazy"
-                whileHover={{ scale: 1.05 }}
-                transition={{ duration: 0.8, ease: "easeOut" }}
                 style={{
                   width: '100%',
                   height: 'auto',
                   display: 'block',
                 }}
+                onError={(e) => {
+                  e.currentTarget.style.display = 'none';
+                }}
               />
             </div>
-          </motion.div>
+          </div>
 
           <style>{`
             .what-is-overlap {
@@ -113,12 +110,10 @@ export const WhatIsIdenty: React.FC = () => {
           `}</style>
 
           {/* Front Layer: Glassmorphism Content overlapping the image */}
-          <motion.div
-            initial={{ opacity: 0, x: 100, y: 50 }}
-            animate={inView ? { opacity: 1, x: 0, y: 0 } : {}}
-            transition={{ type: "spring", stiffness: 70, damping: 20, delay: 0.2 }}
-            className="glass-panel what-is-overlap"
+          <div
+            className="glass-panel what-is-overlap wi-rise"
             style={{
+              ['--ed' as string]: '0.25s',
               width: '100%',
               maxWidth: '600px',
               zIndex: 3,
@@ -285,7 +280,7 @@ export const WhatIsIdenty: React.FC = () => {
                 Explore The I-denty Approach
               </Button>
             </div>
-          </motion.div>
+          </div>
         </div>
       </div>
     </section>
