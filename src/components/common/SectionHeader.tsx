@@ -28,7 +28,7 @@ export const SectionHeader: React.FC<SectionHeaderProps> = ({
     <div
       className={`section-header ${isCentered ? 'text-center' : ''} ${className}`}
       style={{
-        marginBottom: 'clamp(2.2rem, 5vw, 3.8rem)',
+        marginBottom: 'var(--section-head-gap)',
         textAlign: textAlign,
         maxWidth: isCentered ? '780px' : '900px',
         marginLeft: isCentered ? 'auto' : '0',

@@ -1,15 +1,17 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { Search, User, Menu, ChevronDown, Compass } from 'lucide-react';
 import { BRAND_CONFIG } from '../../data/brandData';
 import { SearchModal } from './SearchModal';
 import { MobileDrawer } from './MobileDrawer';
+import './Header.css';
 
 export const Header: React.FC = () => {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isMobileOpen, setIsMobileOpen] = useState(false);
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
+  const navRef = useRef<HTMLElement>(null);
   const location = useLocation();
 
   useEffect(() => {
@@ -32,6 +34,26 @@ export const Header: React.FC = () => {
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, []);
 
+  // Close dropdown on Escape or click-outside (preserves hover + keyboard toggle)
+  useEffect(() => {
+    if (!activeDropdown) return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setActiveDropdown(null);
+    };
+    const handlePointerDown = (e: PointerEvent) => {
+      if (navRef.current && !navRef.current.contains(e.target as Node)) {
+        setActiveDropdown(null);
+      }
+    };
+    document.addEventListener('keydown', handleKeyDown);
+    document.addEventListener('pointerdown', handlePointerDown);
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+      document.removeEventListener('pointerdown', handlePointerDown);
+    };
+  }, [activeDropdown]);
+
+  // Existing navigation structure — unchanged routes and labels
   const navLinks = [
     { label: 'Home', href: '/' },
     {
@@ -72,145 +94,73 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <header
-        className={`site-header-wrapper ${isScrolled ? 'is-sticky' : ''}`}
-        style={{
-          position: 'sticky',
-          top: 0,
-          zIndex: 1000,
-          width: '100%',
-          backgroundColor: '#ffffff',
-          transition: 'all 0.3s ease',
-          boxShadow: isScrolled ? '0 2px 20px rgba(0, 0, 0, 0.05)' : 'none',
-          borderBottom: '1px solid var(--color-border-light)',
-        }}
-      >
-        {/* Top Branding Slogan Bar */}
-        <div
-          style={{
-            backgroundColor: 'var(--color-bg-sand)',
-            borderBottom: '1px solid var(--color-border-light)',
-            padding: '0.42rem 1.5rem',
-            textAlign: 'center',
-            fontSize: '0.76rem',
-            letterSpacing: '0.14em',
-            textTransform: 'uppercase',
-            color: 'var(--color-text-main)',
-            fontWeight: 500,
-          }}
-        >
+      <header className={`lux-header ${isScrolled ? 'is-scrolled' : ''}`}>
+        {/* Gold announcement / tagline strip */}
+        <div className="lux-strip">
           <span>{BRAND_CONFIG.tagline}</span>
         </div>
 
         {/* Main Header Bar */}
         <div className="identy-container identy-container-wide">
-          <div
-            style={{
-              display: 'flex',
-              alignItems: 'center',
-              justifyContent: 'space-between',
-              height: '74px',
-            }}
-          >
-            {/* Logo */}
-            <Link
-              to="/"
-              aria-label="I-denty Home"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                textDecoration: 'none',
-                height: '42px',
-              }}
-            >
-              <img
-                src={BRAND_CONFIG.logoUrl}
-                alt="I-denty Logo"
-                style={{
-                  height: '38px',
-                  width: 'auto',
-                  objectFit: 'contain',
-                }}
-              />
+          <div className="lux-bar">
+            {/* Logo — same brand asset, subtle 3D treatment */}
+            <Link to="/" aria-label="I-denty Home" className="lux-logo">
+              <img src={BRAND_CONFIG.logoUrl} alt="I-denty Logo" />
             </Link>
 
             {/* Desktop Navigation Menu */}
-            <nav
-              className="desktop-nav"
-              aria-label="Main Navigation"
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: 'clamp(1rem, 2vw, 2.2rem)',
-              }}
-            >
+            <nav ref={navRef} className="lux-nav" aria-label="Main Navigation">
               {navLinks.map((link) => {
                 const isActive =
                   location.pathname === link.href ||
                   (link.href !== '/' && location.pathname.startsWith(link.href));
+                const isOpen = activeDropdown === link.label;
 
                 return (
                   <div
                     key={link.label}
-                    style={{ position: 'relative' }}
+                    className={`lux-nav-item ${isOpen ? 'is-open' : ''}`}
                     onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
-                    onMouseLeave={() => setActiveDropdown(null)}
+                    onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
+                    onFocus={() => link.dropdown && setActiveDropdown(link.label)}
+                    onBlur={(e) => {
+                      if (link.dropdown && !e.currentTarget.contains(e.relatedTarget as Node)) {
+                        setActiveDropdown(null);
+                      }
+                    }}
                   >
                     <Link
                       to={link.href}
-                      style={{
-                        display: 'inline-flex',
-                        alignItems: 'center',
-                        gap: '0.25rem',
-                        fontSize: '0.88rem',
-                        letterSpacing: '0.04em',
-                        color: isActive ? 'var(--color-text-main)' : 'var(--color-text-body)',
-                        fontWeight: isActive ? 600 : 400,
-                        padding: '0.6rem 0',
-                        borderBottom: isActive ? '2px solid var(--color-brand-gold)' : '2px solid transparent',
-                        transition: 'all 0.2s ease',
+                      aria-current={isActive ? 'page' : undefined}
+                      aria-haspopup={link.dropdown ? 'true' : undefined}
+                      aria-expanded={link.dropdown ? isOpen : undefined}
+                      className={`lux-nav-link ${isActive ? 'is-active' : ''}`}
+                      onClick={() => setActiveDropdown(null)}
+                      onKeyDown={(e) => {
+                        if (link.dropdown) {
+                          if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            setActiveDropdown(isOpen ? null : link.label);
+                          } else if (e.key === 'Escape') {
+                            setActiveDropdown(null);
+                          }
+                        }
                       }}
                     >
                       <span>{link.label}</span>
-                      {link.dropdown && <ChevronDown size={13} style={{ opacity: 0.6 }} />}
+                      {link.dropdown && <ChevronDown size={13} className="lux-chevron" aria-hidden="true" />}
                     </Link>
 
                     {/* Dropdown Menu */}
-                    {link.dropdown && activeDropdown === link.label && (
-                      <div
-                        style={{
-                          position: 'absolute',
-                          top: '100%',
-                          left: 0,
-                          minWidth: '220px',
-                          backgroundColor: '#ffffff',
-                          boxShadow: 'var(--shadow-card)',
-                          borderRadius: 'var(--radius-sm)',
-                          border: '1px solid var(--color-border-light)',
-                          padding: '0.6rem 0',
-                          zIndex: 1010,
-                          animation: 'fadeIn 0.2s ease forwards',
-                        }}
-                      >
+                    {link.dropdown && isOpen && (
+                      <div className="lux-dropdown" role="menu" aria-label={`${link.label} submenu`}>
                         {link.dropdown.map((sub) => (
                           <Link
                             key={sub.label}
                             to={sub.href}
-                            style={{
-                              display: 'block',
-                              padding: '0.65rem 1.25rem',
-                              fontSize: '0.84rem',
-                              color: 'var(--color-text-body)',
-                              transition: 'background 0.15s, color 0.15s',
-                            }}
-                            onMouseEnter={(e) => {
-                              e.currentTarget.style.backgroundColor = 'var(--color-bg-sand)';
-                              e.currentTarget.style.color = 'var(--color-brand-gold-dark)';
-                            }}
-                            onMouseLeave={(e) => {
-                              e.currentTarget.style.backgroundColor = 'transparent';
-                              e.currentTarget.style.color = 'var(--color-text-body)';
-                            }}
+                            role="menuitem"
+                            className="lux-dropdown-link"
+                            onClick={() => setActiveDropdown(null)}
                           >
                             {sub.label}
                           </Link>
@@ -223,42 +173,10 @@ export const Header: React.FC = () => {
             </nav>
 
             {/* Header Actions */}
-            <div
-              style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.85rem',
-              }}
-            >
+            <div className="lux-actions">
               {/* Path Finder CTA Button */}
-              <Link
-                to="/finder"
-                className="btn-path-finder-header"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.4rem',
-                  fontSize: '0.78rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.1em',
-                  fontWeight: 600,
-                  padding: '0.55rem 1rem',
-                  borderRadius: 'var(--radius-sm)',
-                  backgroundColor: 'var(--color-brand-gold-light)',
-                  color: 'var(--color-brand-gold-dark)',
-                  border: '1px solid var(--color-brand-gold-border)',
-                  transition: 'all 0.2s ease',
-                }}
-                onMouseEnter={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--color-brand-gold)';
-                  e.currentTarget.style.color = '#ffffff';
-                }}
-                onMouseLeave={(e) => {
-                  e.currentTarget.style.backgroundColor = 'var(--color-brand-gold-light)';
-                  e.currentTarget.style.color = 'var(--color-brand-gold-dark)';
-                }}
-              >
-                <Compass size={14} />
+              <Link to="/finder" className="lux-finder-btn">
+                <Compass size={14} aria-hidden="true" />
                 <span>Find Your Path</span>
               </Link>
 
@@ -267,20 +185,9 @@ export const Header: React.FC = () => {
                 onClick={() => setIsSearchOpen(true)}
                 aria-label="Search website"
                 title="Search website (Ctrl+K)"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '40px',
-                  height: '40px',
-                  borderRadius: 'var(--radius-sm)',
-                  color: 'var(--color-text-main)',
-                  transition: 'background 0.2s',
-                }}
-                onMouseEnter={(e) => (e.currentTarget.style.backgroundColor = 'var(--color-bg-sand)')}
-                onMouseLeave={(e) => (e.currentTarget.style.backgroundColor = 'transparent')}
+                className="lux-icon-btn"
               >
-                <Search size={19} />
+                <Search size={19} aria-hidden="true" />
               </button>
 
               {/* Login / Portal Link */}
@@ -288,37 +195,20 @@ export const Header: React.FC = () => {
                 to="/contact?tab=login"
                 aria-label="Member login"
                 title="Member Portal"
-                style={{
-                  display: 'inline-flex',
-                  alignItems: 'center',
-                  gap: '0.35rem',
-                  fontSize: '0.84rem',
-                  fontWeight: 500,
-                  color: 'var(--color-text-body)',
-                  padding: '0.4rem 0.6rem',
-                  borderRadius: 'var(--radius-sm)',
-                  transition: 'color 0.2s',
-                }}
+                className="lux-login"
               >
-                <User size={18} />
-                <span className="hide-mobile">Login</span>
+                <User size={18} aria-hidden="true" />
+                <span className="lux-login-text">Login</span>
               </Link>
 
               {/* Mobile Hamburger Toggle */}
               <button
-                className="mobile-toggle-btn"
+                className="lux-burger"
                 onClick={() => setIsMobileOpen(true)}
                 aria-label="Open mobile menu"
-                style={{
-                  display: 'none',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  width: '44px',
-                  height: '44px',
-                  color: 'var(--color-text-main)',
-                }}
+                aria-expanded={isMobileOpen}
               >
-                <Menu size={24} />
+                <Menu size={24} aria-hidden="true" />
               </button>
             </div>
           </div>
@@ -337,23 +227,6 @@ export const Header: React.FC = () => {
           setIsSearchOpen(true);
         }}
       />
-
-      <style>{`
-        @media (max-width: 980px) {
-          .desktop-nav {
-            display: none !important;
-          }
-          .mobile-toggle-btn {
-            display: inline-flex !important;
-          }
-          .btn-path-finder-header {
-            display: none !important;
-          }
-          .hide-mobile {
-            display: none !important;
-          }
-        }
-      `}</style>
     </>
   );
 };

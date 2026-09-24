@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { SectionHeader } from '../common/SectionHeader';
 import { ArrowRight, Compass, Users, BookOpen, Calendar, ShieldCheck } from 'lucide-react';
 
@@ -84,13 +85,34 @@ export const EcosystemMap: React.FC = () => {
 
         {/* Editorial Interactive Tabs Strip */}
         <div
+          role="tablist"
+          aria-label="Ecosystem Elements"
           style={{
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
             flexWrap: 'wrap',
             gap: '0.65rem',
-            marginBottom: '2.5rem',
+            marginBottom: 'var(--section-block-gap)',
+          }}
+          onKeyDown={(e) => {
+            const currentIndex = nodes.findIndex(n => n.id === activeNodeId);
+            let nextIndex = currentIndex;
+            if (e.key === 'ArrowRight') {
+              nextIndex = (currentIndex + 1) % nodes.length;
+            } else if (e.key === 'ArrowLeft') {
+              nextIndex = (currentIndex - 1 + nodes.length) % nodes.length;
+            } else if (e.key === 'Home') {
+              nextIndex = 0;
+            } else if (e.key === 'End') {
+              nextIndex = nodes.length - 1;
+            } else {
+              return;
+            }
+            e.preventDefault();
+            const nextId = nodes[nextIndex].id;
+            setActiveNodeId(nextId);
+            document.getElementById(`tab-${nextId}`)?.focus();
           }}
         >
           {nodes.map((node) => {
@@ -98,7 +120,24 @@ export const EcosystemMap: React.FC = () => {
             return (
               <button
                 key={node.id}
+                id={`tab-${node.id}`}
+                role="tab"
+                aria-selected={isSelected}
+                aria-controls={`panel-${node.id}`}
+                tabIndex={isSelected ? 0 : -1}
                 onClick={() => setActiveNodeId(node.id)}
+                onMouseEnter={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.opacity = '1';
+                    e.currentTarget.style.borderBottomColor = 'var(--color-brand-gold)';
+                  }
+                }}
+                onMouseLeave={(e) => {
+                  if (!isSelected) {
+                    e.currentTarget.style.opacity = '0.85';
+                    e.currentTarget.style.borderBottomColor = 'var(--color-border-light)';
+                  }
+                }}
                 style={{
                   display: 'inline-flex',
                   alignItems: 'center',
@@ -108,6 +147,8 @@ export const EcosystemMap: React.FC = () => {
                   backgroundColor: isSelected ? 'var(--color-bg-dark)' : 'var(--color-bg-sand)',
                   color: isSelected ? '#ffffff' : 'var(--color-text-main)',
                   border: isSelected ? '1px solid var(--color-bg-dark)' : '1px solid var(--color-border-light)',
+                  borderBottom: isSelected ? '1px solid var(--color-bg-dark)' : '1px solid var(--color-border-light)',
+                  opacity: isSelected ? 1 : 0.85,
                   fontSize: '0.85rem',
                   fontWeight: isSelected ? 600 : 500,
                   textTransform: 'uppercase',
@@ -123,25 +164,32 @@ export const EcosystemMap: React.FC = () => {
           })}
         </div>
 
-        {/* Active Node Detail Card */}
-        <div
-          className="card-editorial animate-fade-in"
-          key={activeNode.id}
-          style={{
-            background: 'linear-gradient(135deg, var(--color-bg-sand-light) 0%, #ffffff 100%)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            padding: 'clamp(2rem, 4vw, 3.5rem)',
-            maxWidth: '960px',
-            margin: '0 auto',
-            position: 'relative',
-          }}
-        >
+        {/* Active Node Detail Card with Spatial Transition */}
+        <AnimatePresence mode="wait">
+          <motion.div
+            id={`panel-${activeNode.id}`}
+            role="tabpanel"
+            aria-labelledby={`tab-${activeNode.id}`}
+            className="glass-panel"
+            key={activeNode.id}
+            initial={{ opacity: 0, y: 40, rotateX: -10 }}
+            animate={{ opacity: 1, y: 0, rotateX: 0 }}
+            exit={{ opacity: 0, y: -40, rotateX: 10 }}
+            transition={{ type: "spring", stiffness: 100, damping: 20 }}
+            style={{
+              borderRadius: 'var(--radius-md)',
+              padding: 'clamp(1.75rem, 3.5vw, 2.75rem)',
+              maxWidth: '960px',
+              margin: '0 auto',
+              position: 'relative',
+              perspective: '1000px'
+            }}
+          >
           <div
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(auto-fit, minmax(280px, 1fr))',
-              gap: '2.5rem',
+              gap: '2rem',
               alignItems: 'center',
             }}
           >
@@ -180,7 +228,7 @@ export const EcosystemMap: React.FC = () => {
                 {activeNode.subtitle}
               </div>
 
-              <p style={{ fontSize: '1.05rem', color: 'var(--color-text-body)', lineHeight: 1.65, marginBottom: '2rem' }}>
+              <p style={{ fontSize: '1.05rem', color: 'var(--color-text-body)', lineHeight: 1.65, marginBottom: '1.4rem' }}>
                 {activeNode.description}
               </p>
 
@@ -252,7 +300,8 @@ export const EcosystemMap: React.FC = () => {
               </div>
             </div>
           </div>
-        </div>
+        </motion.div>
+        </AnimatePresence>
       </div>
     </section>
   );

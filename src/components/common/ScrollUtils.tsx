@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useCallback } from 'react';
 import { ChevronUp } from 'lucide-react';
 
 /**
@@ -6,6 +6,7 @@ import { ChevronUp } from 'lucide-react';
  * that fills as the user scrolls down the page.
  *
  * BackToTopButton — appears after the user scrolls 400px, animated in/out.
+ * Respects prefers-reduced-motion for instant scroll.
  */
 
 export const ScrollProgressBar: React.FC = () => {
@@ -25,7 +26,11 @@ export const ScrollProgressBar: React.FC = () => {
 
   return (
     <div
-      aria-hidden="true"
+      role="progressbar"
+      aria-valuenow={Math.round(progress)}
+      aria-valuemin={0}
+      aria-valuemax={100}
+      aria-label="Page scroll progress"
       style={{
         position: 'fixed',
         top: 0,
@@ -34,6 +39,7 @@ export const ScrollProgressBar: React.FC = () => {
         height: '3px',
         zIndex: 9999,
         backgroundColor: 'transparent',
+        pointerEvents: 'none',
       }}
     >
       <div
@@ -42,6 +48,7 @@ export const ScrollProgressBar: React.FC = () => {
           width: `${progress}%`,
           background: 'linear-gradient(90deg, var(--color-brand-gold) 0%, #d4b98a 100%)',
           transition: 'width 0.1s linear',
+          willChange: 'width',
           transformOrigin: 'left',
         }}
       />
@@ -58,14 +65,22 @@ export const BackToTopButton: React.FC = () => {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
+  const prefersReducedMotion = useCallback(() => {
+    return window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  }, []);
+
+  const scrollToTop = useCallback(() => {
+    window.scrollTo({
+      top: 0,
+      behavior: prefersReducedMotion() ? 'instant' : 'smooth',
+    });
+  }, [prefersReducedMotion]);
 
   return (
     <button
       onClick={scrollToTop}
-      aria-label="Back to top"
+      aria-label="Scroll to top"
+      className="back-to-top-btn"
       style={{
         position: 'fixed',
         bottom: '2rem',
@@ -84,17 +99,10 @@ export const BackToTopButton: React.FC = () => {
         cursor: 'pointer',
         opacity: visible ? 1 : 0,
         transform: visible ? 'translateY(0) scale(1)' : 'translateY(16px) scale(0.9)',
-        transition: 'opacity 0.3s ease, transform 0.3s ease',
+        transition: 'opacity 0.3s ease, transform 0.3s ease, background-color 0.2s ease',
         pointerEvents: visible ? 'auto' : 'none',
       }}
-      onMouseEnter={(e) => {
-        e.currentTarget.style.backgroundColor = 'var(--color-brand-gold)';
-        e.currentTarget.style.transform = 'translateY(-2px) scale(1.05)';
-      }}
-      onMouseLeave={(e) => {
-        e.currentTarget.style.backgroundColor = 'var(--color-bg-dark)';
-        e.currentTarget.style.transform = 'translateY(0) scale(1)';
-      }}
+      tabIndex={visible ? 0 : -1}
     >
       <ChevronUp size={20} />
     </button>

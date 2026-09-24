@@ -1,8 +1,10 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { SectionHeader } from '../common/SectionHeader';
 import { Button } from '../common/Button';
 import { Sparkles, Calendar, Check } from 'lucide-react';
 import { useInView } from '../../hooks/useInView';
+import { TiltCard } from '../common/TiltCard';
 
 export const ValuePropCards: React.FC = () => {
   const { ref: sectionRef, inView } = useInView<HTMLElement>({ threshold: 0.08, rootMargin: '0px 0px -60px 0px' });
@@ -52,190 +54,208 @@ export const ValuePropCards: React.FC = () => {
           }}
         >
           {/* Card 1: The Membership Experience — slides from left */}
-          <div
-            className="card-editorial"
-            style={{
-              backgroundColor: '#ffffff',
-              padding: 'clamp(2.2rem, 4vw, 3rem)',
-              display: 'flex',
-              flexDirection: 'column',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-border)',
-              opacity: inView ? 1 : 0,
-              transform: inView ? 'translateX(0)' : 'translateX(-26px)',
-              transition: 'opacity 0.75s ease 0.15s, transform 0.75s ease 0.15s',
-            }}
-          >
+          <TiltCard>
             <div
+              className="glass-panel"
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                color: 'var(--color-brand-gold-dark)',
-                fontSize: '0.76rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.14em',
-                fontWeight: 600,
-                marginBottom: '0.6rem',
+                padding: 'clamp(2.2rem, 4vw, 3rem)',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 'var(--radius-md)',
+                border: '1px solid var(--color-border)',
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateX(0)' : 'translateX(-26px)',
+                transition: 'opacity 0.75s ease 0.15s, transform 0.75s ease 0.15s',
+                height: '100%',
               }}
             >
-              <Sparkles size={14} />
-              <span>Comprehensive Living Ecosystem</span>
-            </div>
-
-            <h3 style={{ fontSize: '1.75rem', marginBottom: '0.8rem', color: 'var(--color-text-main)' }}>
-              The Membership Experience
-            </h3>
-
-            <p style={{ fontSize: '0.96rem', color: 'var(--color-text-body)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-              Designed as your sustained operating system. Members receive holistic integration across mind, environment, wardrobe, and circle.
-            </p>
-
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem', flex: 1 }}>
-              {membershipItems.map((item, index) => (
-                <li
-                  key={index}
+              <div style={{ transform: "translateZ(20px)", display: "flex", flexDirection: "column", height: '100%' }}>
+                <div
                   style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '0.65rem',
-                    fontSize: '0.92rem',
-                    opacity: inView ? 1 : 0,
-                    transform: inView ? 'translateX(0)' : 'translateX(-10px)',
-                    transition: `opacity 0.45s ease ${0.3 + index * 0.08}s, transform 0.45s ease ${0.3 + index * 0.08}s`,
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    color: 'var(--color-brand-gold-dark)',
+                    fontSize: '0.76rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                    fontWeight: 600,
+                    marginBottom: '0.6rem',
                   }}
                 >
-                  <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
-                  <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
-                </li>
-              ))}
-            </ul>
+                  <Sparkles size={14} />
+                  <span>Comprehensive Living Ecosystem</span>
+                </div>
 
-            <div
-              style={{
-                display: 'flex',
-                flexWrap: 'wrap',
-                gap: '0.5rem',
-                paddingTop: '1.25rem',
-                borderTop: '1px solid var(--color-border-light)',
-                marginBottom: '1.75rem',
-                fontSize: '0.78rem',
-                color: 'var(--color-text-muted)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.08em',
-              }}
-            >
-              <span>A Living Ecosystem</span>
-              <span>•</span>
-              <span>Ongoing Support</span>
-              <span>•</span>
-              <span>Long-Term Evolution</span>
+                <h3 style={{ fontSize: '1.75rem', marginBottom: '0.8rem', color: 'var(--color-text-main)' }}>
+                  The Membership Experience
+                </h3>
+
+                <p style={{ fontSize: '0.96rem', color: 'var(--color-text-body)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                  Designed as your sustained operating system. Members receive holistic integration across mind, environment, wardrobe, and circle.
+                </p>
+
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem', flex: 1 }}>
+                  {membershipItems.map((item, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '0.65rem',
+                        fontSize: '0.92rem',
+                        opacity: inView ? 1 : 0,
+                        transform: inView ? 'translateX(0)' : 'translateX(-10px)',
+                        transition: `opacity 0.45s ease ${0.3 + index * 0.08}s, transform 0.45s ease ${0.3 + index * 0.08}s`,
+                      }}
+                    >
+                      <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                      <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div
+                  style={{
+                    display: 'flex',
+                    flexWrap: 'wrap',
+                    gap: '0.5rem',
+                    paddingTop: '1.25rem',
+                    borderTop: '1px solid var(--color-border-light)',
+                    marginBottom: '1.75rem',
+                    fontSize: '0.78rem',
+                    color: 'var(--color-text-muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                  }}
+                >
+                  <span>A Living Ecosystem</span>
+                  <span>•</span>
+                  <span>Ongoing Support</span>
+                  <span>•</span>
+                  <span>Long-Term Evolution</span>
+                </div>
+
+                <Button variant="primary" href="/memberships" withArrow>
+                  Explore Membership Levels
+                </Button>
+              </div>
             </div>
-
-            <Button variant="primary" href="/memberships" withArrow>
-              Explore Membership Levels
-            </Button>
-          </div>
+          </TiltCard>
 
           {/* Card 2: The Monthly Reinvention Session — slides from right */}
-          <div
-            className="card-editorial"
-            style={{
-              backgroundColor: '#ffffff',
-              padding: 'clamp(2.2rem, 4vw, 3rem)',
-              display: 'flex',
-              flexDirection: 'column',
-              borderRadius: 'var(--radius-md)',
-              border: '1px solid var(--color-brand-gold-border)',
-              position: 'relative',
-              boxShadow: 'var(--shadow-card)',
-              opacity: inView ? 1 : 0,
-              transform: inView ? 'translateX(0)' : 'translateX(26px)',
-              transition: 'opacity 0.75s ease 0.3s, transform 0.75s ease 0.3s',
-            }}
-          >
+          <TiltCard>
             <div
+              className="glass-panel"
               style={{
-                position: 'absolute',
-                top: '1.5rem',
-                right: '1.5rem',
-                backgroundColor: 'var(--color-brand-gold-light)',
-                color: 'var(--color-brand-gold-dark)',
-                fontSize: '0.7rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-                fontWeight: 700,
-                padding: '0.3rem 0.75rem',
-                borderRadius: 'var(--radius-sm)',
+                padding: 'clamp(2.2rem, 4vw, 3rem)',
+                display: 'flex',
+                flexDirection: 'column',
+                borderRadius: 'var(--radius-md)',
                 border: '1px solid var(--color-brand-gold-border)',
+                position: 'relative',
+                boxShadow: 'var(--shadow-card)',
+                opacity: inView ? 1 : 0,
+                transform: inView ? 'translateX(0)' : 'translateX(26px)',
+                transition: 'opacity 0.75s ease 0.3s, transform 0.75s ease 0.3s',
+                height: '100%',
               }}
             >
-              Founder-Led Live
-            </div>
-
-            <div
-              style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.45rem',
-                color: 'var(--color-brand-gold-dark)',
-                fontSize: '0.76rem',
-                textTransform: 'uppercase',
-                letterSpacing: '0.14em',
-                fontWeight: 600,
-                marginBottom: '0.6rem',
-              }}
-            >
-              <Calendar size={14} />
-              <span>Signature Live Ritual</span>
-            </div>
-
-            <h3 style={{ fontSize: '1.75rem', marginBottom: '0.8rem', color: 'var(--color-text-main)' }}>
-              The Monthly Reinvention Session™
-            </h3>
-
-            <p style={{ fontSize: '0.96rem', color: 'var(--color-text-body)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
-              At the heart of I-denty is our 90-minute monthly live session led directly by Founder Eveliene — designed to recalibrate focus and elevate momentum.
-            </p>
-
-            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem', flex: 1 }}>
-              {monthlySessionItems.map((item, index) => (
-                <li
-                  key={index}
+              <div style={{ transform: "translateZ(20px)", display: "flex", flexDirection: "column", height: '100%' }}>
+                <div
                   style={{
-                    display: 'flex',
-                    alignItems: 'flex-start',
-                    gap: '0.65rem',
-                    fontSize: '0.92rem',
-                    opacity: inView ? 1 : 0,
-                    transform: inView ? 'translateX(0)' : 'translateX(10px)',
-                    transition: `opacity 0.45s ease ${0.45 + index * 0.1}s, transform 0.45s ease ${0.45 + index * 0.1}s`,
+                    position: 'absolute',
+                    top: '1.5rem',
+                    right: '1.5rem',
+                    backgroundColor: 'var(--color-brand-gold-light)',
+                    color: 'var(--color-brand-gold-dark)',
+                    fontSize: '0.7rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.12em',
+                    fontWeight: 700,
+                    padding: '0.3rem 0.75rem',
+                    borderRadius: 'var(--radius-sm)',
+                    border: '1px solid var(--color-brand-gold-border)',
                   }}
                 >
-                  <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
-                  <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
-                </li>
-              ))}
-            </ul>
+                  Founder-Led Live
+                </div>
 
-            <div
-              style={{
-                backgroundColor: 'var(--color-bg-sand)',
-                padding: '1rem 1.25rem',
-                borderRadius: 'var(--radius-sm)',
-                marginBottom: '1.75rem',
-                fontSize: '0.84rem',
-                color: 'var(--color-text-body)',
-                lineHeight: 1.5,
-              }}
-            >
-              <strong>Tier Access:</strong> Live attendance is included in <em>Inner Circle</em> &amp; <em>Private Member</em>. On-demand video replays are archived inside <em>The Collective</em>.
+                <div
+                  style={{
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    gap: '0.45rem',
+                    color: 'var(--color-brand-gold-dark)',
+                    fontSize: '0.76rem',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.14em',
+                    fontWeight: 600,
+                    marginBottom: '0.6rem',
+                  }}
+                >
+                  <Calendar size={14} />
+                  <span>Signature Live Ritual</span>
+                </div>
+
+                <h3 style={{ fontSize: '1.75rem', marginBottom: '0.8rem', color: 'var(--color-text-main)' }}>
+                  The Monthly Reinvention Session™
+                </h3>
+
+                <p style={{ fontSize: '0.96rem', color: 'var(--color-text-body)', lineHeight: 1.6, marginBottom: '1.5rem' }}>
+                  At the heart of I-denty is our 90-minute monthly live session led directly by Founder Eveliene — designed to recalibrate focus and elevate momentum.
+                </p>
+
+                <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.85rem', marginBottom: '2rem', flex: 1 }}>
+                  {monthlySessionItems.map((item, index) => (
+                    <li
+                      key={index}
+                      style={{
+                        display: 'flex',
+                        alignItems: 'flex-start',
+                        gap: '0.65rem',
+                        fontSize: '0.92rem',
+                        opacity: inView ? 1 : 0,
+                        transform: inView ? 'translateX(0)' : 'translateX(10px)',
+                        transition: `opacity 0.45s ease ${0.45 + index * 0.1}s, transform 0.45s ease ${0.45 + index * 0.1}s`,
+                      }}
+                    >
+                      <Check size={16} color="var(--color-brand-gold)" style={{ flexShrink: 0, marginTop: '3px' }} />
+                      <span style={{ color: 'var(--color-text-main)' }}>{item}</span>
+                    </li>
+                  ))}
+                </ul>
+
+                <div
+                  style={{
+                    backgroundColor: 'var(--color-bg-sand)',
+                    padding: '1rem 1.25rem',
+                    borderRadius: 'var(--radius-sm)',
+                    marginBottom: '1.75rem',
+                    fontSize: '0.84rem',
+                    color: 'var(--color-text-body)',
+                    lineHeight: 1.5,
+                  }}
+                >
+                  <strong>Tier Access:</strong> Live attendance is included in <em>Inner Circle</em> &amp; <em>Private Member</em>. On-demand video replays are archived inside <em>The Collective</em>.
+                </div>
+
+                <Button variant="gold" href="/experiences" withArrow>
+                  View Upcoming Sessions
+                </Button>
+              </div>
             </div>
+          </TiltCard>
+        </div>
 
-            <Button variant="gold" href="/experiences" withArrow>
-              View Upcoming Sessions
-            </Button>
+        {/* Path Finder Hint */}
+        <div style={{ marginTop: '2.5rem', textAlign: 'center' }}>
+          <div style={{ fontSize: '0.9rem', color: 'var(--color-text-muted)', marginBottom: '0.5rem' }}>
+            Not sure where to start?
           </div>
+          <Link to="/finder" style={{ fontSize: '0.9rem', color: 'var(--color-brand-gold)', fontWeight: 600 }}>
+            Find Your I-denty Path →
+          </Link>
         </div>
       </div>
     </section>

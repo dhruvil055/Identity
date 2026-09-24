@@ -1,0 +1,562 @@
+/* ==========================================================================
+   HOME HERO — premium immersive 3D identity experience (CSS 3D, no WebGL)
+   Depth hierarchy:
+     0 background media (poster img + video)
+     1 cinematic overlays (shade)
+     2 background 3D decor (scene: rings, orb, depth lines, glass card)
+     3 content (eyebrow, H1, description, CTAs)
+     4 scroll cue
+   Navbar (z 1000) always sits above. All motion uses transform/opacity.
+   ========================================================================== */
+
+.hh {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background-color: #0d0e11;
+  color: #ffffff;
+  min-height: 640px;
+  min-height: clamp(600px, 94svh, 920px);
+  isolation: isolate;
+}
+
+/* ---------- Layer 0: background media ---------- */
+.hh-media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  overflow: hidden;
+  transform: translateZ(0);
+}
+
+.hh-media img,
+.hh-media video {
+  position: absolute;
+  inset: -4%;
+  width: 108%;
+  height: 108%;
+  max-width: none;
+  object-fit: cover;
+  object-position: center 30%;
+  opacity: 1;
+}
+
+.hh-media video {
+  background-color: #0d0e11;
+}
+
+/* ---------- Layer 1: cinematic overlays ---------- */
+.hh-shade {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  pointer-events: none;
+  background:
+    radial-gradient(120% 90% at 50% 10%, rgba(13, 14, 17, 0) 30%, rgba(13, 14, 17, 0.55) 100%),
+    linear-gradient(180deg, rgba(13, 14, 17, 0.62) 0%, rgba(13, 14, 17, 0.42) 34%, rgba(13, 14, 17, 0.58) 68%, rgba(13, 14, 17, 0.92) 100%);
+}
+
+.hh-shade::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(46% 34% at 72% 30%, rgba(216, 192, 138, 0.16) 0%, rgba(216, 192, 138, 0) 70%);
+}
+
+/* ---------- Layer 2: CSS 3D scene ---------- */
+.hh-scene {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  perspective: 1200px;
+  perspective-origin: 50% 42%;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.hh-px {
+  --d: 1;
+  --z: 0px;
+  transform:
+    translate3d(calc(var(--mx, 0px) * var(--d)), calc(var(--my, 0px) * var(--d)), var(--z));
+  will-change: transform;
+}
+
+/* Thin gold rings — abstract identity / wholeness motif */
+.hh-ring {
+  position: absolute;
+  border-radius: 50%;
+  border: 1px solid rgba(216, 192, 138, 0.34);
+  box-shadow:
+    0 0 60px rgba(216, 192, 138, 0.08),
+    inset 0 0 60px rgba(216, 192, 138, 0.05);
+}
+
+.hh-ring-a {
+  width: min(72vmin, 640px);
+  height: min(72vmin, 640px);
+  right: -14vmin;
+  top: 50%;
+  margin-top: calc(min(72vmin, 640px) / -2);
+  animation: hh-drift 14s ease-in-out infinite alternate;
+}
+
+.hh-ring-b {
+  width: min(52vmin, 460px);
+  height: min(52vmin, 460px);
+  right: -6vmin;
+  top: 50%;
+  margin-top: calc(min(52vmin, 460px) / -2);
+  border-color: rgba(255, 255, 255, 0.14);
+  animation: hh-drift 18s ease-in-out infinite alternate-reverse;
+}
+
+.hh-ring-c {
+  width: min(30vmin, 260px);
+  height: min(30vmin, 260px);
+  left: -10vmin;
+  bottom: -8vmin;
+  border-color: rgba(216, 192, 138, 0.22);
+  animation: hh-drift 16s ease-in-out infinite alternate;
+}
+
+@keyframes hh-drift {
+  from { translate: 0 -12px; }
+  to { translate: 0 12px; }
+}
+
+/* Soft gold light orb */
+.hh-orb {
+  position: absolute;
+  width: min(56vmin, 520px);
+  height: min(56vmin, 520px);
+  left: -12vmin;
+  top: -10vmin;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(216, 192, 138, 0.22) 0%, rgba(216, 192, 138, 0) 65%);
+  filter: blur(10px);
+  animation: hh-breathe 11s ease-in-out infinite alternate;
+}
+
+@keyframes hh-breathe {
+  from { opacity: 0.7; scale: 0.96; }
+  to { opacity: 1; scale: 1.04; }
+}
+
+/* Fine vertical depth lines */
+.hh-lines {
+  position: absolute;
+  inset: 0;
+  background-image: repeating-linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0 1px,
+    transparent 1px 72px
+  );
+  mask-image: radial-gradient(70% 70% at 50% 45%, black 20%, transparent 75%);
+  -webkit-mask-image: radial-gradient(70% 70% at 50% 45%, black 20%, transparent 75%);
+}
+
+/* Floating glass card — brand-supporting, links to live sessions */
+.hh-card {
+  position: absolute;
+  right: clamp(1.5rem, 6vw, 5rem);
+  bottom: clamp(5.5rem, 14vh, 7.5rem);
+  width: 250px;
+  padding: 1.1rem 1.2rem 1.15rem;
+  border-radius: var(--radius-sm);
+  background: linear-gradient(160deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.04));
+  -webkit-backdrop-filter: blur(14px);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.28),
+    0 24px 60px -20px rgba(0, 0, 0, 0.65);
+  color: #ffffff;
+  text-decoration: none;
+  pointer-events: auto;
+  transition: transform 0.3s cubic-bezier(0.2, 0.8, 0.2, 1), border-color 0.3s ease, box-shadow 0.3s ease;
+  animation: hh-float 9s ease-in-out infinite alternate;
+}
+
+@keyframes hh-float {
+  from { margin-bottom: 0; }
+  to { margin-bottom: 14px; }
+}
+
+.hh-card:hover {
+  border-color: rgba(216, 192, 138, 0.55);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.32),
+    0 30px 70px -20px rgba(0, 0, 0, 0.7),
+    0 0 0 1px rgba(216, 192, 138, 0.12);
+}
+
+/* Preserve parallax offset while lifting on hover */
+.hh-card.hh-px:hover {
+  transform:
+    translate3d(calc(var(--mx, 0px) * var(--d)), calc(var(--my, 0px) * var(--d)), var(--z))
+    translateY(-3px);
+}
+
+.hh-card-eyebrow {
+  display: block;
+  font-size: 0.66rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #d8c08a;
+  font-weight: 600;
+  margin-bottom: 0.45rem;
+}
+
+.hh-card-title {
+  display: block;
+  font-family: var(--font-brand);
+  font-size: 1.12rem;
+  line-height: 1.3;
+  margin-bottom: 0.35rem;
+}
+
+.hh-card-sub {
+  display: block;
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+/* ---------- Layer 3: content ---------- */
+.hh-content {
+  position: relative;
+  z-index: 3;
+  width: 100%;
+  max-width: 1020px;
+  margin: 0 auto;
+  padding: clamp(4.5rem, 9vh, 6.5rem) clamp(1.25rem, 4vw, 2.5rem) clamp(5rem, 10vh, 7rem);
+  text-align: center;
+  transform: translateZ(0);
+}
+
+.hh-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.5rem 1.15rem;
+  border-radius: var(--radius-sm);
+  background: rgba(255, 255, 255, 0.06);
+  -webkit-backdrop-filter: blur(12px);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(216, 192, 138, 0.4);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.14),
+    0 10px 30px rgba(0, 0, 0, 0.35);
+  color: #ffffff;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  font-weight: 500;
+  margin-bottom: 1.9rem;
+}
+
+.hh-pill-dot {
+  color: #d8c08a;
+  font-size: 0.85em;
+}
+
+.hh-title {
+  color: #ffffff;
+  font-size: clamp(2.5rem, 1.5rem + 4.6vw, 4.75rem);
+  font-weight: 400;
+  line-height: 1.06;
+  letter-spacing: -0.02em;
+  margin: 0 0 1.4rem;
+  text-wrap: balance;
+  text-shadow:
+    0 2px 34px rgba(0, 0, 0, 0.6),
+    0 1px 0 rgba(255, 255, 255, 0.07);
+}
+
+.hh-title em {
+  font-style: italic;
+  color: #e6d3a3;
+  text-shadow: 0 2px 30px rgba(0, 0, 0, 0.6), 0 0 44px rgba(216, 192, 138, 0.28);
+}
+
+.hh-br { display: none; }
+@media (min-width: 768px) {
+  .hh-br { display: inline; }
+}
+
+.hh-sub {
+  font-size: clamp(1.02rem, 0.94rem + 0.6vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.84);
+  text-shadow: 0 1px 18px rgba(0, 0, 0, 0.65);
+  max-width: 46rem;
+  margin: 0 auto 2.6rem;
+}
+
+/* ---------- CTA buttons: premium 3D ---------- */
+.hh-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem 1.1rem;
+}
+
+.hh-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  font-family: var(--font-brand);
+  font-size: 0.85rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  line-height: 1;
+  padding: 1.05rem 2.1rem;
+  min-height: 54px;
+  border-radius: var(--radius-sm);
+  text-decoration: none;
+  transform: translateZ(0);
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 0.25s ease, background-color 0.25s ease, border-color 0.25s ease, color 0.25s ease;
+}
+
+.hh-btn svg {
+  transition: transform 0.25s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.hh-btn:hover svg {
+  transform: translateX(3px);
+}
+
+.hh-btn:active {
+  transform: translateY(1px) scale(0.99);
+  transition-duration: 0.08s;
+}
+
+.hh-btn:focus-visible {
+  outline: 2px solid #e6d3a3;
+  outline-offset: 4px;
+}
+
+.hh-btn-primary {
+  color: #141414;
+  background: linear-gradient(180deg, #efdfb8 0%, #d8c08a 55%, #c6a968 100%);
+  border: 1px solid rgba(255, 244, 214, 0.65);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.75),
+    inset 0 -2px 6px rgba(120, 90, 30, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.4),
+    0 18px 44px -12px rgba(216, 192, 138, 0.45);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.4);
+}
+
+.hh-btn-primary:hover {
+  transform: translateY(-2px);
+  background: linear-gradient(180deg, #f6e9c8 0%, #e0c996 55%, #cfae6d 100%);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.8),
+    inset 0 -2px 6px rgba(120, 90, 30, 0.3),
+    0 3px 8px rgba(0, 0, 0, 0.4),
+    0 26px 60px -14px rgba(216, 192, 138, 0.6);
+}
+
+.hh-btn-primary:active {
+  box-shadow:
+    inset 0 2px 8px rgba(120, 90, 30, 0.4),
+    0 1px 3px rgba(0, 0, 0, 0.4);
+}
+
+.hh-btn-ghost {
+  color: #ffffff;
+  background: rgba(255, 255, 255, 0.07);
+  -webkit-backdrop-filter: blur(10px);
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.18),
+    0 2px 6px rgba(0, 0, 0, 0.3),
+    0 16px 40px -16px rgba(0, 0, 0, 0.6);
+  text-shadow: 0 1px 12px rgba(0, 0, 0, 0.5);
+}
+
+.hh-btn-ghost:hover {
+  transform: translateY(-2px);
+  border-color: rgba(230, 211, 163, 0.75);
+  background: rgba(255, 255, 255, 0.12);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.22),
+    0 3px 8px rgba(0, 0, 0, 0.35),
+    0 22px 54px -16px rgba(0, 0, 0, 0.65);
+}
+
+.hh-btn-ghost:active {
+  box-shadow:
+    inset 0 2px 10px rgba(0, 0, 0, 0.35),
+    0 1px 3px rgba(0, 0, 0, 0.35);
+}
+
+/* ---------- Layer 4: scroll cue ---------- */
+.hh-cue {
+  position: absolute;
+  left: 50%;
+  bottom: max(1.4rem, env(safe-area-inset-bottom, 0px));
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.66rem;
+  text-transform: uppercase;
+  letter-spacing: 0.28em;
+  text-decoration: none;
+  padding: 0.5rem 1rem;
+  transition: color 0.25s ease;
+}
+
+.hh-cue:hover {
+  color: #e6d3a3;
+}
+
+.hh-cue-line {
+  position: relative;
+  display: block;
+  width: 1px;
+  height: 44px;
+  background: rgba(255, 255, 255, 0.22);
+  overflow: hidden;
+}
+
+.hh-cue-line::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -40%;
+  width: 100%;
+  height: 40%;
+  background: #e6d3a3;
+  animation: hh-cue-drop 2.2s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}
+
+@keyframes hh-cue-drop {
+  0% { top: -40%; }
+  60%, 100% { top: 110%; }
+}
+
+/* ---------- Entrance choreography (one-shot, transform/opacity only) ---------- */
+.hh-rise {
+  opacity: 0;
+  animation: hh-up 1s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  animation-delay: var(--rd, 0s);
+}
+
+.hh-scene,
+.hh-shade {
+  opacity: 0;
+  animation: hh-fade 1.6s ease forwards;
+}
+
+@keyframes hh-up {
+  from { opacity: 0; transform: translateY(28px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes hh-fade {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+/* ---------- Responsive: dedicated mobile composition ---------- */
+@media (max-width: 1150px) {
+  .hh-card {
+    display: none;
+  }
+}
+
+@media (max-width: 767px) {
+  .hh {
+    min-height: 620px;
+    min-height: clamp(560px, 92svh, 760px);
+    align-items: flex-end;
+  }
+
+  .hh-content {
+    padding-top: clamp(5rem, 12vh, 7rem);
+    padding-bottom: 6.2rem;
+  }
+
+  .hh-ring-a {
+    right: auto;
+    left: 50%;
+    margin-left: calc(min(72vmin, 640px) / -2);
+    top: 8%;
+    margin-top: 0;
+    opacity: 0.7;
+  }
+
+  .hh-ring-b,
+  .hh-ring-c,
+  .hh-orb {
+    opacity: 0.55;
+  }
+
+  .hh-pill {
+    font-size: 0.64rem;
+    letter-spacing: 0.16em;
+    margin-bottom: 1.4rem;
+  }
+
+  .hh-sub {
+    margin-bottom: 2.1rem;
+  }
+
+  .hh-ctas {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .hh-btn {
+    width: 100%;
+    max-width: 340px;
+    margin: 0 auto;
+  }
+}
+
+/* ---------- Reduced motion: stable, fully usable, no movement ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hh-rise,
+  .hh-scene,
+  .hh-shade {
+    animation: none;
+    opacity: 1;
+  }
+
+  .hh-ring-a,
+  .hh-ring-b,
+  .hh-ring-c,
+  .hh-orb,
+  .hh-card {
+    animation: none;
+  }
+
+  .hh-cue-line::after {
+    animation: none;
+    top: 30%;
+  }
+
+  .hh-btn,
+  .hh-card,
+  .hh-cue {
+    transition: none;
+  }
+
+  .hh-btn:hover,
+  .hh-card:hover {
+    transform: none;
+  }
+}

@@ -1,56 +1,87 @@
-/* I-DENTY LUXURY DESIGN TOKENS */
+/* I-DENTY DESIGN TOKENS - Matched to Reference Design */
 :root {
-  /* Brand Colors */
-  --color-brand-gold: #b59c67;
-  --color-brand-gold-hover: #9e8553;
-  --color-brand-gold-dark: #7a663e;
-  --color-brand-gold-light: #f7f3ea;
-  --color-brand-gold-muted: rgba(181, 156, 103, 0.15);
-  --color-brand-gold-border: rgba(181, 156, 103, 0.35);
+  /* Color Scheme - Reference Design */
+  --paper: #fdfcf9;
+  --wash: #f6f2e8;
+  --surface: #ffffff;
+  --ink: #18213b;
+  --muted: #5b6379;
+  --line: #e7e1d2;
+  --gold: #85702f;
+  --gold-l: #b9a15a;
+  --gold-bg: #f4edd7;
+  --ok: #3f7050;
+  --camel: #96683c;
+  --navy: #1c2b52;
+  --char: #2b2a2f;
+  --accent: var(--camel);
 
-  /* Neutrals */
-  --color-bg-body: #ffffff;
-  --color-bg-sand: #f8f6f2;
-  --color-bg-sand-light: #fbfaf8;
-  --color-bg-sand-warm: #f4f1ea;
-  --color-bg-dark: #121417;
-  --color-bg-dark-card: #1a1d22;
-  --color-bg-dark-subtle: #22262c;
+  /* Aliases for existing components */
+  --color-brand-gold: var(--gold);
+  --color-brand-gold-hover: var(--gold-l);
+  --color-brand-gold-dark: var(--camel);
+  --color-brand-gold-light: var(--gold-bg);
+  --color-brand-gold-muted: rgba(133, 112, 47, 0.15);
+  --color-brand-gold-border: rgba(133, 112, 47, 0.35);
 
-  /* Typography Colors */
-  --color-text-main: #14171c;
-  --color-text-body: #404040;
-  --color-text-muted: #717784;
+  --color-bg-body: var(--paper);
+  --color-bg-sand: var(--wash);
+  --color-bg-sand-light: var(--surface);
+  --color-bg-sand-warm: var(--gold-bg);
+  --color-bg-dark: var(--ink);
+  --color-bg-dark-card: var(--char);
+  --color-bg-dark-subtle: var(--navy);
+
+  --color-text-main: var(--ink);
+  --color-text-body: var(--muted);
+  --color-text-muted: var(--muted);
   --color-text-light: #ffffff;
-  --color-text-light-muted: #abb1bc;
-  --color-text-gold: #b59c67;
+  --color-text-light-muted: rgba(255, 255, 255, 0.88);
+  --color-text-gold: var(--gold);
 
-  /* Borders */
-  --color-border: #e4dfd6;
-  --color-border-light: #f0ebe2;
-  --color-border-dark: #2a2e36;
+  --color-border: var(--line);
+  --color-border-light: var(--line);
+  --color-border-dark: var(--char);
 
   /* Typography */
-  --font-brand: "Neue Montreal", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-main: "Neue Montreal", "Plus Jakarta Sans", -apple-system, BlinkMacSystemFont, sans-serif;
-  --font-editorial: "Playfair Display", Georgia, serif;
+  --font-brand: "Cormorant Garamond", Georgia, serif;
+  --font-main: "Jost", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-editorial: "Cormorant Garamond", Georgia, serif;
+  --font-sans: "Jost", -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-serif: "Cormorant Garamond", Georgia, serif;
 
   /* Elevation */
-  --shadow-subtle: 0 4px 20px rgba(0, 0, 0, 0.04);
-  --shadow-card: 0 10px 30px rgba(0, 0, 0, 0.06);
-  --shadow-hover: 0 16px 40px rgba(0, 0, 0, 0.09);
-  --shadow-modal: 0 24px 60px rgba(0, 0, 0, 0.25);
+  --shadow-subtle: 0 4px 20px rgba(24, 33, 59, 0.08);
+  --shadow-card: 0 30px 60px -30px rgba(24, 33, 59, 0.38);
+  --shadow-hover: 0 40px 80px -30px rgba(24, 33, 59, 0.45);
+  --shadow-modal: 0 24px 60px rgba(24, 33, 59, 0.25);
 
   /* Layout */
-  --container-max: 1240px;
-  --container-wide: 1380px;
-  --container-narrow: 840px;
-  --radius-sm: 3px;
-  --radius-md: 6px;
-  --radius-lg: 10px;
+  --container-max: 1200px;
+  --container-wide: 1280px;
+  --container-narrow: 820px;
+  --radius-sm: 6px;
+  --radius-md: 12px;
+  --radius-lg: 26px;
+  --radius-xl: 999px;
 
   /* Transitions */
-  --transition-fast: 0.2s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-base: 0.35s cubic-bezier(0.16, 1, 0.3, 1);
-  --transition-smooth: 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  --transition-fast: 0.2s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-base: 0.35s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-smooth: 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+  --transition-3d: 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+
+  /* Z-index layers */
+  --z-fixed: 40;
+  --z-sticky: 30;
+  --z-modal: 50;
+  --z-toast: 60;
+  --z-prog: 70;
+
+  /* Homepage vertical rhythm — single source of truth for section spacing */
+  --section-pad-y: clamp(3.5rem, 6vw, 5.5rem);
+  --section-pad-y-tablet: clamp(3rem, 6vw, 4.25rem);
+  --section-pad-y-mobile: clamp(2.5rem, 8vw, 3.5rem);
+  --section-head-gap: clamp(1.75rem, 4vw, 2.75rem);
+  --section-block-gap: clamp(1.5rem, 3.5vw, 2.5rem);
 }

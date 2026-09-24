@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import { motion, AnimatePresence, type Transition } from 'framer-motion';
 import { SectionHeader } from '../common/SectionHeader';
 import { Button } from '../common/Button';
 import { REINVENTION_STAGES } from '../../data/frameworkData';
-import { ArrowRight, CheckCircle2 } from 'lucide-react';
+import { CheckCircle2 } from 'lucide-react';
 
 export const FrameworkTeaser: React.FC = () => {
   const [selectedStageId, setSelectedStageId] = useState<string>('recalibrate');
 
-  const activeStage =
-    REINVENTION_STAGES.find((s) => s.id === selectedStageId) || REINVENTION_STAGES[0];
+  const springConfig: Transition = { type: "spring", stiffness: 100, damping: 20 };
 
   return (
     <section className="section-padding" style={{ backgroundColor: '#ffffff' }}>
@@ -21,187 +21,256 @@ export const FrameworkTeaser: React.FC = () => {
           centered
         />
 
-        {/* 4 Step Cards Progression */}
-        <div
-          style={{
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(240px, 1fr))',
-            gap: '1.25rem',
-            marginBottom: '3rem',
-          }}
-        >
-          {REINVENTION_STAGES.map((stage) => {
-            const isSelected = stage.id === selectedStageId;
-            return (
-              <div
-                key={stage.id}
-                onClick={() => setSelectedStageId(stage.id)}
-                className="card-editorial"
-                style={{
-                  cursor: 'pointer',
-                  border: isSelected
-                    ? '2px solid var(--color-brand-gold)'
-                    : '1px solid var(--color-border-light)',
-                  backgroundColor: isSelected ? 'var(--color-bg-sand-light)' : '#ffffff',
-                  boxShadow: isSelected ? 'var(--shadow-card)' : 'none',
-                  borderRadius: 'var(--radius-md)',
-                  padding: '1.8rem 1.5rem',
-                  display: 'flex',
-                  flexDirection: 'column',
-                  position: 'relative',
-                  transition: 'all 0.25s ease',
-                }}
-              >
-                {/* Step Number */}
-                <div
-                  style={{
-                    fontSize: '0.82rem',
-                    fontWeight: 700,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.14em',
-                    color: isSelected ? 'var(--color-brand-gold-dark)' : 'var(--color-text-muted)',
-                    marginBottom: '0.75rem',
+        <div className="glass-panel" style={{ padding: '0.5rem', borderRadius: 'var(--radius-md)', backgroundColor: 'var(--color-bg-sand-light)' }}>
+          <style>{`
+            .framework-accordion {
+              display: flex;
+              flex-direction: row;
+              gap: 0.5rem;
+              height: 600px;
+              width: 100%;
+              overflow: hidden;
+            }
+            .framework-card-content {
+              display: flex;
+              flex-direction: row;
+              width: 100%;
+              height: 100%;
+            }
+            .framework-card-image {
+              flex: 1;
+              position: relative;
+              min-width: 300px;
+            }
+            @media (max-width: 900px) {
+              .framework-accordion {
+                flex-direction: column;
+                height: 800px;
+              }
+              .framework-card-content {
+                flex-direction: column;
+              }
+              .framework-card-image {
+                min-width: 100%;
+                min-height: 200px;
+              }
+              .framework-inactive-container {
+                flex-direction: row !important;
+                gap: 1.5rem;
+                justify-content: flex-start !important;
+                padding: 1rem 1.5rem !important;
+              }
+              .framework-inactive-text {
+                writing-mode: horizontal-tb !important;
+                transform: none !important;
+              }
+              .framework-inactive-number {
+                margin-bottom: 0 !important;
+              }
+            }
+            .framework-inactive-container {
+              display: flex;
+              flex-direction: column;
+              align-items: center;
+              justify-content: center;
+              width: 100%;
+              height: 100%;
+              padding: 1.5rem;
+              background-color: #ffffff;
+            }
+            .framework-inactive-text {
+              writing-mode: vertical-rl;
+              text-orientation: mixed;
+              transform: rotate(180deg);
+              font-size: 1.35rem;
+              font-weight: 600;
+              letter-spacing: 0.05em;
+              color: var(--color-text-main);
+              white-space: nowrap;
+            }
+          `}</style>
+          <div className="framework-accordion">
+            {REINVENTION_STAGES.map((stage) => {
+              const isSelected = stage.id === selectedStageId;
+              return (
+                <motion.div
+                  key={stage.id}
+                  layout
+                  onClick={() => setSelectedStageId(stage.id)}
+                  onKeyDown={(e) => {
+                    if (e.key === 'Enter' || e.key === ' ') {
+                      e.preventDefault();
+                      setSelectedStageId(stage.id);
+                    }
                   }}
-                >
-                  Step {stage.stepNumber}
-                </div>
-
-                <h3
+                  tabIndex={0}
+                  role="button"
+                  aria-pressed={isSelected}
+                  transition={springConfig}
                   style={{
-                    fontSize: '1.35rem',
-                    marginBottom: '0.5rem',
-                    color: 'var(--color-text-main)',
-                  }}
-                >
-                  {stage.title}
-                </h3>
-
-                <p
-                  style={{
-                    fontSize: '0.92rem',
-                    color: 'var(--color-text-body)',
-                    lineHeight: 1.55,
-                    marginBottom: '1.25rem',
-                    flex: 1,
-                  }}
-                >
-                  {stage.shortDescription}
-                </p>
-
-                <div
-                  style={{
+                    flex: isSelected ? 3 : 1,
+                    position: 'relative',
+                    cursor: 'pointer',
+                    borderRadius: 'var(--radius-md)',
+                    overflow: 'hidden',
+                    backgroundColor: isSelected ? 'var(--color-bg-sand)' : '#ffffff',
+                    border: isSelected
+                      ? '2px solid var(--color-brand-gold)'
+                      : '1px solid var(--color-border-light)',
+                    boxShadow: isSelected ? 'var(--shadow-card)' : 'none',
                     display: 'flex',
-                    alignItems: 'center',
-                    gap: '0.4rem',
-                    fontSize: '0.8rem',
-                    fontWeight: 600,
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    color: isSelected ? 'var(--color-brand-gold-dark)' : 'var(--color-text-muted)',
                   }}
                 >
-                  <span>{isSelected ? 'Currently Viewing' : 'View Stage'}</span>
-                  <ArrowRight size={13} />
-                </div>
-              </div>
-            );
-          })}
-        </div>
+                  <AnimatePresence mode="wait">
+                    {isSelected ? (
+                        <motion.div
+                        key="active"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="framework-card-content"
+                      >
+                        {/* Left Side: Image */}
+                        <div className="framework-card-image">
+                          <img
+                            src={stage.imageSrc}
+                            alt={stage.title}
+                            style={{
+                              width: '100%',
+                              height: '100%',
+                              objectFit: 'cover',
+                              display: 'block',
+                            }}
+                          />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              inset: 0,
+                              background: 'linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.5) 100%)',
+                            }}
+                          />
+                          <div
+                            style={{
+                              position: 'absolute',
+                              bottom: '20px',
+                              left: '24px',
+                              color: '#ffffff',
+                              textTransform: 'uppercase',
+                              letterSpacing: '0.12em',
+                              fontSize: '0.8rem',
+                              fontWeight: 600,
+                            }}
+                          >
+                            Stage {stage.stepNumber} Focus
+                          </div>
+                        </div>
 
-        {/* Active Stage Interactive Deep Dive */}
-        <div
-          className="animate-fade-in"
-          key={activeStage.id}
-          style={{
-            backgroundColor: 'var(--color-bg-sand)',
-            border: '1px solid var(--color-border)',
-            borderRadius: 'var(--radius-md)',
-            overflow: 'hidden',
-            display: 'grid',
-            gridTemplateColumns: 'repeat(auto-fit, minmax(320px, 1fr))',
-          }}
-        >
-          {/* Stage Image */}
-          <div style={{ position: 'relative', minHeight: '340px' }}>
-            <img
-              src={activeStage.imageSrc}
-              alt={activeStage.title}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                inset: 0,
-                background: 'linear-gradient(180deg, rgba(0,0,0,0) 60%, rgba(0,0,0,0.5) 100%)',
-              }}
-            />
-            <div
-              style={{
-                position: 'absolute',
-                bottom: '20px',
-                left: '24px',
-                color: '#ffffff',
-                textTransform: 'uppercase',
-                letterSpacing: '0.12em',
-                fontSize: '0.8rem',
-                fontWeight: 600,
-              }}
-            >
-              Stage {activeStage.stepNumber} Focus
-            </div>
-          </div>
+                        {/* Right Side: Content */}
+                        <div style={{ flex: 1.2, padding: '2.5rem', display: 'flex', flexDirection: 'column', overflowY: 'auto' }}>
+                          <motion.span
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.1 }}
+                            className="eyebrow"
+                          >
+                            Operating Pillar {stage.stepNumber}
+                          </motion.span>
+                          
+                          <motion.h3
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.2 }}
+                            style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.1rem)', marginBottom: '0.75rem', color: 'var(--color-text-main)' }}
+                          >
+                            {stage.title}
+                          </motion.h3>
 
-          {/* Stage Text & Learning Outcomes */}
-          <div style={{ padding: 'clamp(2rem, 4vw, 3.2rem)' }}>
-            <span className="eyebrow">Operating Pillar {activeStage.stepNumber}</span>
-            <h3 style={{ fontSize: 'clamp(1.5rem, 2.5vw, 2.1rem)', marginBottom: '0.75rem', color: 'var(--color-text-main)' }}>
-              {activeStage.title}
-            </h3>
+                          <motion.p
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.3 }}
+                            style={{ fontSize: '1.05rem', color: 'var(--color-text-body)', lineHeight: 1.65, marginBottom: '1.5rem' }}
+                          >
+                            {stage.meaning}
+                          </motion.p>
 
-            <p style={{ fontSize: '1.05rem', color: 'var(--color-text-body)', lineHeight: 1.65, marginBottom: '1.5rem' }}>
-              {activeStage.meaning}
-            </p>
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.4 }}
+                            style={{ marginBottom: '1.8rem' }}
+                          >
+                            <div
+                              style={{
+                                fontSize: '0.8rem',
+                                textTransform: 'uppercase',
+                                letterSpacing: '0.12em',
+                                fontWeight: 600,
+                                color: 'var(--color-text-muted)',
+                                marginBottom: '0.75rem',
+                              }}
+                            >
+                              Key Transformation Outcomes
+                            </div>
+                            <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
+                              {stage.learningOutcomes.map((outcome, idx) => (
+                                <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem', fontSize: '0.94rem' }}>
+                                  <CheckCircle2 size={17} color="var(--color-brand-gold)" style={{ marginTop: '2px', flexShrink: 0 }} />
+                                  <span style={{ color: 'var(--color-text-main)' }}>{outcome}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </motion.div>
 
-            <div style={{ marginBottom: '1.8rem' }}>
-              <div
-                style={{
-                  fontSize: '0.8rem',
-                  textTransform: 'uppercase',
-                  letterSpacing: '0.12em',
-                  fontWeight: 600,
-                  color: 'var(--color-text-muted)',
-                  marginBottom: '0.75rem',
-                }}
-              >
-                Key Transformation Outcomes
-              </div>
-              <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '0.65rem' }}>
-                {activeStage.learningOutcomes.map((outcome, idx) => (
-                  <li key={idx} style={{ display: 'flex', alignItems: 'flex-start', gap: '0.65rem', fontSize: '0.94rem' }}>
-                    <CheckCircle2 size={17} color="var(--color-brand-gold)" style={{ marginTop: '2px', flexShrink: 0 }} />
-                    <span style={{ color: 'var(--color-text-main)' }}>{outcome}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-
-            <div style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem' }}>
-              <Button variant="primary" href="/framework" withArrow>
-                Explore The Complete Framework
-              </Button>
-              <Link
-                to={`/journal/${activeStage.relevantArticleSlug}`}
-                className="btn-link"
-                style={{ fontSize: '0.85rem' }}
-              >
-                Read Associated Essay
-              </Link>
-            </div>
+                          <motion.div
+                            initial={{ opacity: 0, y: 10 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ delay: 0.5 }}
+                            style={{ display: 'flex', flexWrap: 'wrap', alignItems: 'center', gap: '1rem', marginTop: 'auto' }}
+                          >
+                            <Button variant="primary" href="/framework" withArrow>
+                              Explore The Complete Framework
+                            </Button>
+                            <Link
+                              to={`/journal/${stage.relevantArticleSlug}`}
+                              className="btn-link"
+                              style={{ fontSize: '0.85rem' }}
+                            >
+                              Read Associated Essay
+                            </Link>
+                          </motion.div>
+                        </div>
+                      </motion.div>
+                    ) : (
+                      <motion.div
+                        key="inactive"
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        exit={{ opacity: 0 }}
+                        transition={{ duration: 0.3 }}
+                        className="framework-inactive-container"
+                      >
+                        <div
+                          style={{
+                            fontSize: '1rem',
+                            fontWeight: 700,
+                            color: 'var(--color-text-muted)',
+                            marginBottom: '1.5rem',
+                          }}
+                          className="framework-inactive-number"
+                        >
+                          {stage.stepNumber}
+                        </div>
+                        <div className="framework-inactive-text">
+                          {stage.title}
+                        </div>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
+                </motion.div>
+              );
+            })}
           </div>
         </div>
       </div>

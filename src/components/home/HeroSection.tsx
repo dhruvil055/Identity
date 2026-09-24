@@ -1,14 +1,62 @@
-import React, { useState } from 'react';
+import React, { useRef } from 'react';
+import { Canvas, useFrame } from '@react-three/fiber';
+import { Environment, Float, MeshTransmissionMaterial, ContactShadows, PresentationControls } from '@react-three/drei';
+import { motion, type Variants } from 'framer-motion';
 import { Button } from '../common/Button';
-import { ChevronDown, Compass } from 'lucide-react';
+import { Compass, ChevronDown } from 'lucide-react';
 import { BRAND_CONFIG } from '../../data/brandData';
+import * as THREE from 'three';
+
+// The 3D Interactive Object
+const IdentitySculpture = () => {
+  const mesh = useRef<THREE.Mesh>(null);
+  
+  useFrame((_state, delta) => {
+    if (mesh.current) {
+      mesh.current.rotation.x += delta * 0.15;
+      mesh.current.rotation.y += delta * 0.2;
+    }
+  });
+
+  return (
+    <Float speed={2.5} rotationIntensity={0.6} floatIntensity={1.2}>
+      <mesh ref={mesh} scale={2}>
+        <icosahedronGeometry args={[1, 0]} />
+        <MeshTransmissionMaterial 
+          backside
+          backsideThickness={5}
+          thickness={2}
+          chromaticAberration={0.08}
+          anisotropicBlur={0.15}
+          clearcoat={1}
+          clearcoatRoughness={0.1}
+          envMapIntensity={2.5}
+          color="#d4b98a"
+          transmission={1}
+          roughness={0.05}
+          metalness={0.2}
+        />
+      </mesh>
+    </Float>
+  );
+};
 
 export const HeroSection: React.FC = () => {
-  const [videoLoaded, setVideoLoaded] = useState(false);
+  // framer-motion orchestration
+  const container: Variants = {
+    hidden: { opacity: 0 },
+    show: { opacity: 1, transition: { staggerChildren: 0.15, delayChildren: 0.4 } }
+  };
+  
+  const item: Variants = {
+    hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
+    show: { opacity: 1, y: 0, filter: 'blur(0px)', transition: { type: "spring", stiffness: 70, damping: 20 } }
+  };
 
   return (
     <section
       className="home-hero-section"
+      aria-label="I-denty — The identity-led lifestyle ecosystem"
       style={{
         position: 'relative',
         minHeight: 'calc(100vh - 110px)',
@@ -16,48 +64,37 @@ export const HeroSection: React.FC = () => {
         alignItems: 'center',
         justifyContent: 'center',
         overflow: 'hidden',
-        backgroundColor: '#121417',
+        backgroundColor: '#0a0b0d', // Deep dark for 3D contrast
         color: '#ffffff',
       }}
     >
-      {/* Background Video with Poster Fallback */}
-      <div
-        style={{
-          position: 'absolute',
-          inset: 0,
-          zIndex: 1,
-        }}
-      >
-        <video
-          autoPlay
-          muted
-          loop
-          playsInline
-          poster="https://i-denty.com/wp-content/themes/i-denty/assets/images/hero.png"
-          onCanPlay={() => setVideoLoaded(true)}
-          style={{
-            width: '100%',
-            height: '100%',
-            objectFit: 'cover',
-            opacity: videoLoaded ? 0.42 : 0,
-            transition: 'opacity 1.4s ease',
-          }}
-        >
-          <source src={BRAND_CONFIG.heroVideoUrl} type="video/mp4" />
-        </video>
-        <div
-          style={{
-            position: 'absolute',
-            inset: 0,
-            background:
-              'linear-gradient(180deg, rgba(18, 20, 23, 0.65) 0%, rgba(18, 20, 23, 0.4) 50%, rgba(18, 20, 23, 0.85) 100%)',
-          }}
-        />
+      {/* Interactive 3D Canvas Background */}
+      <div style={{ position: 'absolute', inset: 0, zIndex: 1 }}>
+        <Canvas camera={{ position: [0, 0, 7], fov: 45 }} dpr={[1, 2]}>
+          <color attach="background" args={['#0a0b0d']} />
+          <ambientLight intensity={0.4} />
+          <spotLight position={[10, 10, 10]} angle={0.15} penumbra={1} intensity={1} castShadow />
+          
+          <PresentationControls
+            global
+            rotation={[0, 0, 0]}
+            polar={[-Math.PI / 3, Math.PI / 3]}
+            azimuth={[-Math.PI / 1.4, Math.PI / 2]}
+          >
+            <IdentitySculpture />
+          </PresentationControls>
+          
+          <Environment preset="city" />
+          <ContactShadows position={[0, -3, 0]} opacity={0.6} scale={15} blur={2} far={4} color="#b59c67" />
+        </Canvas>
       </div>
 
-      {/* Hero Content Container */}
-      <div
+      {/* HTML Overlay Content with Fluid Animations */}
+      <motion.div
         className="identy-container"
+        variants={container}
+        initial="hidden"
+        animate="show"
         style={{
           position: 'relative',
           zIndex: 2,
@@ -65,98 +102,109 @@ export const HeroSection: React.FC = () => {
           paddingBottom: 'clamp(4rem, 8vw, 7rem)',
           textAlign: 'center',
           maxWidth: '960px',
+          pointerEvents: 'none' // Allow mouse to interact with 3D canvas behind
         }}
       >
-        {/* Subtle Eyebrow — enters first */}
-        <div
-          style={{
-            display: 'inline-flex',
-            alignItems: 'center',
-            gap: '0.6rem',
-            padding: '0.45rem 1.1rem',
-            borderRadius: 'var(--radius-sm)',
-            backgroundColor: 'rgba(181, 156, 103, 0.15)',
-            border: '1px solid rgba(181, 156, 103, 0.35)',
-            color: '#ffffff',
-            fontSize: '0.78rem',
-            textTransform: 'uppercase',
-            letterSpacing: '0.18em',
-            fontWeight: 500,
-            marginBottom: '1.8rem',
-            animation: 'heroFadeUp 0.7s ease both',
-            animationDelay: '0.1s',
-          }}
-        >
-          <span style={{ color: 'var(--color-brand-gold)' }}>◈</span>
-          <span>{BRAND_CONFIG.tagline}</span>
-        </div>
+        <motion.div variants={item} style={{ marginBottom: '1.8rem', pointerEvents: 'auto' }}>
+          <div
+            style={{
+              display: 'inline-flex',
+              alignItems: 'center',
+              gap: '0.6rem',
+              padding: '0.45rem 1.1rem',
+              borderRadius: 'var(--radius-sm)',
+              backgroundColor: 'rgba(255, 255, 255, 0.03)',
+              backdropFilter: 'blur(12px)',
+              WebkitBackdropFilter: 'blur(12px)',
+              border: '1px solid rgba(181, 156, 103, 0.35)',
+              color: '#ffffff',
+              fontSize: '0.78rem',
+              textTransform: 'uppercase',
+              letterSpacing: '0.18em',
+              fontWeight: 500,
+              boxShadow: '0 8px 32px rgba(0,0,0,0.1)'
+            }}
+          >
+            <span style={{ color: 'var(--color-brand-gold)' }}>◈</span>
+            <span>{BRAND_CONFIG.tagline}</span>
+          </div>
+        </motion.div>
 
-        {/* Primary Headline — enters second */}
-        <h1
+        <motion.h1
+          variants={item}
           style={{
             color: '#ffffff',
-            fontSize: 'clamp(2.3rem, 5vw, 4.1rem)',
-            fontWeight: 500,
-            lineHeight: 1.14,
-            letterSpacing: '-0.025em',
+            fontSize: 'clamp(2.8rem, 6.5vw, 5.2rem)',
+            fontWeight: 400,
+            lineHeight: 1.05,
+            letterSpacing: '-0.03em',
             marginBottom: '1.5rem',
-            textShadow: '0 2px 20px rgba(0, 0, 0, 0.4)',
-            animation: 'heroFadeUp 0.8s ease both',
-            animationDelay: '0.28s',
+            textShadow: '0 8px 40px rgba(0, 0, 0, 0.6)',
+            pointerEvents: 'auto'
           }}
         >
           {BRAND_CONFIG.heroTitle}
-        </h1>
+        </motion.h1>
 
-        {/* Supporting Message — enters third */}
-        <p
+        <motion.p
+          variants={item}
           style={{
-            fontSize: 'clamp(1.05rem, 1.9vw, 1.28rem)',
-            color: 'rgba(255, 255, 255, 0.88)',
+            fontSize: 'clamp(1.1rem, 2vw, 1.35rem)',
+            color: 'rgba(255, 255, 255, 0.85)',
             lineHeight: 1.65,
-            maxWidth: '820px',
+            maxWidth: '780px',
             marginLeft: 'auto',
             marginRight: 'auto',
-            marginBottom: '2.5rem',
+            marginBottom: '3rem',
             fontWeight: 300,
-            animation: 'heroFadeUp 0.8s ease both',
-            animationDelay: '0.46s',
+            pointerEvents: 'auto'
           }}
         >
           {BRAND_CONFIG.heroSubtitle}
-        </p>
+        </motion.p>
 
-        {/* Dual CTAs — enters last */}
-        <div
-          style={{
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: '1.1rem',
-            animation: 'heroFadeUp 0.8s ease both',
-            animationDelay: '0.62s',
-          }}
-        >
-          <Button variant="gold" href="/reinvention" withArrow>
+        <motion.div variants={item} style={{
+          display: 'flex',
+          flexWrap: 'wrap',
+          alignItems: 'center',
+          justifyContent: 'center',
+          gap: '1.2rem',
+          pointerEvents: 'auto'
+        }}>
+          <Button 
+            variant="gold" 
+            href="/reinvention" 
+            withArrow 
+            style={{ 
+              boxShadow: '0 0 25px rgba(181,156,103,0.35)',
+              border: 'none'
+            }}
+          >
             Explore I-denty
           </Button>
-
           <Button
             variant="ghost-light"
             href="/finder"
-            style={{ display: 'inline-flex', alignItems: 'center', gap: '0.5rem' }}
+            style={{ 
+              display: 'inline-flex', 
+              alignItems: 'center', 
+              gap: '0.5rem', 
+              backdropFilter: 'blur(8px)',
+              backgroundColor: 'rgba(255, 255, 255, 0.05)'
+            }}
           >
             <Compass size={16} />
             <span>Find Your Starting Point</span>
           </Button>
-        </div>
-      </div>
+        </motion.div>
+      </motion.div>
 
       {/* Scroll Down Cue */}
-      <a
+      <motion.a
         href="#what-is-identy"
-        aria-label="Scroll to discover I-denty"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8, duration: 1 }}
         style={{
           position: 'absolute',
           bottom: '24px',
@@ -168,31 +216,19 @@ export const HeroSection: React.FC = () => {
           flexDirection: 'column',
           alignItems: 'center',
           gap: '4px',
-          fontSize: '0.72rem',
+          fontSize: '0.7rem',
           textTransform: 'uppercase',
           letterSpacing: '0.15em',
-          transition: 'color 0.2s',
-          animation: 'heroFadeUp 1s ease both',
-          animationDelay: '1.1s',
         }}
       >
         <span>Discover</span>
-        <ChevronDown size={16} style={{ animation: 'scrollBounce 2s ease-in-out 2s infinite' }} />
-      </a>
-
-      <style>{`
-        @keyframes heroFadeUp {
-          from { opacity: 0; transform: translateY(22px); }
-          to   { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes scrollBounce {
-          0%, 100% { transform: translateY(0); opacity: 0.6; }
-          50%       { transform: translateY(6px); opacity: 1; }
-        }
-        @media (prefers-reduced-motion: reduce) {
-          [style*="animation"] { animation: none !important; opacity: 1 !important; }
-        }
-      `}</style>
+        <motion.div
+          animate={{ y: [0, 6, 0], opacity: [0.5, 1, 0.5] }}
+          transition={{ repeat: Infinity, duration: 2.5, ease: "easeInOut" }}
+        >
+          <ChevronDown size={14} />
+        </motion.div>
+      </motion.a>
     </section>
   );
 };

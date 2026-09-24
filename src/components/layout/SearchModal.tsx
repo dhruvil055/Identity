@@ -14,15 +14,21 @@ interface SearchModalProps {
 export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => {
   const [query, setQuery] = useState('');
   const inputRef = useRef<HTMLInputElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const previousFocusRef = useRef<HTMLElement | null>(null);
   const navigate = useNavigate();
 
   useEffect(() => {
     if (isOpen) {
+      previousFocusRef.current = document.activeElement as HTMLElement;
       setTimeout(() => inputRef.current?.focus(), 50);
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = '';
       setQuery('');
+      if (previousFocusRef.current) {
+        previousFocusRef.current.focus();
+      }
     }
     return () => {
       document.body.style.overflow = '';
@@ -31,13 +37,33 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
+      if (!isOpen) return;
       if (e.key === 'Escape') {
         onClose();
+        return;
+      }
+      if (e.key === 'Tab') {
+        const focusable = modalRef.current?.querySelectorAll<HTMLElement>(
+          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+        );
+        if (!focusable || focusable.length === 0) return;
+        const firstElement = focusable[0];
+        const lastElement = focusable[focusable.length - 1];
+
+        if (e.shiftKey) {
+          if (document.activeElement === firstElement) {
+            lastElement.focus();
+            e.preventDefault();
+          }
+        } else {
+          if (document.activeElement === lastElement) {
+            firstElement.focus();
+            e.preventDefault();
+          }
+        }
       }
     };
-    if (isOpen) {
-      window.addEventListener('keydown', handleKeyDown);
-    }
+    window.addEventListener('keydown', handleKeyDown);
     return () => window.removeEventListener('keydown', handleKeyDown);
   }, [isOpen, onClose]);
 
@@ -89,9 +115,10 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
 
   return (
     <div
+      ref={modalRef}
       role="dialog"
       aria-modal="true"
-      aria-label="Global Search"
+      aria-label="Search I-denty"
       style={{
         position: 'fixed',
         inset: 0,
@@ -151,23 +178,37 @@ export const SearchModal: React.FC<SearchModalProps> = ({ isOpen, onClose }) => 
           {query && (
             <button
               onClick={() => setQuery('')}
-              style={{ padding: '0.2rem', color: 'var(--color-text-muted)' }}
+              aria-label="Clear search"
+              style={{ padding: '0.2rem', color: 'var(--color-text-muted)', border: 'none', background: 'none', cursor: 'pointer' }}
             >
               <X size={16} />
             </button>
           )}
-          <kbd
+          <button
+            onClick={onClose}
+            aria-label="Close search"
             style={{
-              fontSize: '0.72rem',
-              padding: '0.2rem 0.45rem',
-              borderRadius: '3px',
-              backgroundColor: 'var(--color-bg-sand)',
-              color: 'var(--color-text-muted)',
-              border: '1px solid var(--color-border)',
+              background: 'none',
+              border: 'none',
+              padding: 0,
+              cursor: 'pointer',
+              display: 'flex',
+              alignItems: 'center',
             }}
           >
-            ESC
-          </kbd>
+            <kbd
+              style={{
+                fontSize: '0.72rem',
+                padding: '0.2rem 0.45rem',
+                borderRadius: '3px',
+                backgroundColor: 'var(--color-bg-sand)',
+                color: 'var(--color-text-muted)',
+                border: '1px solid var(--color-border)',
+              }}
+            >
+              ESC
+            </kbd>
+          </button>
         </div>
 
         {/* Results Container */}
