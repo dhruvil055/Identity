@@ -13,6 +13,7 @@ export const Header: React.FC = () => {
   const [activeDropdown, setActiveDropdown] = useState<string | null>(null);
   const navRef = useRef<HTMLElement>(null);
   const location = useLocation();
+  const isHome = location.pathname === '/';
 
   useEffect(() => {
     const handleScroll = () => {
@@ -53,9 +54,8 @@ export const Header: React.FC = () => {
     };
   }, [activeDropdown]);
 
-  // Existing navigation structure — unchanged routes and labels
+  // Existing navigation structure — "Home" removed: the logo is the home control.
   const navLinks = [
-    { label: 'Home', href: '/' },
     {
       label: 'Reinvention',
       href: '/reinvention',
@@ -94,7 +94,7 @@ export const Header: React.FC = () => {
 
   return (
     <>
-      <header className={`lux-header ${isScrolled ? 'is-scrolled' : ''}`}>
+      <header className={`lux-header is-entering ${isScrolled ? 'is-scrolled' : ''}`}>
         {/* Gold announcement / tagline strip */}
         <div className="lux-strip">
           <span>{BRAND_CONFIG.tagline}</span>
@@ -103,14 +103,19 @@ export const Header: React.FC = () => {
         {/* Main Header Bar */}
         <div className="identy-container identy-container-wide">
           <div className="lux-bar">
-            {/* Logo — same brand asset, subtle 3D treatment */}
-            <Link to="/" aria-label="I-denty Home" className="lux-logo">
+            {/* Logo — the primary Home control (client-side navigation, no refresh) */}
+            <Link
+              to="/"
+              aria-label="I-denty Home"
+              aria-current={isHome ? 'page' : undefined}
+              className={`lux-logo${isHome ? ' is-home' : ''}`}
+            >
               <img src={BRAND_CONFIG.logoUrl} alt="I-denty Logo" />
             </Link>
 
             {/* Desktop Navigation Menu */}
             <nav ref={navRef} className="lux-nav" aria-label="Main Navigation">
-              {navLinks.map((link) => {
+              {navLinks.map((link, idx) => {
                 const isActive =
                   location.pathname === link.href ||
                   (link.href !== '/' && location.pathname.startsWith(link.href));
@@ -119,7 +124,8 @@ export const Header: React.FC = () => {
                 return (
                   <div
                     key={link.label}
-                    className={`lux-nav-item ${isOpen ? 'is-open' : ''}`}
+                    className={`lux-nav-item${isOpen ? ' is-open' : ''}`}
+                    style={{ ['--i' as string]: idx }}
                     onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
                     onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
                     onFocus={() => link.dropdown && setActiveDropdown(link.label)}

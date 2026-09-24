@@ -54,17 +54,20 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 1rem;
-  height: 74px;
+  gap: 1.25rem;
+  height: 84px;
 }
 
-/* ---------- Logo with subtle 3D treatment (no distortion) ---------- */
+/* ---------- Logo: the primary Home control ---------- */
 .lux-logo {
+  position: relative;
   display: inline-flex;
   align-items: center;
   flex-shrink: 0;
-  height: 42px;
+  height: 60px;
+  padding: 0 4px;
   border-radius: var(--radius-sm);
+  cursor: pointer;
   transform: translateZ(0);
   transition: transform var(--transition-fast), filter var(--transition-fast);
   filter: drop-shadow(0 1px 1px rgba(24, 33, 59, 0.08));
@@ -72,15 +75,56 @@
 
 .lux-logo:hover {
   transform: translateY(-1px);
-  filter: drop-shadow(0 4px 8px rgba(24, 33, 59, 0.14));
+  filter: drop-shadow(0 5px 10px rgba(24, 33, 59, 0.16));
 }
 
 .lux-logo img {
-  height: 38px;
+  height: 56px;
   width: auto;
   max-width: none;
   flex-shrink: 0;
   object-fit: contain;
+}
+
+/* Subtle premium home-active treatment: small gold dot, never an underline */
+.lux-logo.is-home::after {
+  content: '';
+  position: absolute;
+  left: 50%;
+  bottom: -1px;
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  transform: translateX(-50%);
+  background: radial-gradient(circle, var(--color-brand-gold-hover) 0%, var(--color-brand-gold) 100%);
+  box-shadow: 0 0 6px rgba(133, 112, 47, 0.55);
+}
+
+.lux-logo.is-home {
+  filter: drop-shadow(0 2px 3px rgba(24, 33, 59, 0.12));
+}
+
+/* ---------- Entrance choreography (runs once on mount, <700ms total) ---------- */
+@keyframes lux-enter {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.lux-header.is-entering .lux-logo {
+  animation: lux-enter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+}
+
+.lux-header.is-entering .lux-nav-item {
+  animation: lux-enter 0.45s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(0.08s + var(--i, 0) * 0.05s);
+}
+
+.lux-header.is-entering .lux-actions {
+  animation: lux-enter 0.5s cubic-bezier(0.2, 0.8, 0.2, 1) 0.4s backwards;
+}
+
+.lux-header.is-entering .lux-strip {
+  animation: lux-enter 0.4s ease backwards;
 }
 
 /* ---------- Desktop nav ---------- */
@@ -559,6 +603,15 @@
   .lux-nav-link {
     font-size: 0.83rem;
   }
+  .lux-bar {
+    height: 76px;
+  }
+  .lux-logo {
+    height: 52px;
+  }
+  .lux-logo img {
+    height: 48px;
+  }
 }
 
 @media (max-width: 980px) {
@@ -577,6 +630,12 @@
   .lux-bar {
     height: 68px;
   }
+  .lux-logo {
+    height: 48px;
+  }
+  .lux-logo img {
+    height: 44px;
+  }
 }
 
 @media (max-width: 480px) {
@@ -586,11 +645,14 @@
     padding: 0.4rem 0.9rem;
   }
   .lux-bar {
-    height: 62px;
+    height: 64px;
     gap: 0.6rem;
   }
+  .lux-logo {
+    height: 42px;
+  }
   .lux-logo img {
-    height: 30px;
+    height: 38px;
   }
   .lux-actions {
     gap: 0.5rem;
@@ -608,6 +670,12 @@
 
 /* ---------- Reduced motion: static, still 3D-looking, no movement ---------- */
 @media (prefers-reduced-motion: reduce) {
+  .lux-header.is-entering .lux-logo,
+  .lux-header.is-entering .lux-nav-item,
+  .lux-header.is-entering .lux-actions,
+  .lux-header.is-entering .lux-strip {
+    animation: none;
+  }
   .lux-nav-link,
   .lux-nav-link::after,
   .lux-finder-btn,
