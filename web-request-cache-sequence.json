@@ -1,0 +1,51 @@
+{
+  "schema_version": 1,
+  "diagram_type": "sequence",
+  "meta": {
+    "title": "Web Request Cache-Lookup Sequence",
+    "locale": "en",
+    "viewBox": [1040, 480],
+    "column_fit": "spread",
+    "quality_profile": "showcase"
+  },
+  "participants": [
+    { "id": "browser", "type": "frontend", "label": "Browser", "sublabel": "client app" },
+    { "id": "api", "type": "backend", "label": "API", "sublabel": "request handler" },
+    { "id": "redis", "type": "database", "label": "Redis", "sublabel": "cache" },
+    { "id": "postgres", "type": "database", "label": "PostgreSQL", "sublabel": "source of truth" }
+  ],
+  "messages": [
+    { "id": "api-request", "from": "browser", "to": "api", "y": 168, "label": "GET /products/42", "variant": "emphasis" },
+    { "id": "cache-lookup", "from": "api", "to": "redis", "y": 205, "label": "GET product:42", "variant": "default" },
+    { "id": "cache-miss", "from": "redis", "to": "api", "y": 235, "label": "miss", "variant": "return" },
+    { "id": "db-query", "from": "api", "to": "postgres", "y": 270, "label": "SELECT ... FROM products", "variant": "emphasis" },
+    { "id": "db-rows", "from": "postgres", "to": "api", "y": 300, "label": "1 row", "variant": "return" },
+    { "id": "cache-fill", "from": "api", "to": "redis", "y": 336, "label": "SET product:42 EX 300", "variant": "dashed" },
+    { "id": "api-response", "from": "api", "to": "browser", "y": 372, "label": "200 JSON body", "variant": "return" }
+  ],
+  "activations": [
+    { "participant": "api", "from": 162, "to": 380, "type": "backend" },
+    { "participant": "redis", "from": 200, "to": 241, "type": "database" },
+    { "participant": "postgres", "from": 265, "to": 306, "type": "database" }
+  ],
+  "cards": [
+    {
+      "dot": "emerald",
+      "title": "Happy path",
+      "items": [
+        "The browser talks only to the API",
+        "Redis is checked before any database work",
+        "Return messages retrace the path back to the browser"
+      ]
+    },
+    {
+      "dot": "orange",
+      "title": "Cache miss",
+      "items": [
+        "A miss is a quiet return, then a PostgreSQL query",
+        "The API fills Redis with a TTL before responding",
+        "Later reads for this key skip PostgreSQL entirely"
+      ]
+    }
+  ]
+}

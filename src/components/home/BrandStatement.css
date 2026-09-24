@@ -1,0 +1,95 @@
+/* ==========================================================================
+   BRAND STATEMENT — light editorial finale between invitation + footer
+   ========================================================================== */
+
+.bs {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(44% 60% at 50% 100%, rgba(133, 112, 47, 0.1) 0%, rgba(133, 112, 47, 0) 70%),
+    var(--color-bg-body);
+  text-align: center;
+}
+
+.bs-mark {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 2rem + 6vw, 5.5rem);
+  letter-spacing: 0.22em;
+  text-indent: 0.22em;
+  color: var(--color-text-main);
+  font-weight: 400;
+  line-height: 1.1;
+  margin-bottom: 1.1rem;
+}
+
+.bs-mark em {
+  font-style: italic;
+  color: var(--color-brand-gold-dark);
+}
+
+.bs-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  color: var(--color-brand-gold);
+  margin-bottom: 1.6rem;
+}
+
+.bs-rule::before,
+.bs-rule::after {
+  content: '';
+  height: 1px;
+  width: min(140px, 24vw);
+  background: linear-gradient(90deg, transparent, var(--color-brand-gold-border));
+}
+
+.bs-rule::after {
+  background: linear-gradient(90deg, var(--color-brand-gold-border), transparent);
+}
+
+.bs-line {
+  font-size: clamp(1.05rem, 0.98rem + 0.5vw, 1.25rem);
+  color: var(--color-text-body);
+  font-weight: 300;
+  max-width: 42rem;
+  margin: 0 auto 2.2rem;
+  line-height: 1.7;
+}
+
+.bs-ctas {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: 1rem;
+}
+
+/* Entrance */
+.bs-rise {
+  opacity: 0;
+  translate: 0 24px;
+}
+
+.is-in .bs-rise {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s),
+    translate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s);
+}
+
+@media (max-width: 560px) {
+  .bs-ctas .btn {
+    width: 100%;
+    max-width: 340px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .bs-rise {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+}

@@ -1,0 +1,145 @@
+/* ==========================================================================
+   IDENTITY INTRO — editorial brand statement (light, calm, typographic)
+   ========================================================================== */
+
+.ii {
+  position: relative;
+  overflow: hidden;
+  background:
+    radial-gradient(50% 36% at 50% 0%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0) 70%),
+    var(--color-bg-body);
+}
+
+.ii-inner {
+  position: relative;
+  max-width: 880px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.ii-rule {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.9rem;
+  margin-bottom: 1.6rem;
+  color: var(--color-brand-gold);
+}
+
+.ii-rule::before,
+.ii-rule::after {
+  content: '';
+  height: 1px;
+  width: min(120px, 22vw);
+  background: linear-gradient(90deg, transparent, var(--color-brand-gold-border));
+}
+
+.ii-rule::after {
+  background: linear-gradient(90deg, var(--color-brand-gold-border), transparent);
+}
+
+.ii-statement {
+  font-size: clamp(2rem, 1.4rem + 3.4vw, 3.4rem);
+  line-height: 1.12;
+  letter-spacing: -0.02em;
+  font-weight: 400;
+  color: var(--color-text-main);
+  margin: 0 0 1.3rem;
+  text-wrap: balance;
+}
+
+.ii-statement em {
+  font-style: italic;
+  color: var(--color-brand-gold-dark);
+}
+
+.ii-sub {
+  font-size: clamp(1rem, 0.94rem + 0.5vw, 1.18rem);
+  line-height: 1.75;
+  color: var(--color-text-body);
+  max-width: 44rem;
+  margin: 0 auto 2.4rem;
+  font-weight: 300;
+}
+
+.ii-pillars {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: clamp(1rem, 2.5vw, 1.75rem);
+  margin-bottom: 2.4rem;
+  perspective: 1000px;
+}
+
+.ii-pillar {
+  --rx: 0deg;
+  --ry: 0deg;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid var(--color-border-light);
+  border-radius: var(--radius-md);
+  padding: 1.5rem 1.25rem;
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 18px 36px -24px rgba(24, 33, 59, 0.25);
+  transform-style: preserve-3d;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+}
+
+.ii-pillar:hover {
+  border-color: var(--color-brand-gold-border);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 1),
+    0 28px 54px -26px rgba(24, 33, 59, 0.32);
+}
+
+.ii-pillar svg {
+  color: var(--color-brand-gold-dark);
+  margin-bottom: 0.7rem;
+  transform: translateZ(24px);
+}
+
+.ii-pillar h3 {
+  font-size: 1.02rem;
+  margin-bottom: 0.4rem;
+  transform: translateZ(14px);
+}
+
+.ii-pillar p {
+  font-size: 0.86rem;
+  line-height: 1.6;
+  color: var(--color-text-body);
+}
+
+/* Entrance */
+.ii-rise {
+  opacity: 0;
+  translate: 0 26px;
+}
+
+.is-in .ii-rise {
+  opacity: 1;
+  translate: 0 0;
+  transition:
+    opacity 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s),
+    translate 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) var(--ed, 0s);
+}
+
+@media (max-width: 720px) {
+  .ii-pillars {
+    grid-template-columns: minmax(0, 1fr);
+    max-width: 420px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ii-rise {
+    opacity: 1;
+    translate: none;
+    transition: none;
+  }
+  .ii-pillar {
+    transition: none;
+  }
+}
