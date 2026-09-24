@@ -54,7 +54,7 @@ export const Header: React.FC = () => {
     };
   }, [activeDropdown]);
 
-  // Existing navigation structure — "Home" removed: the logo is the home control.
+  // Navigation structure
   const navLinks = [
     {
       label: 'Reinvention',
@@ -125,7 +125,7 @@ export const Header: React.FC = () => {
                   <div
                     key={link.label}
                     className={`lux-nav-item${isOpen ? ' is-open' : ''}`}
-                    style={{ ['--i' as string]: idx }}
+                    style={{ ['--i' as string]: idx } as React.CSSProperties}
                     onMouseEnter={() => link.dropdown && setActiveDropdown(link.label)}
                     onMouseLeave={() => link.dropdown && setActiveDropdown(null)}
                     onFocus={() => link.dropdown && setActiveDropdown(link.label)}

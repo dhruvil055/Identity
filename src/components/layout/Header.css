@@ -49,6 +49,11 @@
     0 8px 28px -12px rgba(24, 33, 59, 0.22);
 }
 
+/* ---------- Subtle 3D perspective on the entire header ---------- */
+.lux-header {
+  transform-style: preserve-3d;
+}
+
 /* ---------- Main bar layout ---------- */
 .lux-bar {
   display: flex;
@@ -56,6 +61,7 @@
   justify-content: space-between;
   gap: 1.25rem;
   height: 84px;
+  perspective: 600px;
 }
 
 /* ---------- Logo: the primary Home control ---------- */
@@ -74,7 +80,7 @@
 }
 
 .lux-logo:hover {
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(2px);
   filter: drop-shadow(0 5px 10px rgba(24, 33, 59, 0.16));
 }
 
@@ -133,10 +139,18 @@
   align-items: center;
   gap: clamp(0.9rem, 1.8vw, 2rem);
   perspective: 600px;
+  transform-style: preserve-3d;
 }
 
+/* Subtle 3D tilt on nav items on hover */
 .lux-nav-item {
   position: relative;
+  transform-style: preserve-3d;
+  transition: transform var(--transition-fast) cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.lux-nav-item:hover {
+  transform: translateZ(2px) rotateX(2deg);
 }
 
 .lux-nav-link {
@@ -151,6 +165,7 @@
   padding: 0.6rem 0.15rem;
   transform: translateZ(0);
   transition: color 0.22s ease, transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), text-shadow 0.22s ease;
+  transform-style: preserve-3d;
 }
 
 /* Gold underline indicator that grows from center */
@@ -171,7 +186,7 @@
 
 .lux-nav-link:hover {
   color: var(--color-text-main);
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(1px);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8), 0 6px 14px rgba(24, 33, 59, 0.12);
 }
 
@@ -217,6 +232,7 @@
   z-index: 1010;
   transform-origin: top center;
   animation: lux-drop-in 0.22s cubic-bezier(0.2, 0.8, 0.2, 1) forwards;
+  transform-style: preserve-3d;
 }
 
 /* Bridge the hover gap so the menu doesn't flicker closed */
@@ -227,6 +243,11 @@
   left: 0;
   right: 0;
   height: 8px;
+}
+
+/* Subtle 3D lift on dropdown open */
+.lux-dropdown.opened {
+  transform: translateZ(4px);
 }
 
 @keyframes lux-drop-in {
@@ -282,7 +303,7 @@
 }
 
 .lux-finder-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) translateZ(2px);
   background: linear-gradient(180deg, var(--color-brand-gold-hover) 0%, var(--color-brand-gold) 100%);
   color: #ffffff;
   text-shadow: 0 1px 1px rgba(0, 0, 0, 0.18);
@@ -317,7 +338,7 @@
 }
 
 .lux-icon-btn:hover {
-  transform: translateY(-2px);
+  transform: translateY(-2px) translateZ(2px);
   border-color: var(--color-brand-gold-border);
   color: var(--color-brand-gold-dark);
   box-shadow:
@@ -344,7 +365,7 @@
   border-radius: var(--radius-sm);
   border: 1px solid transparent;
   transform: translateZ(0);
-  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease, box-shadow 0.22s ease;
+  transition: transform 0.22s cubic-bezier(0.2, 0.8, 0.2, 1), background-color 0.2s ease, color 0.2s ease, border-color 0.22s ease, box-shadow 0.22s ease;
 }
 
 .lux-login svg {
@@ -358,7 +379,7 @@
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 1),
     0 6px 14px -8px rgba(24, 33, 59, 0.3);
-  transform: translateY(-1px);
+  transform: translateY(-1px) translateZ(1px);
 }
 
 .lux-login:hover svg {
@@ -714,5 +735,22 @@
   .lux-login:hover,
   .lux-logo:hover {
     transform: none;
+  }
+  
+  /* Reduced motion: keep 3D-looking but static */
+  .lux-nav-item {
+    transform: none !important;
+  }
+  .lux-nav-link {
+    transform: none !important;
+  }
+  .lux-finder-btn {
+    transform: none !important;
+  }
+  .lux-icon-btn {
+    transform: none !important;
+  }
+  .lux-login {
+    transform: none !important;
   }
 }
